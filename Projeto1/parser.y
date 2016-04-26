@@ -1,4 +1,5 @@
 %{
+    #include "AnaliseSemantica/AnaliseSemantica.hpp"
     #include "AnaliseSemantica/Primitivo.hpp"
     #include "AnaliseSemantica/Operacao.hpp"
 
@@ -20,9 +21,9 @@
  */
 %union {
     int integer;
-    std::string* string;
+    string* string;
 
-    TipoFundamental nodo;
+    Nodo<int>* nodo;
     Bloco* bloco;
 }
 

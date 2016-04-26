@@ -2,13 +2,15 @@
 FLEX=flex
 BISON=bison
 CC=clang++
-PARAM=-std=c++11 -fcxx-exceptions -Wno-deprecated-register -lboost
+PARAM=-std=c++11 -fcxx-exceptions -Wno-deprecated-register
 OUTPUT=myparse
+
+BOOST=-I boost_1_60_0
 
 all: flex yacc clang
 
 clang: *.cpp *.h
-	${CC} -o ${OUTPUT} *.cpp ${LLVMPARAM} ${PARAM}
+	${CC} ${BOOST} -o ${OUTPUT} *.cpp ${LLVMPARAM} ${PARAM}
 
 yacc: parser.y
 	${BISON} --defines=parser.h --output=parser.cpp parser.y

@@ -33,7 +33,7 @@ namespace AnaliseSemantica {
             public:
                 Soma_int_int(Nodo<int>* left, Nodo<int>* right) : Soma(left, right) { }
                 int executar(){
-                    return left->valor + right->valor;
+                    return left->executar() + right->executar();
                 };
         };
 
@@ -41,7 +41,7 @@ namespace AnaliseSemantica {
             public:
                 Soma_double_int(Nodo<double>* left, Nodo<int>* right) : Soma(left, right) { }
                 double executar(){
-                    return left->valor + right->valor;
+                    return left->executar() + right->executar();
                 };
         };
 
@@ -49,7 +49,7 @@ namespace AnaliseSemantica {
             public:
                 Soma_double_double(Nodo<double>* left, Nodo<double>* right) : Soma(left, right) { }
                 double executar(){
-                    return left->valor + right->valor;
+                    return left->executar() + right->executar();
                 };
         };
 
@@ -63,7 +63,7 @@ namespace AnaliseSemantica {
             public:
                 Multiplicacao_int_int(Nodo<int>* left, Nodo<int>* right) : Multiplicacao(left, right) { }
                 int executar(){
-                    return left->valor * right->valor;
+                    return left->executar() * right->executar();
                 };
         };
 
@@ -71,7 +71,7 @@ namespace AnaliseSemantica {
             public:
                 Multiplicacao_double_int(Nodo<double>* left, Nodo<int>* right) : Multiplicacao(left, right) { }
                 double executar(){
-                    return left->valor * right->valor;
+                    return left->executar() * right->executar();
                 };
         };
 
@@ -79,7 +79,7 @@ namespace AnaliseSemantica {
             public:
                 Multiplicacao_double_double(Nodo<double>* left, Nodo<double>* right) : Multiplicacao(left, right) { }
                 double executar(){
-                    return left->valor * right->valor;
+                    return left->executar() * right->executar();
                 };
         };
 
