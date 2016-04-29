@@ -62,25 +62,8 @@
 
 
 /* Copy the first part of user declarations.  */
-#line 1 "parser.y" /* yacc.c:339  */
 
-    #include "AnaliseSemantica/AnaliseSemantica.hpp"
-    #include "AnaliseSemantica/Primitivo.hpp"
-    #include "AnaliseSemantica/Operacao.hpp"
-
-    #include <stdio.h>
-    #include <stdlib.h>
-
-    using namespace AnaliseSemantica;
-    using namespace std;
-
-    extern int yylex();
-    extern void yyerror(const char* s, ...);
-
-    Bloco *raizDoPrograma; /* the root node of our program */
-    bool debug = true;
-
-#line 84 "parser.cpp" /* yacc.c:339  */
+#line 67 "parser.cpp" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -109,6 +92,25 @@
 #if YYDEBUG
 extern int yydebug;
 #endif
+/* "%code requires" blocks.  */
+#line 1 "parser.y" /* yacc.c:355  */
+
+    #include "AnaliseSemantica/Primitivo.hpp"
+    #include "AnaliseSemantica/Operacao.hpp"
+
+    #include <stdio.h>
+    #include <stdlib.h>
+
+    using namespace AnaliseSemantica;
+    using namespace std;
+
+    extern Bloco *raizDoPrograma; /* the root node of our program */
+    extern bool debug;
+
+    extern int yylex();
+    extern void yyerror(const char* s, ...);
+
+#line 114 "parser.cpp" /* yacc.c:355  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -139,7 +141,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 22 "parser.y" /* yacc.c:355  */
+#line 21 "parser.y" /* yacc.c:355  */
 
     int integer;
     string* string;
@@ -147,7 +149,7 @@ union YYSTYPE
     Nodo<int>* nodo;
     Bloco* bloco;
 
-#line 151 "parser.cpp" /* yacc.c:355  */
+#line 153 "parser.cpp" /* yacc.c:355  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -162,7 +164,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 166 "parser.cpp" /* yacc.c:358  */
+#line 168 "parser.cpp" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -461,7 +463,7 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    83,    83,    88,    93,   100,   101,   141,   143,   148
+       0,    82,    82,    87,    92,    99,   100,   140,   142,   147
 };
 #endif
 
@@ -1236,61 +1238,61 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 83 "parser.y" /* yacc.c:1646  */
+#line 82 "parser.y" /* yacc.c:1646  */
     { raizDoPrograma = (yyvsp[0].bloco); }
-#line 1242 "parser.cpp" /* yacc.c:1646  */
+#line 1244 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 88 "parser.y" /* yacc.c:1646  */
+#line 87 "parser.y" /* yacc.c:1646  */
     {
             (yyval.bloco) = new Bloco();
             (yyval.bloco)->listaDeInstrucoes.push_back((yyvsp[0].nodo));
     }
-#line 1251 "parser.cpp" /* yacc.c:1646  */
+#line 1253 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 93 "parser.y" /* yacc.c:1646  */
+#line 92 "parser.y" /* yacc.c:1646  */
     {
             if((yyvsp[0].nodo) != NULL)
                 (yyvsp[-1].bloco)->listaDeInstrucoes.push_back((yyvsp[0].nodo));
      }
-#line 1260 "parser.cpp" /* yacc.c:1646  */
+#line 1262 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 100 "parser.y" /* yacc.c:1646  */
+#line 99 "parser.y" /* yacc.c:1646  */
     { (yyval.nodo) = NULL; }
-#line 1266 "parser.cpp" /* yacc.c:1646  */
+#line 1268 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 141 "parser.y" /* yacc.c:1646  */
+#line 140 "parser.y" /* yacc.c:1646  */
     { (yyval.nodo) = new Inteiro((yyvsp[0].integer)); }
-#line 1272 "parser.cpp" /* yacc.c:1646  */
+#line 1274 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 143 "parser.y" /* yacc.c:1646  */
+#line 142 "parser.y" /* yacc.c:1646  */
     {
             (yyval.nodo) = new Soma_int_int((yyvsp[-2].nodo), (yyvsp[0].nodo));
             if(debug) cout << "SOMA" << endl;
     }
-#line 1281 "parser.cpp" /* yacc.c:1646  */
+#line 1283 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 148 "parser.y" /* yacc.c:1646  */
+#line 147 "parser.y" /* yacc.c:1646  */
     {
             (yyval.nodo) = new Multiplicacao_int_int((yyvsp[-2].nodo), (yyvsp[0].nodo));
             if(debug) cout << "MULTIPLICACAO" << endl;
     }
-#line 1290 "parser.cpp" /* yacc.c:1646  */
+#line 1292 "parser.cpp" /* yacc.c:1646  */
     break;
 
 
-#line 1294 "parser.cpp" /* yacc.c:1646  */
+#line 1296 "parser.cpp" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1518,5 +1520,5 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 169 "parser.y" /* yacc.c:1906  */
+#line 168 "parser.y" /* yacc.c:1906  */
 

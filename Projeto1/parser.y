@@ -1,5 +1,4 @@
-%{
-    #include "AnaliseSemantica/AnaliseSemantica.hpp"
+%code requires{
     #include "AnaliseSemantica/Primitivo.hpp"
     #include "AnaliseSemantica/Operacao.hpp"
 
@@ -9,12 +8,12 @@
     using namespace AnaliseSemantica;
     using namespace std;
 
+    extern Bloco *raizDoPrograma; /* the root node of our program */
+    extern bool debug;
+
     extern int yylex();
     extern void yyerror(const char* s, ...);
-
-    Bloco *raizDoPrograma; /* the root node of our program */
-    bool debug = true;
-%}
+}
 
 /* yylval == %union
  * union informs the different ways we can store data

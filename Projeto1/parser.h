@@ -39,6 +39,25 @@
 #if YYDEBUG
 extern int yydebug;
 #endif
+/* "%code requires" blocks.  */
+#line 1 "parser.y" /* yacc.c:1909  */
+
+    #include "AnaliseSemantica/Primitivo.hpp"
+    #include "AnaliseSemantica/Operacao.hpp"
+
+    #include <stdio.h>
+    #include <stdlib.h>
+
+    using namespace AnaliseSemantica;
+    using namespace std;
+
+    extern Bloco *raizDoPrograma; /* the root node of our program */
+    extern bool debug;
+
+    extern int yylex();
+    extern void yyerror(const char* s, ...);
+
+#line 61 "parser.h" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -69,7 +88,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 22 "parser.y" /* yacc.c:1909  */
+#line 21 "parser.y" /* yacc.c:1909  */
 
     int integer;
     string* string;
@@ -77,7 +96,7 @@ union YYSTYPE
     Nodo<int>* nodo;
     Bloco* bloco;
 
-#line 81 "parser.h" /* yacc.c:1909  */
+#line 100 "parser.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

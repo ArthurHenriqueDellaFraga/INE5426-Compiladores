@@ -15,7 +15,7 @@ namespace AnaliseSemantica {
     template <typename T>
     class Nodo {
         public:
-            virtual ~Nodo();
+            // virtual ~Nodo();
             virtual void print() = 0;
             virtual T executar() = 0;
     };
