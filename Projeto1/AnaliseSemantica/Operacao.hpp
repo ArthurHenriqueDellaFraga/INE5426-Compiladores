@@ -18,7 +18,7 @@ namespace AnaliseSemantica {
         public:
             void print(){
                 left->print();
-                cout << *simbolo;
+                cout << " " << *simbolo << " ";
                 right->print();
             };
     };

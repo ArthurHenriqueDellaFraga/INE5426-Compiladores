@@ -2,7 +2,9 @@
 
 #include <iostream>
 
-AnaliseSemantica::Bloco* raizDoPrograma; //set on Bison file
+using namespace AnaliseSemantica;
+
+Bloco* raizDoPrograma; //set on Bison file
 bool debug = true;
 
 extern int yyparse();

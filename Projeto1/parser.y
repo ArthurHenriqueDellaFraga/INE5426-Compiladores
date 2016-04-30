@@ -19,11 +19,17 @@
  * union informs the different ways we can store data
  */
 %union {
-    int integer;
-    string* string;
+    int _int;
+    double _double;
+    bool _bool;
+    char _char;
+    string* _string;
 
-    Nodo<int>* nodo;
     Bloco* bloco;
+
+    Nodo<int>* inteiro;
+    Nodo<double>* racional;
+    Nodo<bool>* booleano;
 }
 
 // token defines our terminal symbols (tokens).
@@ -44,20 +50,24 @@
 %token ABRE_PARENTESES FECHA_PARENTESES
 %token ABRE_CHAVES FECHA_CHAVES
 
-%token <integer> INTEIRO
-%token <string> STRING
+%token <_int> INTEIRO
+%token <_double> RACIONAL
+%token <_bool> BOOLEANO
+
+%token <_string> IDENTIFICADOR
 
 // type defines the type of our nonterminal symbols.
 
 %type <bloco> program
 %type <bloco> bloco
-%type <nodo> instrucao
 
 //%type <nodo> definicao
 //%type <nodo> definicao_multipla
 //%type <nodo> atribuicao
 
-%type <nodo> inteiro
+%type <inteiro> inteiro
+%type <racional> racional
+%type <booleano> booleano
 
 
 /* Operator precedence for mathematical operators
@@ -84,24 +94,73 @@ program
 
 
 bloco
-    : instrucao {
+    : inteiro NOVA_LINHA {
             $$ = new Bloco();
             $$->listaDeInstrucoes.push_back($1);
     }
 
-    | bloco instrucao {
-            if($2 != NULL)
-                $1->listaDeInstrucoes.push_back($2);
-     }
+    | racional NOVA_LINHA {
+            $$ = new Bloco();
+            $$->listaDeInstrucoes.push_back($1);
+    }
+
+    | booleano NOVA_LINHA {
+            $$ = new Bloco();
+            $$->listaDeInstrucoes.push_back($1);
+    }
+
+    | bloco inteiro NOVA_LINHA {
+            $1->listaDeInstrucoes.push_back($2);
+    }
+
+    | bloco racional NOVA_LINHA {
+            $1->listaDeInstrucoes.push_back($2);
+    }
+
+    | bloco booleano NOVA_LINHA {
+            $1->listaDeInstrucoes.push_back($2);
+    }
 ;
 
-instrucao
-    : NOVA_LINHA { $$ = NULL; } /*nothing here to be used */
-    | inteiro NOVA_LINHA
+inteiro
+    : INTEIRO { $$ = new Inteiro($1); }
+
+    | inteiro SOMA inteiro {
+            $$ = new Soma_int_int($1, $3);
+            if(debug) cout << "inteiro: SOMA" << endl;
+    }
+
+    | inteiro MULTIPLICACAO inteiro {
+            $$ = new Multiplicacao_int_int($1, $3);
+            if(debug) cout << "inteiro: MULTIPLICACAO" << endl;
+    }
+;
+
+racional
+    : RACIONAL { $$ = new Racional($1); }
+
+    | racional SOMA inteiro {
+            $$ = new Soma_double_int($1, $3);
+            if(debug) cout << "racional: SOMA" << endl;
+    }
+
+    | inteiro SOMA racional {
+            $$ = new Soma_double_int($3, $1);
+            if(debug) cout << "racional: SOMA" << endl;
+    }
+
+    | racional SOMA racional {
+            $$ = new Soma_double_double($1, $3);
+            if(debug) cout << "racional: SOMA" << endl;
+    }
+;
+
+booleano
+    : BOOLEANO { $$ = new Booleano($1); }
+
 //    | definicao NOVA_LINHA
 //    | definicao_multipla NOVA_LINHA
 //    | atribuicao NOVA_LINHA
-;
 
 /*
 definicao
@@ -134,35 +193,6 @@ atribuicao
 
     }
 ;
-*/
 
-inteiro
-    : INTEIRO { $$ = new Inteiro($1); }
-
-    | inteiro SOMA inteiro {
-            $$ = new Soma_int_int($1, $3);
-            if(debug) cout << "SOMA" << endl;
-    }
-
-    | inteiro MULTIPLICACAO inteiro {
-            $$ = new Multiplicacao_int_int($1, $3);
-            if(debug) cout << "MULTIPLICACAO" << endl;
-    }
-;
-
-/*
-racional
-    : RACIONAL { $$ = new Racional($1); }
-
-    | racional SOMA inteiro {
-            $$ = new Soma_double_int($1, $3);
-            if(debug) cout << "SOMA" << endl;
-    }
-
-    | racional SOMA racional {
-            $$ = new Soma_double_double($1, $3);
-            if(debug) cout << "SOMA" << endl;
-    }
-;
 */
 %%

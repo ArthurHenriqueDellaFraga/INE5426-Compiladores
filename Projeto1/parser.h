@@ -78,8 +78,10 @@ extern int yydebug;
     ABRE_CHAVES = 269,
     FECHA_CHAVES = 270,
     INTEIRO = 271,
-    STRING = 272,
-    errord = 273
+    RACIONAL = 272,
+    BOOLEANO = 273,
+    IDENTIFICADOR = 274,
+    errord = 275
   };
 #endif
 
@@ -90,13 +92,19 @@ union YYSTYPE
 {
 #line 21 "parser.y" /* yacc.c:1909  */
 
-    int integer;
-    string* string;
+    int _int;
+    double _double;
+    bool _bool;
+    char _char;
+    string* _string;
 
-    Nodo<int>* nodo;
     Bloco* bloco;
 
-#line 100 "parser.h" /* yacc.c:1909  */
+    Nodo<int>* inteiro;
+    Nodo<double>* racional;
+    Nodo<bool>* booleano;
+
+#line 108 "parser.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

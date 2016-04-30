@@ -12,35 +12,38 @@
 
 %option noyywrap nodefault yylineno
 
-number [0-9]+
-string [a-zA-Z]+
+digito [0-9]
+letra [a-zA-Z]
 
 %%
 
-[ \t]               ; //ignora espaços
-\n                  {return NOVA_LINHA;}
-";"                 {return NOVA_LINHA;}
+[ \t]                         ; //ignora espaços
+\n                            {return NOVA_LINHA;}
+";"                           {return NOVA_LINHA;}
 
-"def"               {return DEFINICAO;}
-"="                 {return ATRIBUICAO;}
+"def"                         {return DEFINICAO;}
+"="                           {return ATRIBUICAO;}
 
-"+"                 {return SOMA;}
-"-"                 {return SUBTRACAO;}
-"*"                 {return MULTIPLICACAO;}
-":"                 {return DIVISAO;}
+"+"                           {return SOMA;}
+"-"                           {return SUBTRACAO;}
+"*"                           {return MULTIPLICACAO;}
+":"                           {return DIVISAO;}
 
-","                 {return VIRGULA;}
-"."                 {return PONTO;}
+","                           {return VIRGULA;}
+"."                           {return PONTO;}
 
-"("                 {return ABRE_PARENTESES;}
-")"                 {return FECHA_PARENTESES;}
-"{"                 {return ABRE_CHAVES;}
-"}"                 {return FECHA_CHAVES;}
+"("                           {return ABRE_PARENTESES;}
+")"                           {return FECHA_PARENTESES;}
+"{"                           {return ABRE_CHAVES;}
+"}"                           {return FECHA_CHAVES;}
 
-{number}            {yylval.integer = atoi(yytext); return INTEIRO;}
-{string}            {yylval.string = new string(yytext); return STRING;}
+{digito}+                     {yylval._int = atoi(yytext); return INTEIRO;}
+{digito}+"."{digito}+         {yylval._double = atof(yytext); return RACIONAL;}
+"TRUE"                        {yylval._bool = true; return BOOLEANO;}
+"FALSE"                       {yylval._bool = false; return BOOLEANO;}
+{letra}+                      {yylval._string = new string(yytext); return IDENTIFICADOR;}
 
-.                   {yyerror("Caracter desconhecido: %c\n", *yytext);}
+.                             {yyerror("Caracter desconhecido: %c\n", *yytext);}
 
 %%
 
