@@ -25,6 +25,7 @@
     bool _bool;
     char _char;
     string* _string;
+    //typename _typename;
 
     Bloco* bloco;
 
@@ -59,7 +60,7 @@
 %token <_char> CARACTER
 %token <_string> SENTENCA
 
-%token <_string> TIPO
+%token TIPO_INT
 %token <_string> IDENTIFICADOR
 
 // type defines the type of our nonterminal symbols.
@@ -199,8 +200,8 @@ sentenca
 
 
 definicao
-    : TIPO IDENTIFICADOR {
-            $$ = new Variavel(*$2);
+    : TIPO_INT IDENTIFICADOR {
+            $$ = new Variavel<int>(*$2);
             cout << "DEFINICAO" << endl;
     }
 ;

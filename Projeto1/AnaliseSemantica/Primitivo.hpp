@@ -17,7 +17,7 @@ namespace AnaliseSemantica {
             void print(){
                 cout << valor;
             };
-            T executar(){
+            T executar( ){
                 return valor;
             }
     };
@@ -30,7 +30,7 @@ namespace AnaliseSemantica {
             void print(){
                 cout << '@';
             }
-            void executar(){ }
+            void executar( ){ }
     };
 
     class Inteiro : public Primitivo<int> {

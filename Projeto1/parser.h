@@ -82,7 +82,7 @@ extern int yydebug;
     BOOLEANO = 272,
     CARACTER = 273,
     SENTENCA = 274,
-    TIPO = 275,
+    TIPO_INT = 275,
     IDENTIFICADOR = 276,
     errord = 277
   };
@@ -100,6 +100,7 @@ union YYSTYPE
     bool _bool;
     char _char;
     string* _string;
+    //typename _typename;
 
     Bloco* bloco;
 
@@ -110,7 +111,7 @@ union YYSTYPE
     Nodo<string>* sentenca;
     Nodo<void>* vazio;
 
-#line 114 "parser.h" /* yacc.c:1909  */
+#line 115 "parser.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

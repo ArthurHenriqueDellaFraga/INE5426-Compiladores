@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+#include <map>
 
 #include "boost/variant.hpp"
 
@@ -9,6 +10,11 @@ using namespace boost;
 using namespace std;
 
 namespace AnaliseSemantica {
+
+    // class Contexto {
+    //     public:
+    //         map<string, TipoFundamental> conjuntoDeVariaveis;
+    // };
 
     template <typename T>
     class Nodo {

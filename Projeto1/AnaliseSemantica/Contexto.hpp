@@ -3,7 +3,6 @@
 #include "AnaliseSemantica.hpp"
 
 #include <iostream>
-#include <map>
 
 #include "boost/variant/apply_visitor.hpp"
 #include "boost/variant/static_visitor.hpp"
@@ -13,11 +12,7 @@ using namespace std;
 
 namespace AnaliseSemantica {
 
-    class Contexto {
-        public:
-            map<string, TipoFundamental> conjuntoDeVariaveis;
-    };
-
+    template <typename T>
     class Variavel : public Nodo<void> {
         private:
             string identificador;
@@ -34,11 +29,9 @@ namespace AnaliseSemantica {
     class Bloco : public Nodo<void> {
         public:
             vector<TipoFundamental> listaDeInstrucoes;
-            Contexto* contexto = new Contexto();
+            //static Contexto contexto;
 
-            Bloco() : Nodo() {
-                //contexto = new Contexto();
-            };
+            Bloco() : Nodo() { };
             void print(){
                 for(int i=0; i < listaDeInstrucoes.size(); i++){
                     apply_visitor(PrintFundamentalVisitor(), listaDeInstrucoes[i]);

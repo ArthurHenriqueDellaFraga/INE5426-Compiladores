@@ -135,7 +135,7 @@ extern int yydebug;
     BOOLEANO = 272,
     CARACTER = 273,
     SENTENCA = 274,
-    TIPO = 275,
+    TIPO_INT = 275,
     IDENTIFICADOR = 276,
     errord = 277
   };
@@ -153,6 +153,7 @@ union YYSTYPE
     bool _bool;
     char _char;
     string* _string;
+    //typename _typename;
 
     Bloco* bloco;
 
@@ -163,7 +164,7 @@ union YYSTYPE
     Nodo<string>* sentenca;
     Nodo<void>* vazio;
 
-#line 167 "parser.cpp" /* yacc.c:355  */
+#line 168 "parser.cpp" /* yacc.c:355  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -178,7 +179,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 182 "parser.cpp" /* yacc.c:358  */
+#line 183 "parser.cpp" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -477,9 +478,9 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    98,    98,   102,   107,   112,   117,   122,   127,   132,
-     136,   140,   144,   148,   152,   159,   161,   166,   173,   175,
-     180,   185,   192,   195,   198,   202
+       0,    99,    99,   103,   108,   113,   118,   123,   128,   133,
+     137,   141,   145,   149,   153,   160,   162,   167,   174,   176,
+     181,   186,   193,   196,   199,   203
 };
 #endif
 
@@ -491,7 +492,7 @@ static const char *const yytname[] =
   "$end", "error", "$undefined", "NOVA_LINHA", "ATRIBUICAO", "SOMA",
   "SUBTRACAO", "MULTIPLICACAO", "DIVISAO", "VIRGULA", "PONTO",
   "ABRE_PARENTESES", "FECHA_PARENTESES", "ABRE_CHAVES", "FECHA_CHAVES",
-  "INTEIRO", "RACIONAL", "BOOLEANO", "CARACTER", "SENTENCA", "TIPO",
+  "INTEIRO", "RACIONAL", "BOOLEANO", "CARACTER", "SENTENCA", "TIPO_INT",
   "IDENTIFICADOR", "errord", "$accept", "program", "bloco", "inteiro",
   "racional", "booleano", "caracter", "sentenca", "definicao", YY_NULLPTR
 };
@@ -1275,200 +1276,200 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 98 "parser.y" /* yacc.c:1646  */
+#line 99 "parser.y" /* yacc.c:1646  */
     { raizDoPrograma = (yyvsp[0].bloco); }
-#line 1281 "parser.cpp" /* yacc.c:1646  */
+#line 1282 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 102 "parser.y" /* yacc.c:1646  */
+#line 103 "parser.y" /* yacc.c:1646  */
     {
             (yyval.bloco) = new Bloco();
             (yyval.bloco)->listaDeInstrucoes.push_back((yyvsp[-1].inteiro));
     }
-#line 1290 "parser.cpp" /* yacc.c:1646  */
+#line 1291 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 107 "parser.y" /* yacc.c:1646  */
+#line 108 "parser.y" /* yacc.c:1646  */
     {
             (yyval.bloco) = new Bloco();
             (yyval.bloco)->listaDeInstrucoes.push_back((yyvsp[-1].racional));
     }
-#line 1299 "parser.cpp" /* yacc.c:1646  */
+#line 1300 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 112 "parser.y" /* yacc.c:1646  */
+#line 113 "parser.y" /* yacc.c:1646  */
     {
             (yyval.bloco) = new Bloco();
             (yyval.bloco)->listaDeInstrucoes.push_back((yyvsp[-1].booleano));
     }
-#line 1308 "parser.cpp" /* yacc.c:1646  */
+#line 1309 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 117 "parser.y" /* yacc.c:1646  */
+#line 118 "parser.y" /* yacc.c:1646  */
     {
             (yyval.bloco) = new Bloco();
             (yyval.bloco)->listaDeInstrucoes.push_back((yyvsp[-1].caracter));
     }
-#line 1317 "parser.cpp" /* yacc.c:1646  */
+#line 1318 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 122 "parser.y" /* yacc.c:1646  */
+#line 123 "parser.y" /* yacc.c:1646  */
     {
             (yyval.bloco) = new Bloco();
             (yyval.bloco)->listaDeInstrucoes.push_back((yyvsp[-1].sentenca));
     }
-#line 1326 "parser.cpp" /* yacc.c:1646  */
+#line 1327 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 127 "parser.y" /* yacc.c:1646  */
+#line 128 "parser.y" /* yacc.c:1646  */
     {
             (yyval.bloco) = new Bloco();
             (yyval.bloco)->listaDeInstrucoes.push_back((yyvsp[-1].vazio));
     }
-#line 1335 "parser.cpp" /* yacc.c:1646  */
+#line 1336 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 132 "parser.y" /* yacc.c:1646  */
+#line 133 "parser.y" /* yacc.c:1646  */
     {
             (yyvsp[-2].bloco)->listaDeInstrucoes.push_back((yyvsp[-1].inteiro));
     }
-#line 1343 "parser.cpp" /* yacc.c:1646  */
+#line 1344 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 136 "parser.y" /* yacc.c:1646  */
+#line 137 "parser.y" /* yacc.c:1646  */
     {
             (yyvsp[-2].bloco)->listaDeInstrucoes.push_back((yyvsp[-1].racional));
     }
-#line 1351 "parser.cpp" /* yacc.c:1646  */
+#line 1352 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 140 "parser.y" /* yacc.c:1646  */
+#line 141 "parser.y" /* yacc.c:1646  */
     {
             (yyvsp[-2].bloco)->listaDeInstrucoes.push_back((yyvsp[-1].booleano));
     }
-#line 1359 "parser.cpp" /* yacc.c:1646  */
+#line 1360 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 144 "parser.y" /* yacc.c:1646  */
+#line 145 "parser.y" /* yacc.c:1646  */
     {
             (yyvsp[-2].bloco)->listaDeInstrucoes.push_back((yyvsp[-1].caracter));
     }
-#line 1367 "parser.cpp" /* yacc.c:1646  */
+#line 1368 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 148 "parser.y" /* yacc.c:1646  */
+#line 149 "parser.y" /* yacc.c:1646  */
     {
             (yyvsp[-2].bloco)->listaDeInstrucoes.push_back((yyvsp[-1].sentenca));
     }
-#line 1375 "parser.cpp" /* yacc.c:1646  */
+#line 1376 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 152 "parser.y" /* yacc.c:1646  */
+#line 153 "parser.y" /* yacc.c:1646  */
     {
             (yyvsp[-2].bloco)->listaDeInstrucoes.push_back((yyvsp[-1].vazio));
             (yyvsp[-1].vazio)->executar();
     }
-#line 1384 "parser.cpp" /* yacc.c:1646  */
+#line 1385 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 159 "parser.y" /* yacc.c:1646  */
+#line 160 "parser.y" /* yacc.c:1646  */
     { (yyval.inteiro) = new Inteiro((yyvsp[0]._int)); }
-#line 1390 "parser.cpp" /* yacc.c:1646  */
+#line 1391 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 161 "parser.y" /* yacc.c:1646  */
+#line 162 "parser.y" /* yacc.c:1646  */
     {
             (yyval.inteiro) = new Soma_int_int((yyvsp[-2].inteiro), (yyvsp[0].inteiro));
             if(debug) cout << "inteiro: SOMA" << endl;
     }
-#line 1399 "parser.cpp" /* yacc.c:1646  */
+#line 1400 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 166 "parser.y" /* yacc.c:1646  */
+#line 167 "parser.y" /* yacc.c:1646  */
     {
             (yyval.inteiro) = new Multiplicacao_int_int((yyvsp[-2].inteiro), (yyvsp[0].inteiro));
             if(debug) cout << "inteiro: MULTIPLICACAO" << endl;
     }
-#line 1408 "parser.cpp" /* yacc.c:1646  */
+#line 1409 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 173 "parser.y" /* yacc.c:1646  */
+#line 174 "parser.y" /* yacc.c:1646  */
     { (yyval.racional) = new Racional((yyvsp[0]._double)); }
-#line 1414 "parser.cpp" /* yacc.c:1646  */
+#line 1415 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 175 "parser.y" /* yacc.c:1646  */
+#line 176 "parser.y" /* yacc.c:1646  */
     {
             (yyval.racional) = new Soma_double_int((yyvsp[-2].racional), (yyvsp[0].inteiro));
             if(debug) cout << "racional: SOMA" << endl;
     }
-#line 1423 "parser.cpp" /* yacc.c:1646  */
+#line 1424 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 180 "parser.y" /* yacc.c:1646  */
+#line 181 "parser.y" /* yacc.c:1646  */
     {
             (yyval.racional) = new Soma_double_int((yyvsp[0].racional), (yyvsp[-2].inteiro));
             if(debug) cout << "racional: SOMA" << endl;
     }
-#line 1432 "parser.cpp" /* yacc.c:1646  */
+#line 1433 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 185 "parser.y" /* yacc.c:1646  */
+#line 186 "parser.y" /* yacc.c:1646  */
     {
             (yyval.racional) = new Soma_double_double((yyvsp[-2].racional), (yyvsp[0].racional));
             if(debug) cout << "racional: SOMA" << endl;
     }
-#line 1441 "parser.cpp" /* yacc.c:1646  */
+#line 1442 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 192 "parser.y" /* yacc.c:1646  */
+#line 193 "parser.y" /* yacc.c:1646  */
     { (yyval.booleano) = new Booleano((yyvsp[0]._bool)); }
-#line 1447 "parser.cpp" /* yacc.c:1646  */
+#line 1448 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 195 "parser.y" /* yacc.c:1646  */
+#line 196 "parser.y" /* yacc.c:1646  */
     { (yyval.caracter) = new Caracter((yyvsp[0]._char)); }
-#line 1453 "parser.cpp" /* yacc.c:1646  */
+#line 1454 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 198 "parser.y" /* yacc.c:1646  */
+#line 199 "parser.y" /* yacc.c:1646  */
     { (yyval.sentenca) = new Sentenca(*(yyvsp[0]._string)); }
-#line 1459 "parser.cpp" /* yacc.c:1646  */
+#line 1460 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 202 "parser.y" /* yacc.c:1646  */
+#line 203 "parser.y" /* yacc.c:1646  */
     {
-            (yyval.vazio) = new Variavel(*(yyvsp[0]._string));
+            (yyval.vazio) = new Variavel<int>(*(yyvsp[0]._string));
             cout << "DEFINICAO" << endl;
     }
-#line 1468 "parser.cpp" /* yacc.c:1646  */
+#line 1469 "parser.cpp" /* yacc.c:1646  */
     break;
 
 
-#line 1472 "parser.cpp" /* yacc.c:1646  */
+#line 1473 "parser.cpp" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1696,5 +1697,5 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 233 "parser.y" /* yacc.c:1906  */
+#line 234 "parser.y" /* yacc.c:1906  */
 
