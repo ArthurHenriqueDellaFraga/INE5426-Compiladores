@@ -3,11 +3,14 @@
     #include "AnaliseSemantica/AnaliseSemantica.hpp"
 
     #include <string>
+    #include <boost/lexical_cast.hpp>
 
     using namespace std;
 
     extern int yylineno;
     void yyerror(const char* s, ...);
+
+
 %}
 
 %option noyywrap nodefault yylineno
@@ -21,7 +24,6 @@ letra [a-zA-Z]
 \n                            {return NOVA_LINHA;}
 ";"                           {return NOVA_LINHA;}
 
-"def"                         {return DEFINICAO;}
 "="                           {return ATRIBUICAO;}
 
 "+"                           {return SOMA;}
@@ -41,7 +43,23 @@ letra [a-zA-Z]
 {digito}+"."{digito}+         {yylval._double = atof(yytext); return RACIONAL;}
 "TRUE"                        {yylval._bool = true; return BOOLEANO;}
 "FALSE"                       {yylval._bool = false; return BOOLEANO;}
+"\'"{letra}"\'"               {
+                                  yylval._char = yytext[1];
+                                  return CARACTER;
+                              }
+"\""{letra}+"\""              {
+                                  yylval._string = new string(yytext);
+                                  yylval._string = new string(yylval._string->substr(1, yylval._string->size() -2));
+                                  return SENTENCA;
+                              }
+
+{letra}+":"                   {
+                                  yylval._string = new string(yytext);
+                                  yylval._string->pop_back();
+                                  return TIPO;
+                              }
 {letra}+                      {yylval._string = new string(yytext); return IDENTIFICADOR;}
+
 
 .                             {yyerror("Caracter desconhecido: %c\n", *yytext);}
 

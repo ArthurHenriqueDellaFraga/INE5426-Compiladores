@@ -30,13 +30,15 @@
     Nodo<int>* inteiro;
     Nodo<double>* racional;
     Nodo<bool>* booleano;
+    Nodo<char>* caracter;
+    Nodo<string>* sentenca;
+    Nodo<void>* vazio;
 }
 
 // token defines our terminal symbols (tokens).
 
 %token NOVA_LINHA
 
-%token DEFINICAO
 %token ATRIBUICAO
 
 %token SOMA
@@ -53,7 +55,10 @@
 %token <_int> INTEIRO
 %token <_double> RACIONAL
 %token <_bool> BOOLEANO
+%token <_char> CARACTER
+%token <_string> SENTENCA
 
+%token <_string> TIPO
 %token <_string> IDENTIFICADOR
 
 // type defines the type of our nonterminal symbols.
@@ -61,21 +66,21 @@
 %type <bloco> program
 %type <bloco> bloco
 
-//%type <nodo> definicao
 //%type <nodo> definicao_multipla
 //%type <nodo> atribuicao
 
 %type <inteiro> inteiro
 %type <racional> racional
 %type <booleano> booleano
+%type <caracter> caracter
+%type <sentenca> sentenca
 
+//%type <vazio> definicao
 
 /* Operator precedence for mathematical operators
  * The latest it is listed, the highest the precedence
  */
 
-%left ATRIBUICAO
-%left DEFINICAO
 %left SOMA
 %left SUBTRACAO
 %left MULTIPLICACAO
@@ -91,7 +96,6 @@
 program
     : bloco { raizDoPrograma = $1; }
 ;
-
 
 bloco
     : inteiro NOVA_LINHA {
@@ -109,6 +113,16 @@ bloco
             $$->listaDeInstrucoes.push_back($1);
     }
 
+    | caracter NOVA_LINHA {
+            $$ = new Bloco();
+            $$->listaDeInstrucoes.push_back($1);
+    }
+
+    | sentenca NOVA_LINHA {
+            $$ = new Bloco();
+            $$->listaDeInstrucoes.push_back($1);
+    }
+
     | bloco inteiro NOVA_LINHA {
             $1->listaDeInstrucoes.push_back($2);
     }
@@ -118,6 +132,14 @@ bloco
     }
 
     | bloco booleano NOVA_LINHA {
+            $1->listaDeInstrucoes.push_back($2);
+    }
+
+    | bloco caracter NOVA_LINHA {
+            $1->listaDeInstrucoes.push_back($2);
+    }
+
+    | bloco sentenca NOVA_LINHA {
             $1->listaDeInstrucoes.push_back($2);
     }
 ;
@@ -158,13 +180,15 @@ racional
 booleano
     : BOOLEANO { $$ = new Booleano($1); }
 
-//    | definicao NOVA_LINHA
-//    | definicao_multipla NOVA_LINHA
-//    | atribuicao NOVA_LINHA
+caracter
+    : CARACTER { $$ = new Caracter($1); }
+
+sentenca
+    : SENTENCA { $$ = new Sentenca(*$1); }
 
 /*
 definicao
-    : DEFINICAO STRING {
+    : TIPO IDENTIFICADOR {
             $$ = new Identificador(*$2);
             tabelaDeVariaveis[*$2] = VARIAVEL_INDEFINIDA;
             cout << "DEFINICAO" << endl;

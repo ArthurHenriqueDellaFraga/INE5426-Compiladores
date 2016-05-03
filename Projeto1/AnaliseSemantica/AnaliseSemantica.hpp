@@ -3,6 +3,8 @@
 #include <iostream>
 #include <vector>
 
+#include "Contexto.hpp"
+
 #include "boost/variant.hpp"
 #include "boost/variant/apply_visitor.hpp"
 #include "boost/variant/static_visitor.hpp"
@@ -30,8 +32,11 @@ namespace AnaliseSemantica {
     class Bloco : public Nodo<void> {
         public:
             vector<TipoFundamental> listaDeInstrucoes;
+            //Contexto contexto;
 
-            Bloco() : Nodo() { };
+            Bloco() : Nodo() {
+                //contexto = new Contexto();
+            };
             void print(){
                 for(int i=0; i < listaDeInstrucoes.size(); i++){
                     apply_visitor(PrintFundamentalVisitor(), listaDeInstrucoes[i]);

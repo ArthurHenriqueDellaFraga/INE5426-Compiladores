@@ -82,6 +82,5 @@ namespace AnaliseSemantica {
                     return left->executar() * right->executar();
                 };
         };
-
-
+        
 }

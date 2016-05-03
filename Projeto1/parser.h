@@ -65,23 +65,25 @@ extern int yydebug;
   enum yytokentype
   {
     NOVA_LINHA = 258,
-    DEFINICAO = 259,
-    ATRIBUICAO = 260,
-    SOMA = 261,
-    SUBTRACAO = 262,
-    MULTIPLICACAO = 263,
-    DIVISAO = 264,
-    VIRGULA = 265,
-    PONTO = 266,
-    ABRE_PARENTESES = 267,
-    FECHA_PARENTESES = 268,
-    ABRE_CHAVES = 269,
-    FECHA_CHAVES = 270,
-    INTEIRO = 271,
-    RACIONAL = 272,
-    BOOLEANO = 273,
-    IDENTIFICADOR = 274,
-    errord = 275
+    ATRIBUICAO = 259,
+    SOMA = 260,
+    SUBTRACAO = 261,
+    MULTIPLICACAO = 262,
+    DIVISAO = 263,
+    VIRGULA = 264,
+    PONTO = 265,
+    ABRE_PARENTESES = 266,
+    FECHA_PARENTESES = 267,
+    ABRE_CHAVES = 268,
+    FECHA_CHAVES = 269,
+    INTEIRO = 270,
+    RACIONAL = 271,
+    BOOLEANO = 272,
+    CARACTER = 273,
+    SENTENCA = 274,
+    TIPO = 275,
+    IDENTIFICADOR = 276,
+    errord = 277
   };
 #endif
 
@@ -103,8 +105,11 @@ union YYSTYPE
     Nodo<int>* inteiro;
     Nodo<double>* racional;
     Nodo<bool>* booleano;
+    Nodo<char>* caracter;
+    Nodo<string>* sentenca;
+    Nodo<void>* vazio;
 
-#line 108 "parser.h" /* yacc.c:1909  */
+#line 113 "parser.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
