@@ -44,6 +44,7 @@ extern int yydebug;
 
     #include "AnaliseSemantica/Primitivo.hpp"
     #include "AnaliseSemantica/Operacao.hpp"
+    #include "AnaliseSemantica/Contexto.hpp"
 
     #include <stdio.h>
     #include <stdlib.h>
@@ -57,7 +58,7 @@ extern int yydebug;
     extern int yylex();
     extern void yyerror(const char* s, ...);
 
-#line 61 "parser.h" /* yacc.c:1909  */
+#line 62 "parser.h" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -92,7 +93,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 21 "parser.y" /* yacc.c:1909  */
+#line 22 "parser.y" /* yacc.c:1909  */
 
     int _int;
     double _double;
@@ -109,7 +110,7 @@ union YYSTYPE
     Nodo<string>* sentenca;
     Nodo<void>* vazio;
 
-#line 113 "parser.h" /* yacc.c:1909  */
+#line 114 "parser.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

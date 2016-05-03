@@ -23,7 +23,7 @@ namespace AnaliseSemantica {
     };
 
     template<>
-    class Primitivo<void> : Nodo<void>{
+    class Primitivo<void> : public Nodo<void>{
         protected:
             Primitivo() { };
         public:

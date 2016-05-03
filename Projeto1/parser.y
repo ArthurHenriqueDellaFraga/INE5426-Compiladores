@@ -1,6 +1,7 @@
 %code requires{
     #include "AnaliseSemantica/Primitivo.hpp"
     #include "AnaliseSemantica/Operacao.hpp"
+    #include "AnaliseSemantica/Contexto.hpp"
 
     #include <stdio.h>
     #include <stdlib.h>
@@ -75,7 +76,7 @@
 %type <caracter> caracter
 %type <sentenca> sentenca
 
-//%type <vazio> definicao
+%type <vazio> definicao
 
 /* Operator precedence for mathematical operators
  * The latest it is listed, the highest the precedence
@@ -123,6 +124,11 @@ bloco
             $$->listaDeInstrucoes.push_back($1);
     }
 
+    | definicao NOVA_LINHA {
+            $$ = new Bloco();
+            $$->listaDeInstrucoes.push_back($1);
+    }
+
     | bloco inteiro NOVA_LINHA {
             $1->listaDeInstrucoes.push_back($2);
     }
@@ -141,6 +147,11 @@ bloco
 
     | bloco sentenca NOVA_LINHA {
             $1->listaDeInstrucoes.push_back($2);
+    }
+
+    | bloco definicao NOVA_LINHA {
+            $1->listaDeInstrucoes.push_back($2);
+            $2->executar();
     }
 ;
 
@@ -186,15 +197,15 @@ caracter
 sentenca
     : SENTENCA { $$ = new Sentenca(*$1); }
 
-/*
+
 definicao
     : TIPO IDENTIFICADOR {
-            $$ = new Identificador(*$2);
-            tabelaDeVariaveis[*$2] = VARIAVEL_INDEFINIDA;
+            $$ = new Variavel(*$2);
             cout << "DEFINICAO" << endl;
     }
 ;
 
+/*
 definicao_multipla
     : definicao VIRGULA STRING {
             $$ = new Identificador(*$3);
