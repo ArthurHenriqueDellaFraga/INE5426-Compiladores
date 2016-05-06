@@ -69,25 +69,36 @@ extern int yydebug;
   enum yytokentype
   {
     NOVA_LINHA = 258,
-    ATRIBUICAO = 259,
-    SOMA = 260,
-    SUBTRACAO = 261,
-    MULTIPLICACAO = 262,
-    DIVISAO = 263,
-    VIRGULA = 264,
-    PONTO = 265,
-    ABRE_PARENTESES = 266,
-    FECHA_PARENTESES = 267,
-    ABRE_CHAVES = 268,
-    FECHA_CHAVES = 269,
-    INTEIRO = 270,
-    RACIONAL = 271,
-    BOOLEANO = 272,
-    CARACTER = 273,
-    SENTENCA = 274,
-    TIPO_INT = 275,
-    IDENTIFICADOR = 276,
-    errord = 277
+    SOMA = 259,
+    SUBTRACAO = 260,
+    MULTIPLICACAO = 261,
+    DIVISAO = 262,
+    IGUAL = 263,
+    DIFERENCA = 264,
+    MAIOR = 265,
+    MENOR = 266,
+    MAIOR_IGUAL = 267,
+    MENOR_IGUAL = 268,
+    AND = 269,
+    OR = 270,
+    NEGACAO_BOOLEANA = 271,
+    ATRIBUICAO = 272,
+    VIRGULA = 273,
+    PONTO = 274,
+    ABRE_PARENTESES = 275,
+    FECHA_PARENTESES = 276,
+    ABRE_CHAVES = 277,
+    FECHA_CHAVES = 278,
+    INTEIRO = 279,
+    RACIONAL = 280,
+    BOOLEANO = 281,
+    CARACTER = 282,
+    SENTENCA = 283,
+    TIPO_INT = 284,
+    TIPO_BOOL = 285,
+    TIPO_REAL = 286,
+    IDENTIFICADOR = 287,
+    errord = 288
   };
 #endif
 
@@ -114,7 +125,7 @@ union YYSTYPE
     Nodo<string>* sentenca;
     Nodo<void>* vazio;
 
-#line 118 "parser.h" /* yacc.c:1909  */
+#line 129 "parser.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

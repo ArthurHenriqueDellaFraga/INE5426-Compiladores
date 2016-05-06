@@ -44,12 +44,23 @@
 
 %token NOVA_LINHA
 
-%token ATRIBUICAO
-
 %token SOMA
 %token SUBTRACAO
 %token MULTIPLICACAO
 %token DIVISAO
+
+%token IGUAL
+%token DIFERENCA
+%token MAIOR
+%token MENOR
+%token MAIOR_IGUAL
+%token MENOR_IGUAL
+
+%token AND
+%token OR
+%token NEGACAO_BOOLEANA
+
+%token ATRIBUICAO
 
 %token VIRGULA
 %token PONTO
@@ -64,6 +75,8 @@
 %token <_string> SENTENCA
 
 %token TIPO_INT
+%token TIPO_BOOL
+%token TIPO_REAL
 %token <_string> IDENTIFICADOR
 
 // type defines the type of our nonterminal symbols.
@@ -201,7 +214,17 @@ sentenca
 definicao
     : TIPO_INT IDENTIFICADOR {
             $$ = new Variavel<int>(*$2);
-            cout << "DEFINICAO" << endl;
+            cout << "Declaracao de variavel inteira: "<< *$2 << endl;
+    }
+
+    | TIPO_BOOL IDENTIFICADOR {
+        $$ = new Variavel<bool>(*$2);
+        cout << "Declaracao de variavel booleana: "<< *$2 << endl;
+    }
+
+    | TIPO_REAL IDENTIFICADOR {
+        $$ = new Variavel<float>(*$2);
+        cout << "Declaracao de variavel real: "<< *$2 << endl;
     }
 ;
 

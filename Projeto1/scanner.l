@@ -21,12 +21,24 @@ letra [a-zA-Z]
 \n                            {return NOVA_LINHA;}
 ";"                           {return NOVA_LINHA;}
 
-"="                           {return ATRIBUICAO;}
-
 "+"                           {return SOMA;}
 "-"                           {return SUBTRACAO;}
 "*"                           {return MULTIPLICACAO;}
 ":"                           {return DIVISAO;}
+
+"="                           {return IGUAL;}
+"~="                          {return DIFERENCA;}
+">"                           {return MAIOR;}
+"<"                           {return MENOR;}
+">="                          {return MAIOR_IGUAL;}
+"<="                          {return MENOR_IGUAL;}
+
+"AND"                         {return AND;}
+"OR"                          {return OR;}
+
+"~"                           {return NEGACAO_BOOLEANA;}
+
+":="                          {return ATRIBUICAO;}
 
 ","                           {return VIRGULA;}
 "."                           {return PONTO;}
@@ -49,7 +61,10 @@ letra [a-zA-Z]
                                   yylval._string = new string(yylval._string->substr(1, yylval._string->size() -2));
                                   return SENTENCA;
                               }
+
 "int:"                        {return TIPO_INT;}
+"bool:"                       {return TIPO_BOOL;}
+"real:"                       {return TIPO_REAL;}
 
 {letra}+                      {yylval._string = new string(yytext); return IDENTIFICADOR;}
 
