@@ -6,6 +6,9 @@
     #include <stdio.h>
     #include <stdlib.h>
 
+    #include "boost/variant.hpp"
+
+    using namespace boost;
     using namespace AnaliseSemantica;
     using namespace std;
 
@@ -25,9 +28,9 @@
     bool _bool;
     char _char;
     string* _string;
-    //typename _typename;
 
     Bloco* bloco;
+    TipoFundamental* fundamental;
 
     Nodo<int>* inteiro;
     Nodo<double>* racional;
@@ -67,6 +70,7 @@
 
 %type <bloco> program
 %type <bloco> bloco
+%type <fundamental> instrucao
 
 //%type <nodo> definicao_multipla
 //%type <nodo> atribuicao
@@ -100,59 +104,54 @@ program
 ;
 
 bloco
-    : inteiro NOVA_LINHA {
+    : instrucao {
             $$ = new Bloco();
-            $$->listaDeInstrucoes.push_back($1);
+            $$->listaDeInstrucoes.push_back(*$1);
+    }
+
+    | bloco instrucao {
+            if($2 != NULL)
+                $1->listaDeInstrucoes.push_back(*$2);
+    }
+;
+
+instrucao
+    : NOVA_LINHA { $$ = NULL; }
+
+    | inteiro NOVA_LINHA{
+            TipoFundamental tF;
+            tF = $1;
+            $$ = &tF;
     }
 
     | racional NOVA_LINHA {
-            $$ = new Bloco();
-            $$->listaDeInstrucoes.push_back($1);
+            TipoFundamental tF;
+            tF = $1;
+            $$ = &tF;
     }
 
     | booleano NOVA_LINHA {
-            $$ = new Bloco();
-            $$->listaDeInstrucoes.push_back($1);
+            TipoFundamental tF;
+            tF = $1;
+            $$ = &tF;
     }
 
     | caracter NOVA_LINHA {
-            $$ = new Bloco();
-            $$->listaDeInstrucoes.push_back($1);
+            TipoFundamental tF;
+            tF = $1;
+            $$ = &tF;
     }
 
     | sentenca NOVA_LINHA {
-            $$ = new Bloco();
-            $$->listaDeInstrucoes.push_back($1);
+            TipoFundamental tF;
+            tF = $1;
+            $$ = &tF;
     }
 
     | definicao NOVA_LINHA {
-            $$ = new Bloco();
-            $$->listaDeInstrucoes.push_back($1);
-    }
-
-    | bloco inteiro NOVA_LINHA {
-            $1->listaDeInstrucoes.push_back($2);
-    }
-
-    | bloco racional NOVA_LINHA {
-            $1->listaDeInstrucoes.push_back($2);
-    }
-
-    | bloco booleano NOVA_LINHA {
-            $1->listaDeInstrucoes.push_back($2);
-    }
-
-    | bloco caracter NOVA_LINHA {
-            $1->listaDeInstrucoes.push_back($2);
-    }
-
-    | bloco sentenca NOVA_LINHA {
-            $1->listaDeInstrucoes.push_back($2);
-    }
-
-    | bloco definicao NOVA_LINHA {
-            $1->listaDeInstrucoes.push_back($2);
-            $2->executar();
+            TipoFundamental tF;
+            tF = $1;
+            $$ = &tF;
     }
 ;
 

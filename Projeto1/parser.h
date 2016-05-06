@@ -49,6 +49,9 @@ extern int yydebug;
     #include <stdio.h>
     #include <stdlib.h>
 
+    #include "boost/variant.hpp"
+
+    using namespace boost;
     using namespace AnaliseSemantica;
     using namespace std;
 
@@ -58,7 +61,7 @@ extern int yydebug;
     extern int yylex();
     extern void yyerror(const char* s, ...);
 
-#line 62 "parser.h" /* yacc.c:1909  */
+#line 65 "parser.h" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -93,16 +96,16 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 22 "parser.y" /* yacc.c:1909  */
+#line 25 "parser.y" /* yacc.c:1909  */
 
     int _int;
     double _double;
     bool _bool;
     char _char;
     string* _string;
-    //typename _typename;
 
     Bloco* bloco;
+    TipoFundamental* fundamental;
 
     Nodo<int>* inteiro;
     Nodo<double>* racional;
@@ -111,7 +114,7 @@ union YYSTYPE
     Nodo<string>* sentenca;
     Nodo<void>* vazio;
 
-#line 115 "parser.h" /* yacc.c:1909  */
+#line 118 "parser.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

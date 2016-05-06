@@ -3,14 +3,11 @@
     #include "AnaliseSemantica/AnaliseSemantica.hpp"
 
     #include <string>
-    #include <boost/lexical_cast.hpp>
 
     using namespace std;
 
     extern int yylineno;
     void yyerror(const char* s, ...);
-
-
 %}
 
 %option noyywrap nodefault yylineno

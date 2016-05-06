@@ -4,6 +4,9 @@
 
 #include <iostream>
 
+#include "boost/variant.hpp"
+
+using namespace boost;
 using namespace std;
 
 namespace AnaliseSemantica {
