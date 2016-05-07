@@ -24,7 +24,9 @@
 * [Exemplo 2](cpp.sh/2w75)
 
 #### Using a string for identify a type
-* [Exemplo](cpp.sh/5gdh)
+* [StackOverflow](http://stackoverflow.com/questions/3113139/how-to-create-mapstring-classmethod-in-c-and-be-able-to-search-for-functi)
+* [Exemplo](cpp.sh/9m63v)
 
 **Implicit inicialization by default constructor**
 [StackOverflow](http://stackoverflow.com/questions/3127454/how-do-c-class-members-get-initialized-if-i-dont-do-it-explicitly)
+[StackOverflow](http://stackoverflow.com/questions/5989652/initializing-variable-in-c-function-header)

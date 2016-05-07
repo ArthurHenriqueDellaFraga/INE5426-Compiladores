@@ -49,7 +49,11 @@ letra [a-zA-Z]
                                   yylval._string = new string(yylval._string->substr(1, yylval._string->size() -2));
                                   return SENTENCA;
                               }
-"int:"                        {return TIPO_INT;}
+{letra}+":"                   {
+                                  yylval._string = new string(yytext);
+                                  yylval._string->pop_back();
+                                  return TIPO;
+                              }
 
 {letra}+                      {yylval._string = new string(yytext); return IDENTIFICADOR;}
 

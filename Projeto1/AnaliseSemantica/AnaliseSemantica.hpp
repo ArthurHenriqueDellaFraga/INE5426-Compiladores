@@ -11,10 +11,7 @@ using namespace std;
 
 namespace AnaliseSemantica {
 
-    // class Contexto {
-    //     public:
-    //         map<string, TipoFundamental> conjuntoDeVariaveis;
-    // };
+    //class Contexto;
 
     template <typename T>
     class Nodo {
@@ -30,5 +27,4 @@ namespace AnaliseSemantica {
         Nodo<char>*, Nodo<string>*,
         Nodo<void>*
     > TipoFundamental;
-
 }

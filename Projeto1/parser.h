@@ -85,7 +85,7 @@ extern int yydebug;
     BOOLEANO = 272,
     CARACTER = 273,
     SENTENCA = 274,
-    TIPO_INT = 275,
+    TIPO = 275,
     IDENTIFICADOR = 276,
     errord = 277
   };

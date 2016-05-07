@@ -36,29 +36,36 @@ namespace AnaliseSemantica {
             void executar( ){ }
     };
 
+    typedef variant<
+        Primitivo<int>*, Primitivo<double>*,
+        Primitivo<bool>*,
+        Primitivo<char>*, Primitivo<string>*,
+        Primitivo<void>*
+    > TipoPrimitivo;
+
     class Inteiro : public Primitivo<int> {
         public:
-            Inteiro(int valor) : Primitivo(valor) { }
+            Inteiro(int valor = 0) : Primitivo(valor) { }
     };
 
     class Racional : public Primitivo<double> {
         public:
-            Racional(double valor) : Primitivo(valor) { }
+            Racional(double valor = 0.0) : Primitivo(valor) { }
     };
 
     class Booleano : public Primitivo<bool> {
         public:
-            Booleano(bool valor) : Primitivo(valor) { }
+            Booleano(bool valor = false) : Primitivo(valor) { }
     };
 
     class Caracter : public Primitivo<char> {
         public:
-            Caracter(char valor) : Primitivo(valor) { }
+            Caracter(char valor = ' ') : Primitivo(valor) { }
     };
 
     class Sentenca : public Primitivo<string> {
         public:
-            Sentenca(string valor) : Primitivo(valor) { }
+            Sentenca(string valor = "") : Primitivo(valor) { }
     };
 
     class Vazio : public Primitivo<void>{

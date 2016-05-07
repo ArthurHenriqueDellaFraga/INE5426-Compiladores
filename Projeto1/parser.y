@@ -63,7 +63,7 @@
 %token <_char> CARACTER
 %token <_string> SENTENCA
 
-%token TIPO_INT
+%token <_string> TIPO
 %token <_string> IDENTIFICADOR
 
 // type defines the type of our nonterminal symbols.
@@ -81,7 +81,7 @@
 %type <caracter> caracter
 %type <sentenca> sentenca
 
-%type <vazio> definicao
+%type <fundamental> definicao
 
 /* Operator precedence for mathematical operators
  * The latest it is listed, the highest the precedence
@@ -101,7 +101,7 @@
 
 program
     : bloco { raizDoPrograma = $1; }
-;
+
 
 bloco
     : instrucao {
@@ -113,7 +113,6 @@ bloco
             if($2 != NULL)
                 $1->listaDeInstrucoes.push_back(*$2);
     }
-;
 
 instrucao
     : NOVA_LINHA { $$ = NULL; }
@@ -149,11 +148,9 @@ instrucao
     }
 
     | definicao NOVA_LINHA {
-            TipoFundamental tF;
-            tF = $1;
-            $$ = &tF;
+            $$ = $1;
     }
-;
+
 
 inteiro
     : INTEIRO { $$ = new Inteiro($1); }
@@ -167,7 +164,6 @@ inteiro
             $$ = new Multiplicacao_int_int($1, $3);
             if(debug) cout << "inteiro: MULTIPLICACAO" << endl;
     }
-;
 
 racional
     : RACIONAL { $$ = new Racional($1); }
@@ -186,7 +182,6 @@ racional
             $$ = new Soma_double_double($1, $3);
             if(debug) cout << "racional: SOMA" << endl;
     }
-;
 
 booleano
     : BOOLEANO { $$ = new Booleano($1); }
@@ -197,10 +192,11 @@ caracter
 sentenca
     : SENTENCA { $$ = new Sentenca(*$1); }
 
-
 definicao
-    : TIPO_INT IDENTIFICADOR {
-            $$ = new Variavel<int>(*$2);
+    : TIPO IDENTIFICADOR {
+            TipoFundamental tF;
+            tF = (new Contexto())->_tipo[*$1]();
+            $$ = &tF;
             cout << "DEFINICAO" << endl;
     }
 ;

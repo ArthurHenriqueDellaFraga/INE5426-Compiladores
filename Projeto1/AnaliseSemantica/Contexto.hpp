@@ -1,6 +1,7 @@
 #pragma once
 
 #include "AnaliseSemantica.hpp"
+#include "Primitivo.hpp"
 
 #include <iostream>
 
@@ -11,6 +12,28 @@ using namespace boost;
 using namespace std;
 
 namespace AnaliseSemantica {
+
+    template<typename T>
+    TipoFundamental create() {
+        TipoFundamental fundamental;
+        fundamental = new T();
+
+        return fundamental;
+    };
+
+    class Contexto {
+        public:
+            map<string, TipoFundamental(*)()> _tipo;
+
+            Contexto(){
+                _tipo["int"] = &create<Inteiro>;
+                _tipo["double"] = &create<Racional>;
+                _tipo["bool"] = &create<Booleano>;
+                _tipo["char"] = &create<Caracter>;
+                _tipo["string"] = &create<Sentenca>;
+                _tipo["void"] = &create<Vazio>;
+            }
+    };
 
     template <typename T>
     class Variavel : public Nodo<void> {
@@ -29,9 +52,10 @@ namespace AnaliseSemantica {
     class Bloco : public Nodo<void> {
         public:
             vector<TipoFundamental> listaDeInstrucoes;
-            //static Contexto contexto;
+            Contexto* contexto;
 
-            Bloco() : Nodo() { };
+            Bloco() : Nodo() { }
+
             void print(){
                 for(int i=0; i < listaDeInstrucoes.size(); i++){
                     apply_visitor(PrintFundamentalVisitor(), listaDeInstrucoes[i]);
