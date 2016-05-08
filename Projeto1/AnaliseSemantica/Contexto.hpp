@@ -13,58 +13,66 @@ using namespace std;
 
 namespace AnaliseSemantica {
 
+    template <typename T>
+    class Variavel : public Nodo<T> {
+        private:
+            string identificador;
+            Primitivo<T>* referencia;
+        public:
+            Variavel(string identificador) : identificador(identificador), referencia(new Primitivo<T>()) { }
+
+            void print(){
+                cout << identificador << "->";
+                referencia->print();
+            }
+            T executar(){
+                return referencia->executar();
+            }
+    };
+
     template<typename T>
-    TipoFundamental create() {
+    TipoFundamental create(string identificador) {
         TipoFundamental fundamental;
-        fundamental = new T();
+        fundamental = new Variavel<T>(identificador);
 
         return fundamental;
     };
 
     class Contexto {
         public:
-            map<string, TipoFundamental(*)()> _tipo;
+            map<string, TipoFundamental(*)(string)> _tipo;
 
             Contexto(){
-                _tipo["int"] = &create<Inteiro>;
-                _tipo["double"] = &create<Racional>;
-                _tipo["bool"] = &create<Booleano>;
-                _tipo["char"] = &create<Caracter>;
-                _tipo["string"] = &create<Sentenca>;
-                _tipo["void"] = &create<Vazio>;
-            }
-    };
-
-    template <typename T>
-    class Variavel : public Nodo<void> {
-        private:
-            string identificador;
-        public:
-            Variavel(string identificador) : identificador(identificador) { }
-            void print(){
-                cout << identificador;
-            }
-            void executar(){
-                cout << identificador << endl;
+                _tipo["int"] = &create<int>;
+                _tipo["double"] = &create<double>;
+                _tipo["bool"] = &create<bool>;
+                _tipo["char"] = &create<char>;
+                _tipo["string"] = &create<string>;
+                _tipo["void"] = &create<void>;
             }
     };
 
     class Bloco : public Nodo<void> {
-        public:
+        protected:
             vector<TipoFundamental> listaDeInstrucoes;
             Contexto* contexto;
-
+        public:
             Bloco() : Nodo() { }
 
             void print(){
                 for(int i=0; i < listaDeInstrucoes.size(); i++){
-                    apply_visitor(PrintFundamentalVisitor(), listaDeInstrucoes[i]);
+                    apply_visitor(PrintFundamentalVisitor (), listaDeInstrucoes[i]);
                 }
             }
             void executar(){
                 for(int i=0; i < listaDeInstrucoes.size(); i++){
-                    apply_visitor(ExecutarFundamentalVisitor(), listaDeInstrucoes[i]);
+                    apply_visitor(ExecutarFundamentalVisitor (), listaDeInstrucoes[i]);
                 }
+            }
+
+            void addInstrucao(TipoFundamental instrucao){
+                listaDeInstrucoes.push_back(instrucao);
+                apply_visitor(PrintFundamentalVisitor (), instrucao);
             }
 
         class PrintFundamentalVisitor : public static_visitor<void>{

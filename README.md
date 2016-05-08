@@ -26,6 +26,7 @@
 #### Using a string for identify a type
 * [StackOverflow](http://stackoverflow.com/questions/3113139/how-to-create-mapstring-classmethod-in-c-and-be-able-to-search-for-functi)
 * [Exemplo](cpp.sh/9m63v)
+* [Exemplo 2](http://cpp.sh/6w5ux)
 
 **Implicit inicialization by default constructor**
 [StackOverflow](http://stackoverflow.com/questions/3127454/how-do-c-class-members-get-initialized-if-i-dont-do-it-explicitly)

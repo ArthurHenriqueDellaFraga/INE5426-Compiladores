@@ -1,3 +1,11 @@
-10 + 20 + 30
-1 + 2 + 3
-5 + 10 + 5
+int: i
+
+double: d
+
+bool: b
+
+char: c
+
+string: s
+
+void: v

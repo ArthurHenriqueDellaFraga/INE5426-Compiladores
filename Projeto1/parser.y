@@ -12,7 +12,8 @@
     using namespace AnaliseSemantica;
     using namespace std;
 
-    extern Bloco *raizDoPrograma; /* the root node of our program */
+    extern Bloco* raizDoPrograma; /* the root node of our program */
+    extern Contexto* contexto;
     extern bool debug;
 
     extern int yylex();
@@ -106,12 +107,12 @@ program
 bloco
     : instrucao {
             $$ = new Bloco();
-            $$->listaDeInstrucoes.push_back(*$1);
+            $$->addInstrucao(*$1);
     }
 
     | bloco instrucao {
             if($2 != NULL)
-                $1->listaDeInstrucoes.push_back(*$2);
+                $1->addInstrucao(*$2);
     }
 
 instrucao
@@ -195,9 +196,9 @@ sentenca
 definicao
     : TIPO IDENTIFICADOR {
             TipoFundamental tF;
-            tF = (new Contexto())->_tipo[*$1]();
+            tF = contexto->_tipo[*$1](*$2);
             $$ = &tF;
-            cout << "DEFINICAO" << endl;
+            cout << "DEFINICAO ";
     }
 ;
 

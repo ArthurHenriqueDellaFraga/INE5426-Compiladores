@@ -55,13 +55,14 @@ extern int yydebug;
     using namespace AnaliseSemantica;
     using namespace std;
 
-    extern Bloco *raizDoPrograma; /* the root node of our program */
+    extern Bloco* raizDoPrograma; /* the root node of our program */
+    extern Contexto* contexto;
     extern bool debug;
 
     extern int yylex();
     extern void yyerror(const char* s, ...);
 
-#line 65 "parser.h" /* yacc.c:1909  */
+#line 66 "parser.h" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -96,7 +97,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 25 "parser.y" /* yacc.c:1909  */
+#line 26 "parser.y" /* yacc.c:1909  */
 
     int _int;
     double _double;
@@ -114,7 +115,7 @@ union YYSTYPE
     Nodo<string>* sentenca;
     Nodo<void>* vazio;
 
-#line 118 "parser.h" /* yacc.c:1909  */
+#line 119 "parser.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
