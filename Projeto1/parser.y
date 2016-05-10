@@ -33,6 +33,9 @@
     Bloco* bloco;
     NodoFundamental* nodo;
 
+    VariavelFundamental* variavel;
+    AtribuicaoFundamental* atribuicao;
+
     Nodo<int>* inteiro;
     Nodo<double>* racional;
     Nodo<bool>* booleano;
@@ -51,6 +54,19 @@
 %token SUBTRACAO
 %token MULTIPLICACAO
 %token DIVISAO
+
+%token IGUAL
+%token DIFERENTE
+%token MAIOR
+%token MENOR
+%token MAIOR_IGUAL
+%token MENOR_IGUAL
+
+%token AND
+%token OR
+%token NEGACAO_BOOLEANA
+
+%token ATRIBUICAO
 
 %token VIRGULA
 %token PONTO
@@ -73,9 +89,6 @@
 %type <bloco> bloco
 %type <nodo> instrucao
 
-//%type <nodo> definicao_multipla
-//%type <nodo> atribuicao
-
 %type <inteiro> inteiro
 %type <racional> racional
 %type <booleano> booleano
@@ -83,7 +96,9 @@
 %type <sentenca> sentenca
 
 %type <vazio> definicao
-%type <nodo> variavel
+%type <atribuicao> atribuicao
+
+%type <variavel> variavel
 
 /* Operator precedence for mathematical operators
  * The latest it is listed, the highest the precedence
@@ -155,13 +170,11 @@ instrucao
             $$ = &nF;
     }
 
-    | variavel NOVA_LINHA {
-            // NodoFundamental nF;
-            // nF = $1;
-            // $$ = &nF;
-            $$ = $1;
+    | atribuicao NOVA_LINHA {
+            NodoFundamental nF;
+            nF = new Primitivo<void>();
+            $$ = &nF;
     }
-
 
 inteiro
     : INTEIRO { $$ = new Inteiro($1); }
@@ -209,6 +222,19 @@ definicao
             $$->executar(contexto);
     }
 ;
+
+atribuicao
+    : variavel ATRIBUICAO instrucao {
+        if(*$1.which() == *$3.which()){
+            AtribuicaoVisitor visitor;
+            visitor.valor = instrucao;
+
+            $$ = & apply_visitor(AtribuicaoVisitor (), variavel);
+        }
+        else{
+            cout << "Tipos incompativeis" << endl;
+        }
+    }
 
 variavel
     : IDENTIFICADOR {

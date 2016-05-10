@@ -21,12 +21,24 @@ letra [a-zA-Z]
 \n                            {return NOVA_LINHA;}
 ";"                           {return NOVA_LINHA;}
 
-"="                           {return ATRIBUICAO;}
-
 "+"                           {return SOMA;}
 "-"                           {return SUBTRACAO;}
 "*"                           {return MULTIPLICACAO;}
-":"                           {return DIVISAO;}
+"/"                           {return DIVISAO;}
+
+"="                           {return IGUAL;}
+"~="                          {return DIFERENTE;}
+">"                           {return MAIOR;}
+"<"                           {return MENOR;}
+">="                          {return MAIOR_IGUAL;}
+"<="                          {return MENOR_IGUAL;}
+
+"AND"                         {return AND;}
+"OR"                          {return OR;}
+
+"~"                           {return NEGACAO_BOOLEANA;}
+
+":="                          {return ATRIBUICAO;}
 
 ","                           {return VIRGULA;}
 "."                           {return PONTO;}

@@ -75,20 +75,29 @@ extern int yydebug;
     SUBTRACAO = 261,
     MULTIPLICACAO = 262,
     DIVISAO = 263,
-    VIRGULA = 264,
-    PONTO = 265,
-    ABRE_PARENTESES = 266,
-    FECHA_PARENTESES = 267,
-    ABRE_CHAVES = 268,
-    FECHA_CHAVES = 269,
-    INTEIRO = 270,
-    RACIONAL = 271,
-    BOOLEANO = 272,
-    CARACTER = 273,
-    SENTENCA = 274,
-    TIPO = 275,
-    IDENTIFICADOR = 276,
-    errord = 277
+    IGUAL = 264,
+    DIFERENTE = 265,
+    MAIOR = 266,
+    MENOR = 267,
+    MAIOR_IGUAL = 268,
+    MENOR_IGUAL = 269,
+    AND = 270,
+    OR = 271,
+    NEGACAO_BOOLEANA = 272,
+    VIRGULA = 273,
+    PONTO = 274,
+    ABRE_PARENTESES = 275,
+    FECHA_PARENTESES = 276,
+    ABRE_CHAVES = 277,
+    FECHA_CHAVES = 278,
+    INTEIRO = 279,
+    RACIONAL = 280,
+    BOOLEANO = 281,
+    CARACTER = 282,
+    SENTENCA = 283,
+    TIPO = 284,
+    IDENTIFICADOR = 285,
+    errord = 286
   };
 #endif
 
@@ -108,6 +117,9 @@ union YYSTYPE
     Bloco* bloco;
     NodoFundamental* nodo;
 
+    VariavelFundamental* variavel;
+    AtribuicaoFundamental* atribuicao;
+
     Nodo<int>* inteiro;
     Nodo<double>* racional;
     Nodo<bool>* booleano;
@@ -115,7 +127,7 @@ union YYSTYPE
     Nodo<string>* sentenca;
     Nodo<void>* vazio;
 
-#line 119 "parser.h" /* yacc.c:1909  */
+#line 131 "parser.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
