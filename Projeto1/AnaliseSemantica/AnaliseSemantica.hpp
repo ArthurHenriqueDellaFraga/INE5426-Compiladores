@@ -13,6 +13,10 @@ namespace AnaliseSemantica {
 
     //class Contexto;
 
+    typedef variant<
+        int, double, bool, char, string, void
+    > TipoFundamental;
+
     template <typename T>
     class Nodo {
         public:
@@ -26,5 +30,5 @@ namespace AnaliseSemantica {
         Nodo<bool>*,
         Nodo<char>*, Nodo<string>*,
         Nodo<void>*
-    > TipoFundamental;
+    > NodoFundamental;
 }

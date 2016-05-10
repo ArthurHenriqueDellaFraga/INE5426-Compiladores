@@ -31,7 +31,7 @@
     string* _string;
 
     Bloco* bloco;
-    TipoFundamental* fundamental;
+    NodoFundamental* fundamental;
 
     Nodo<int>* inteiro;
     Nodo<double>* racional;
@@ -119,31 +119,31 @@ instrucao
     : NOVA_LINHA { $$ = NULL; }
 
     | inteiro NOVA_LINHA{
-            TipoFundamental tF;
+            NodoFundamental tF;
             tF = $1;
             $$ = &tF;
     }
 
     | racional NOVA_LINHA {
-            TipoFundamental tF;
+            NodoFundamental tF;
             tF = $1;
             $$ = &tF;
     }
 
     | booleano NOVA_LINHA {
-            TipoFundamental tF;
+            NodoFundamental tF;
             tF = $1;
             $$ = &tF;
     }
 
     | caracter NOVA_LINHA {
-            TipoFundamental tF;
+            NodoFundamental tF;
             tF = $1;
             $$ = &tF;
     }
 
     | sentenca NOVA_LINHA {
-            TipoFundamental tF;
+            NodoFundamental tF;
             tF = $1;
             $$ = &tF;
     }
@@ -195,10 +195,9 @@ sentenca
 
 definicao
     : TIPO IDENTIFICADOR {
-            TipoFundamental tF;
+            NodoFundamental tF;
             tF = contexto->_tipo[*$1](*$2);
             $$ = &tF;
-            cout << "DEFINICAO ";
     }
 ;
 

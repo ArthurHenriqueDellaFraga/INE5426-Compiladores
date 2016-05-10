@@ -159,7 +159,7 @@ union YYSTYPE
     string* _string;
 
     Bloco* bloco;
-    TipoFundamental* fundamental;
+    NodoFundamental* fundamental;
 
     Nodo<int>* inteiro;
     Nodo<double>* racional;
@@ -1307,7 +1307,7 @@ yyreduce:
   case 6:
 #line 121 "parser.y" /* yacc.c:1646  */
     {
-            TipoFundamental tF;
+            NodoFundamental tF;
             tF = (yyvsp[-1].inteiro);
             (yyval.fundamental) = &tF;
     }
@@ -1317,7 +1317,7 @@ yyreduce:
   case 7:
 #line 127 "parser.y" /* yacc.c:1646  */
     {
-            TipoFundamental tF;
+            NodoFundamental tF;
             tF = (yyvsp[-1].racional);
             (yyval.fundamental) = &tF;
     }
@@ -1327,7 +1327,7 @@ yyreduce:
   case 8:
 #line 133 "parser.y" /* yacc.c:1646  */
     {
-            TipoFundamental tF;
+            NodoFundamental tF;
             tF = (yyvsp[-1].booleano);
             (yyval.fundamental) = &tF;
     }
@@ -1337,7 +1337,7 @@ yyreduce:
   case 9:
 #line 139 "parser.y" /* yacc.c:1646  */
     {
-            TipoFundamental tF;
+            NodoFundamental tF;
             tF = (yyvsp[-1].caracter);
             (yyval.fundamental) = &tF;
     }
@@ -1347,7 +1347,7 @@ yyreduce:
   case 10:
 #line 145 "parser.y" /* yacc.c:1646  */
     {
-            TipoFundamental tF;
+            NodoFundamental tF;
             tF = (yyvsp[-1].sentenca);
             (yyval.fundamental) = &tF;
     }
@@ -1440,16 +1440,15 @@ yyreduce:
   case 22:
 #line 197 "parser.y" /* yacc.c:1646  */
     {
-            TipoFundamental tF;
+            NodoFundamental tF;
             tF = contexto->_tipo[*(yyvsp[-1]._string)](*(yyvsp[0]._string));
             (yyval.fundamental) = &tF;
-            cout << "DEFINICAO ";
     }
-#line 1449 "parser.cpp" /* yacc.c:1646  */
+#line 1448 "parser.cpp" /* yacc.c:1646  */
     break;
 
 
-#line 1453 "parser.cpp" /* yacc.c:1646  */
+#line 1452 "parser.cpp" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1677,5 +1676,5 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 230 "parser.y" /* yacc.c:1906  */
+#line 229 "parser.y" /* yacc.c:1906  */
 

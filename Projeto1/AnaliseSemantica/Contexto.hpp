@@ -17,44 +17,50 @@ namespace AnaliseSemantica {
     class Variavel : public Nodo<T> {
         private:
             string identificador;
-            Primitivo<T>* referencia;
+            T* referencia;
         public:
-            Variavel(string identificador) : identificador(identificador), referencia(new Primitivo<T>()) { }
+            Variavel(string identificador) : identificador(identificador), referencia(new T()){ }
 
             void print(){
-                cout << identificador << "->";
-                referencia->print();
+                cout << identificador << "->" << *referencia;
             }
             T executar(){
-                return referencia->executar();
+                return *referencia;
             }
     };
 
-    template<typename T>
-    TipoFundamental create(string identificador) {
-        TipoFundamental fundamental;
-        fundamental = new Variavel<T>(identificador);
+    typedef variant<
+        Variavel<int>*, Variavel<double>*,
+        Variavel<bool>*,
+        Variavel<char>*, Variavel<string>*,
+        Variavel<void>*
+    > VariavelFundamental;
 
-        return fundamental;
+    template<typename T>
+    VariavelFundamental instanciar(string identificador) {
+        VariavelFundamental variavel;
+        variavel = new Variavel<T>(identificador);
+
+        return variavel;
     };
 
     class Contexto {
         public:
-            map<string, TipoFundamental(*)(string)> _tipo;
+            map<string, VariavelFundamental(*)(string)> _tipo;
 
             Contexto(){
-                _tipo["int"] = &create<int>;
-                _tipo["double"] = &create<double>;
-                _tipo["bool"] = &create<bool>;
-                _tipo["char"] = &create<char>;
-                _tipo["string"] = &create<string>;
-                _tipo["void"] = &create<void>;
+                _tipo["int"] = &instanciar<int>;
+                _tipo["double"] = &instanciar<double>;
+                _tipo["bool"] = &instanciar<bool>;
+                _tipo["char"] = &instanciar<char>;
+                _tipo["string"] = &instanciar<string>;
+                // _tipo["void"] = &instanciar<void>;
             }
     };
 
     class Bloco : public Nodo<void> {
         protected:
-            vector<TipoFundamental> listaDeInstrucoes;
+            vector<NodoFundamental> listaDeInstrucoes;
             Contexto* contexto;
         public:
             Bloco() : Nodo() { }
@@ -70,8 +76,9 @@ namespace AnaliseSemantica {
                 }
             }
 
-            void addInstrucao(TipoFundamental instrucao){
+            void addInstrucao(NodoFundamental instrucao){
                 listaDeInstrucoes.push_back(instrucao);
+                cout << "Bloco->addInstrucao :: ";
                 apply_visitor(PrintFundamentalVisitor (), instrucao);
             }
 

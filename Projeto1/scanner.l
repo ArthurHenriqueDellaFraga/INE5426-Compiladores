@@ -36,15 +36,27 @@ letra [a-zA-Z]
 "{"                           {return ABRE_CHAVES;}
 "}"                           {return FECHA_CHAVES;}
 
-{digito}+                     {yylval._int = atoi(yytext); return INTEIRO;}
-{digito}+"."{digito}+         {yylval._double = atof(yytext); return RACIONAL;}
-"TRUE"                        {yylval._bool = true; return BOOLEANO;}
-"FALSE"                       {yylval._bool = false; return BOOLEANO;}
-"\'"{letra}"\'"               {
+{digito}+                     {
+                                  yylval._int = atoi(yytext);
+                                  return INTEIRO;
+                              }
+{digito}+"."{digito}+         {
+                                  yylval._double = atof(yytext);
+                                  return RACIONAL;
+                              }
+"TRUE"                        {
+                                  yylval._bool = true;
+                                  return BOOLEANO;
+                              }
+"FALSE"                       {
+                                  yylval._bool = false;
+                                  return BOOLEANO;
+                              }
+"\'"."\'"                     {
                                   yylval._char = yytext[1];
                                   return CARACTER;
                               }
-"\""{letra}+"\""              {
+"\"".+"\""                    {
                                   yylval._string = new string(yytext);
                                   yylval._string = new string(yylval._string->substr(1, yylval._string->size() -2));
                                   return SENTENCA;
@@ -54,8 +66,10 @@ letra [a-zA-Z]
                                   yylval._string->pop_back();
                                   return TIPO;
                               }
-
-{letra}+                      {yylval._string = new string(yytext); return IDENTIFICADOR;}
+{letra}+                      {
+                                  yylval._string = new string(yytext);
+                                  return IDENTIFICADOR;
+                              }
 
 
 .                             {yyerror("Caracter desconhecido: %c\n", *yytext);}
