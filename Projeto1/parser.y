@@ -31,7 +31,7 @@
     string* _string;
 
     Bloco* bloco;
-    NodoFundamental* fundamental;
+    NodoFundamental* nodo;
 
     Nodo<int>* inteiro;
     Nodo<double>* racional;
@@ -71,7 +71,7 @@
 
 %type <bloco> program
 %type <bloco> bloco
-%type <fundamental> instrucao
+%type <nodo> instrucao
 
 //%type <nodo> definicao_multipla
 //%type <nodo> atribuicao
@@ -82,7 +82,8 @@
 %type <caracter> caracter
 %type <sentenca> sentenca
 
-%type <fundamental> definicao
+%type <vazio> definicao
+%type <nodo> variavel
 
 /* Operator precedence for mathematical operators
  * The latest it is listed, the highest the precedence
@@ -119,36 +120,45 @@ instrucao
     : NOVA_LINHA { $$ = NULL; }
 
     | inteiro NOVA_LINHA{
-            NodoFundamental tF;
-            tF = $1;
-            $$ = &tF;
+            NodoFundamental nF;
+            nF = $1;
+            $$ = &nF;
     }
 
     | racional NOVA_LINHA {
-            NodoFundamental tF;
-            tF = $1;
-            $$ = &tF;
+            NodoFundamental nF;
+            nF = $1;
+            $$ = &nF;
     }
 
     | booleano NOVA_LINHA {
-            NodoFundamental tF;
-            tF = $1;
-            $$ = &tF;
+            NodoFundamental nF;
+            nF = $1;
+            $$ = &nF;
     }
 
     | caracter NOVA_LINHA {
-            NodoFundamental tF;
-            tF = $1;
-            $$ = &tF;
+            NodoFundamental nF;
+            nF = $1;
+            $$ = &nF;
     }
 
     | sentenca NOVA_LINHA {
-            NodoFundamental tF;
-            tF = $1;
-            $$ = &tF;
+            NodoFundamental nF;
+            nF = $1;
+            $$ = &nF;
     }
 
     | definicao NOVA_LINHA {
+            NodoFundamental nF;
+            nF = $1;
+            $$ = &nF;
+    }
+
+    | variavel NOVA_LINHA {
+            // NodoFundamental nF;
+            // nF = $1;
+            // $$ = &nF;
             $$ = $1;
     }
 
@@ -195,12 +205,24 @@ sentenca
 
 definicao
     : TIPO IDENTIFICADOR {
-            NodoFundamental tF;
-            tF = contexto->_tipo[*$1](*$2);
-            $$ = &tF;
+            $$ = new Definicao(*$1, *$2);
+            $$->executar(contexto);
     }
 ;
 
+variavel
+    : IDENTIFICADOR {
+            if(contexto->_variavel.find(*$1) != contexto->_variavel.end()){
+                $$ = &(contexto->_variavel[*$1]);
+            }
+            else{
+                cout << "Variavel não definida: " << *$1 << endl;
+                NodoFundamental nF;
+                nF = new Primitivo<void>();
+                $$ = &nF;
+            }
+    }
+;
 /*
 definicao_multipla
     : definicao VIRGULA STRING {

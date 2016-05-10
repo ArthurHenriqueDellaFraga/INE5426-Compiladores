@@ -106,7 +106,7 @@ union YYSTYPE
     string* _string;
 
     Bloco* bloco;
-    NodoFundamental* fundamental;
+    NodoFundamental* nodo;
 
     Nodo<int>* inteiro;
     Nodo<double>* racional;
