@@ -1,7 +1,6 @@
 #pragma once
 
 #include "AnaliseSemantica.hpp"
-#include "Primitivo.hpp"
 
 #include <iostream>
 
@@ -24,7 +23,7 @@ namespace AnaliseSemantica {
             void print(){
                 cout << identificador << "->" << *referencia;
             }
-            T executar(){
+            T executar(Contexto* contexto){
                 return *referencia;
             }
     };
@@ -70,16 +69,20 @@ namespace AnaliseSemantica {
                     apply_visitor(PrintFundamentalVisitor (), listaDeInstrucoes[i]);
                 }
             }
-            void executar(){
+            void executar(Contexto* contexto){
                 for(int i=0; i < listaDeInstrucoes.size(); i++){
-                    apply_visitor(ExecutarFundamentalVisitor (), listaDeInstrucoes[i]);
+                    ExecutarFundamentalVisitor visitor;
+                    visitor.contexto = this->contexto;
+                    apply_visitor(visitor, listaDeInstrucoes[i]);
                 }
             }
 
             void addInstrucao(NodoFundamental instrucao){
                 listaDeInstrucoes.push_back(instrucao);
                 cout << "Bloco->addInstrucao :: ";
-                apply_visitor(PrintFundamentalVisitor (), instrucao);
+
+                PrintFundamentalVisitor visitor;
+                apply_visitor(visitor, instrucao);
             }
 
         class PrintFundamentalVisitor : public static_visitor<void>{
@@ -112,23 +115,25 @@ namespace AnaliseSemantica {
 
         class ExecutarFundamentalVisitor : public static_visitor<void>{
             public:
+                Contexto* contexto;
+
                 void operator()(Nodo<int>*& nodo) const {
-                    nodo->executar();
+                    nodo->executar(contexto);
                 }
                 void operator()(Nodo<double>*& nodo) const {
-                    nodo->executar();
+                    nodo->executar(contexto);
                 }
                 void operator()(Nodo<bool>*& nodo) const {
-                    nodo->executar();
+                    nodo->executar(contexto);
                 }
                 void operator()(Nodo<char>*& nodo) const {
-                    nodo->executar();
+                    nodo->executar(contexto);
                 }
                 void operator()(Nodo<string>*& nodo) const {
-                    nodo->executar();
+                    nodo->executar(contexto);
                 }
                 void operator()(Nodo<void>*& nodo) const {
-                    nodo->executar();
+                    nodo->executar(contexto);
                 }
         };
     };

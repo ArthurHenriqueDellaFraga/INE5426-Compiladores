@@ -1,6 +1,6 @@
 #pragma once
 
-#include "AnaliseSemantica.hpp"
+#include "Contexto.hpp"
 
 #include <iostream>
 
@@ -21,7 +21,7 @@ namespace AnaliseSemantica {
             void print(){
                 cout << valor;
             };
-            T executar( ){
+            T executar(Contexto* contexto){
                 return valor;
             }
     };
@@ -34,7 +34,7 @@ namespace AnaliseSemantica {
             void print(){
                 cout << '@';
             }
-            void executar( ){ }
+            void executar(Contexto* contexto){ }
     };
 
     typedef Primitivo<int> Inteiro;

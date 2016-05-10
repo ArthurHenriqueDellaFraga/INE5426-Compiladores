@@ -19,9 +19,10 @@
 
 #### Indentifying variant objects
 **Boost::static_visitor<T>**
-* [StackOverflow](http://stackoverflow.com/questions/13265156/boost-why-is-apply-visitor-not-working-in-this-code)
+* [StackOverflow ](http://stackoverflow.com/questions/13265156/boost-why-is-apply-visitor-not-working-in-this-code)
 * [Exemplo 1](cpp.sh/9obd)
 * [Exemplo 2](cpp.sh/2w75)
+[StackOverflow 2](http://stackoverflow.com/questions/12954852/booststatic-visitor-with-multiple-arguments)
 
 #### Using a string for identify a type
 * [StackOverflow](http://stackoverflow.com/questions/3113139/how-to-create-mapstring-classmethod-in-c-and-be-able-to-search-for-functi)

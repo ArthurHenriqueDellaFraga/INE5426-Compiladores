@@ -11,7 +11,7 @@ using namespace std;
 
 namespace AnaliseSemantica {
 
-    //class Contexto;
+    class Contexto;
 
     typedef variant<
         int, double, bool, char, string, void
@@ -22,7 +22,7 @@ namespace AnaliseSemantica {
         public:
             // virtual ~Nodo();
             virtual void print() = 0;
-            virtual T executar() = 0;
+            virtual T executar(Contexto* contexto) = 0;
     };
 
     typedef variant<

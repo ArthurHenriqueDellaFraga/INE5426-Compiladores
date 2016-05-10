@@ -16,7 +16,7 @@ int main(int argc, char **argv){
 
     yyparse();                  //parses whole data
     raizDoPrograma->print();
-    raizDoPrograma->executar();
+    raizDoPrograma->executar(contexto);
 
     return 0;
 }
