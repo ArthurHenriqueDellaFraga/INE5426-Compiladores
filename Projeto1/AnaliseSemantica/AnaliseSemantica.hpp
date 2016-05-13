@@ -39,7 +39,7 @@ namespace AnaliseSemantica {
             vector<NodoFundamental> listaDeInstrucoes;
             Contexto* contexto;
         public:
-            Bloco() : Nodo() { }
+            Bloco(Contexto* contexto) : contexto(contexto), Nodo() { }
 
             void print(){
                 for(int i=0; i < listaDeInstrucoes.size(); i++){
@@ -59,6 +59,14 @@ namespace AnaliseSemantica {
                 cout << "Bloco->addInstrucao :: ";
 
                 apply_visitor(PrintFundamentalVisitor (), instrucao);
+
+                ExecutarFundamentalVisitor visitor;
+                visitor.contexto = this->contexto;
+                apply_visitor(visitor, instrucao);
+            }
+
+            Contexto* getContexto(){
+                return contexto;
             }
 
         class PrintFundamentalVisitor : public static_visitor<void>{

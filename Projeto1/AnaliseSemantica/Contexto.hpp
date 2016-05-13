@@ -27,6 +27,40 @@ namespace AnaliseSemantica {
             void setReferencia(T* referencia){
                 this->referencia = referencia;
             }
+
+            class NodoConversorVisitor : public static_visitor<NodoFundamental>{
+                public:
+                    NodoFundamental operator()(Variavel<int>*& variavel) const {
+                        NodoFundamental nodo;
+                        nodo = variavel;
+                        return nodo;
+                    }
+                    NodoFundamental operator()(Variavel<double>*& variavel) const {
+                        NodoFundamental nodo;
+                        nodo = variavel;
+                        return nodo;
+                    }
+                    NodoFundamental operator()(Variavel<bool>*& variavel) const {
+                        NodoFundamental nodo;
+                        nodo = variavel;
+                        return nodo;
+                    }
+                    NodoFundamental operator()(Variavel<char>*& variavel) const {
+                        NodoFundamental nodo;
+                        nodo = variavel;
+                        return nodo;
+                    }
+                    NodoFundamental operator()(Variavel<string>*& variavel) const {
+                        NodoFundamental nodo;
+                        nodo = variavel;
+                        return nodo;
+                    }
+                    NodoFundamental operator()(Variavel<void>*& variavel) const {
+                        NodoFundamental nodo;
+                        nodo = variavel;
+                        return nodo;
+                    }
+            };
     };
 
     typedef variant<
@@ -36,117 +70,145 @@ namespace AnaliseSemantica {
         Variavel<void>*
     > VariavelFundamental;
 
-    template<typename T>
-    VariavelFundamental instanciar(string identificador) {
-        VariavelFundamental variavel;
-        variavel = new Variavel<T>(identificador);
-
-        return variavel;
-    };
-
     class Contexto {
+        protected:
+            map<string, TipoFundamental(*)()> _tipo;
         public:
-            map<string, VariavelFundamental(*)(string)> _tipo;
             map<string, VariavelFundamental> _variavel;
 
-            Contexto(){
-                _tipo["int"] = &instanciar<int>;
-                _tipo["double"] = &instanciar<double>;
-                _tipo["bool"] = &instanciar<bool>;
-                _tipo["char"] = &instanciar<char>;
-                _tipo["string"] = &instanciar<string>;
-                // _tipo["void"] = &instanciar<void>;
-            }
-    };
-
-    class Definicao : public Nodo<void>{
-        public:
-            string tipo;
-            string variavel;
-
-            Definicao(string tipo, string variavel) : tipo(tipo), variavel(variavel){ }
-
-            void print(){
-                cout << tipo << ": " << variavel;
-            }
-            void executar(Contexto* contexto){
-                VariavelFundamental variavel;
-                variavel = contexto->_tipo[tipo](variavel);
-
-                contexto->_variavel[variavel] = variavel;
-            }
+            Contexto(){ }
     };
 
     template <typename T>
-    class Atribuicao : public Nodo<void>{
+    class Definicao : public Nodo<void>{
         public:
-            Variavel<T>* variavel;
-            Nodo<T>* valor;
+            string tipo;
+            string identificador;
 
-            Atribuicao(Variavel<T>* variavel, Nodo<T>* valor) : variavel(variavel), valor(valor){ }
+            Definicao(string tipo, string identificador) : tipo(tipo), identificador(identificador){ }
 
             void print(){
-                variavel->print();
-                cout << ":=";
-                valor->print();
+                cout << tipo << ": " << identificador;
             }
             void executar(Contexto* contexto){
-                variavel->setReferencia(&(valor->executar(contexto)));
+                VariavelFundamental variavel;
+                variavel = new Variavel<T>(identificador);
+
+                contexto->_variavel[identificador] = variavel;
             }
-    }
+
+            class NodoConversorVisitor : public static_visitor<NodoFundamental>{
+                public:
+                    NodoFundamental operator()(Definicao<int>*& definicao) const {
+                        NodoFundamental nodo;
+                        nodo = definicao;
+                        return nodo;
+                    }
+                    NodoFundamental operator()(Definicao<double>*& definicao) const {
+                        NodoFundamental nodo;
+                        nodo = definicao;
+                        return nodo;
+                    }
+                    NodoFundamental operator()(Definicao<bool>*& definicao) const {
+                        NodoFundamental nodo;
+                        nodo = definicao;
+                        return nodo;
+                    }
+                    NodoFundamental operator()(Definicao<char>*& definicao) const {
+                        NodoFundamental nodo;
+                        nodo = definicao;
+                        return nodo;
+                    }
+                    NodoFundamental operator()(Definicao<string>*& definicao) const {
+                        NodoFundamental nodo;
+                        nodo = definicao;
+                        return nodo;
+                    }
+                    NodoFundamental operator()(Definicao<void>*& definicao) const {
+                        NodoFundamental nodo;
+                        nodo = definicao;
+                        return nodo;
+                    }
+            };
+    };
 
     typedef variant<
-        Atribuicao<int>*, Atribuicao<double>*,
-        Atribuicao<bool>*,
-        Atribuicao<char>*, Atribuicao<string>*,
-        Atribuicao<void>*
-    > AtribuicaoFundamental;
+        Definicao<int>*, Definicao<double>*,
+        Definicao<bool>*,
+        Definicao<char>*, Definicao<string>*,
+        Definicao<void>*
+    > DefinicaoFundamental;
 
-    class AtribuicaoVisitor : public static_visitor<AtribuicaoFundamental>{
-        public:
-            AtribuicaoFundamental atribuicao;
-            NodoFundamental valor;
-
-            AtribuicaoFundamental operator()(Variavel<int>*& variavel) const {
-                Nodo<int> nodo = get<int>(valor);
-
-                variavel->print()
-                cout << " := "
-                valor->print();
-
-                atribuicao = new Atribuicao<int>(variavel, nodo);
-                return atribuicao;
-            }
-            AtribuicaoFundamental operator()(Variavel<double>*& variavel) const {
-                Nodo<double> nodo = get<double>(valor);
-
-                atribuicao = new Atribuicao<double>(variavel, nodo);
-                return atribuicao;
-            }
-            AtribuicaoFundamental operator()(Variavel<bool>*& variavel) const {
-                Nodo<bool> nodo = get<bool>(valor);
-
-                atribuicao = new Atribuicao<bool>(variavel, nodo);
-                return atribuicao;
-            }
-            AtribuicaoFundamental operator()(Variavel<char>*& variavel) const {
-                Nodo<char> nodo = get<char>(valor);
-
-                atribuicao = new Atribuicao<char>(variavel, nodo);
-                return atribuicao;
-            }
-            AtribuicaoFundamental operator()(Variavel<string>*& variavel) const {
-                Nodo<string> nodo = get<string>(valor);
-
-                atribuicao = new Atribuicao<string>(variavel, nodo);
-                return atribuicao;
-            }
-            AtribuicaoFundamental operator()(Variavel<void>*& variavel) const {
-                Nodo<void> nodo = get<void>(valor);
-
-                atribuicao = new Atribuicao<void>(variavel, nodo);
-                return atribuicao;
-            }
-    };
+    // template <typename T>
+    // class Atribuicao : public Nodo<void>{
+    //     public:
+    //         Variavel<T>* variavel;
+    //         Nodo<T>* valor;
+    //
+    //         Atribuicao(Variavel<T>* variavel, Nodo<T>* valor) : variavel(variavel), valor(valor){ }
+    //
+    //         void print(){
+    //             variavel->print();
+    //             cout << ":=";
+    //             valor->print();
+    //         }
+    //         void executar(Contexto* contexto){
+    //             variavel->setReferencia(&(valor->executar(contexto)));
+    //         }
+    // }
+    //
+    // typedef variant<
+    //     Atribuicao<int>*, Atribuicao<double>*,
+    //     Atribuicao<bool>*,
+    //     Atribuicao<char>*, Atribuicao<string>*,
+    //     Atribuicao<void>*
+    // > AtribuicaoFundamental;
+    //
+    // class AtribuicaoVisitor : public static_visitor<AtribuicaoFundamental>{
+    //     public:
+    //         AtribuicaoFundamental atribuicao;
+    //         NodoFundamental valor;
+    //
+    //         AtribuicaoFundamental operator()(Variavel<int>*& variavel) const {
+    //             Nodo<int>* nodo = get<Nodo<int>*>(valor);
+    //
+    //             variavel->print()
+    //             cout << " := "
+    //             valor->print();
+    //
+    //             atribuicao = new Atribuicao<int>(variavel, nodo);
+    //             return atribuicao;
+    //         }
+    //         AtribuicaoFundamental operator()(Variavel<double>*& variavel) const {
+    //             Nodo<double>* nodo = get<Nodo<double>*>(valor);
+    //
+    //             atribuicao = new Atribuicao<double>(variavel, nodo);
+    //             return atribuicao;
+    //         }
+    //         AtribuicaoFundamental operator()(Variavel<bool>*& variavel) const {
+    //             Nodo<bool>* nodo = get<Nodo<bool>*>(valor);
+    //
+    //             atribuicao = new Atribuicao<bool>(variavel, nodo);
+    //             return atribuicao;
+    //         }
+    //         AtribuicaoFundamental operator()(Variavel<char>*& variavel) const {
+    //             Nodo<char>* nodo = get<Nodo<char>*>(valor);
+    //
+    //             atribuicao = new Atribuicao<char>(variavel, nodo);
+    //             return atribuicao;
+    //         }
+    //         AtribuicaoFundamental operator()(Variavel<string>*& variavel) const {
+    //             Nodo<string>* nodo = get<Nodo<string>*>(valor);
+    //
+    //             atribuicao = new Atribuicao<string>(variavel, nodo);
+    //             return atribuicao;
+    //         }
+    //         AtribuicaoFundamental operator()(Variavel<void>*& variavel) const {
+    //             Nodo<void>* nodo = get<Nodo<void>*>(valor);
+    //
+    //             atribuicao = new Atribuicao<void>(variavel, nodo);
+    //             return atribuicao;
+    //         }
+    // };
 
 }

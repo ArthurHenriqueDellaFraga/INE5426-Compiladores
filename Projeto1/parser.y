@@ -16,6 +16,8 @@
     extern Contexto* contexto;
     extern bool debug;
 
+    extern DefinicaoFundamental definir(string, string);
+
     extern int yylex();
     extern void yyerror(const char* s, ...);
 }
@@ -34,7 +36,8 @@
     NodoFundamental* nodo;
 
     VariavelFundamental* variavel;
-    AtribuicaoFundamental* atribuicao;
+    DefinicaoFundamental* definicao;
+    // AtribuicaoFundamental* atribuicao;
 
     Nodo<int>* inteiro;
     Nodo<double>* racional;
@@ -66,8 +69,6 @@
 %token OR
 %token NEGACAO_BOOLEANA
 
-%token ATRIBUICAO
-
 %token VIRGULA
 %token PONTO
 
@@ -95,8 +96,8 @@
 %type <caracter> caracter
 %type <sentenca> sentenca
 
-%type <vazio> definicao
-%type <atribuicao> atribuicao
+%type <definicao> definicao
+// %type <atribuicao> atribuicao
 
 %type <variavel> variavel
 
@@ -122,13 +123,15 @@ program
 
 bloco
     : instrucao {
-            $$ = new Bloco();
+            $$ = new Bloco(contexto);
             $$->addInstrucao(*$1);
     }
 
     | bloco instrucao {
             if($2 != NULL)
                 $1->addInstrucao(*$2);
+
+            contexto = $1->getContexto();
     }
 
 instrucao
@@ -166,13 +169,19 @@ instrucao
 
     | definicao NOVA_LINHA {
             NodoFundamental nF;
-            nF = $1;
+            nF = apply_visitor(Definicao<void>::NodoConversorVisitor (), *$1);
             $$ = &nF;
     }
 
-    | atribuicao NOVA_LINHA {
+    // | atribuicao NOVA_LINHA {
+    //         NodoFundamental nF;
+    //         nF = new Primitivo<void>();
+    //         $$ = &nF;
+    // }
+
+    | variavel NOVA_LINHA {
             NodoFundamental nF;
-            nF = new Primitivo<void>();
+            nF = apply_visitor(Variavel<void>::NodoConversorVisitor (), *$1);
             $$ = &nF;
     }
 
@@ -218,23 +227,24 @@ sentenca
 
 definicao
     : TIPO IDENTIFICADOR {
-            $$ = new Definicao(*$1, *$2);
-            $$->executar(contexto);
+            DefinicaoFundamental dF;
+            dF = definir(*$1, *$2);
+            $$ = &dF;
     }
 ;
 
-atribuicao
-    : variavel ATRIBUICAO instrucao {
-        if(*$1.which() == *$3.which()){
-            AtribuicaoVisitor visitor;
-            visitor.valor = instrucao;
-
-            $$ = & apply_visitor(AtribuicaoVisitor (), variavel);
-        }
-        else{
-            cout << "Tipos incompativeis" << endl;
-        }
-    }
+// atribuicao
+//     : variavel ATRIBUICAO instrucao {
+//         if(*$1.which() == *$3.which()){
+//             AtribuicaoVisitor visitor;
+//             visitor.valor = instrucao;
+//
+//             $$ = & apply_visitor(AtribuicaoVisitor (), variavel);
+//         }
+//         else{
+//             cout << "Tipos incompativeis" << endl;
+//         }
+//     }
 
 variavel
     : IDENTIFICADOR {
@@ -243,9 +253,9 @@ variavel
             }
             else{
                 cout << "Variavel não definida: " << *$1 << endl;
-                NodoFundamental nF;
-                nF = new Primitivo<void>();
-                $$ = &nF;
+                VariavelFundamental vF;
+                vF = new Variavel<int>("null");
+                $$ = &vF;
             }
     }
 ;
