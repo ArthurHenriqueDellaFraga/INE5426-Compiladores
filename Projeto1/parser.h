@@ -59,12 +59,10 @@ extern int yydebug;
     extern Contexto* contexto;
     extern bool debug;
 
-    extern DefinicaoFundamental definir(string, string);
-
     extern int yylex();
     extern void yyerror(const char* s, ...);
 
-#line 68 "parser.h" /* yacc.c:1909  */
+#line 66 "parser.h" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -108,7 +106,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 28 "parser.y" /* yacc.c:1909  */
+#line 26 "parser.y" /* yacc.c:1909  */
 
     int _int;
     double _double;
@@ -130,7 +128,7 @@ union YYSTYPE
     Nodo<string>* sentenca;
     Nodo<void>* vazio;
 
-#line 134 "parser.h" /* yacc.c:1909  */
+#line 132 "parser.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

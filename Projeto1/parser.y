@@ -16,8 +16,6 @@
     extern Contexto* contexto;
     extern bool debug;
 
-    extern DefinicaoFundamental definir(string, string);
-
     extern int yylex();
     extern void yyerror(const char* s, ...);
 }
@@ -130,8 +128,6 @@ bloco
     | bloco instrucao {
             if($2 != NULL)
                 $1->addInstrucao(*$2);
-
-            contexto = $1->getContexto();
     }
 
 instrucao
@@ -228,7 +224,7 @@ sentenca
 definicao
     : TIPO IDENTIFICADOR {
             DefinicaoFundamental dF;
-            dF = definir(*$1, *$2);
+            dF = Definicao<void>::definir(*$1, *$2);
             $$ = &dF;
     }
 ;

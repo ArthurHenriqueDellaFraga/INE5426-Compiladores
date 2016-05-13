@@ -80,7 +80,26 @@ namespace AnaliseSemantica {
     };
 
     template <typename T>
+    class Definicao;
+
+    typedef variant<
+        Definicao<int>*, Definicao<double>*,
+        Definicao<bool>*,
+        Definicao<char>*, Definicao<string>*,
+        Definicao<void>*
+    > DefinicaoFundamental;
+
+    template <typename T>
     class Definicao : public Nodo<void>{
+        protected:
+            template<typename U>
+            static DefinicaoFundamental getDefinicao(string tipo, string identificador) {
+                DefinicaoFundamental definicao;
+                definicao = new Definicao<U>(tipo, identificador);
+
+                return definicao;
+            };
+
         public:
             string tipo;
             string identificador;
@@ -95,6 +114,18 @@ namespace AnaliseSemantica {
                 variavel = new Variavel<T>(identificador);
 
                 contexto->_variavel[identificador] = variavel;
+            }
+
+            static DefinicaoFundamental definir(string tipo, string identificador){
+                map<string, DefinicaoFundamental(*)(string, string)> _definicao;
+                    _definicao["int"] = &getDefinicao<int>;
+                    _definicao["double"] = &getDefinicao<double>;
+                    _definicao["bool"] = &getDefinicao<bool>;
+                    _definicao["char"] = &getDefinicao<char>;
+                    _definicao["string"] = &getDefinicao<string>;
+
+
+                return _definicao[tipo](tipo, identificador);
             }
 
             class NodoConversorVisitor : public static_visitor<NodoFundamental>{
@@ -131,13 +162,6 @@ namespace AnaliseSemantica {
                     }
             };
     };
-
-    typedef variant<
-        Definicao<int>*, Definicao<double>*,
-        Definicao<bool>*,
-        Definicao<char>*, Definicao<string>*,
-        Definicao<void>*
-    > DefinicaoFundamental;
 
     // template <typename T>
     // class Atribuicao : public Nodo<void>{
