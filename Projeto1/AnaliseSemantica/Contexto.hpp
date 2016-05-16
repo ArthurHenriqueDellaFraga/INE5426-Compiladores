@@ -27,40 +27,6 @@ namespace AnaliseSemantica {
             void setReferencia(T* referencia){
                 this->referencia = referencia;
             }
-
-            class NodoConversorVisitor : public static_visitor<NodoFundamental>{
-                public:
-                    NodoFundamental operator()(Variavel<int>*& variavel) const {
-                        NodoFundamental nodo;
-                        nodo = variavel;
-                        return nodo;
-                    }
-                    NodoFundamental operator()(Variavel<double>*& variavel) const {
-                        NodoFundamental nodo;
-                        nodo = variavel;
-                        return nodo;
-                    }
-                    NodoFundamental operator()(Variavel<bool>*& variavel) const {
-                        NodoFundamental nodo;
-                        nodo = variavel;
-                        return nodo;
-                    }
-                    NodoFundamental operator()(Variavel<char>*& variavel) const {
-                        NodoFundamental nodo;
-                        nodo = variavel;
-                        return nodo;
-                    }
-                    NodoFundamental operator()(Variavel<string>*& variavel) const {
-                        NodoFundamental nodo;
-                        nodo = variavel;
-                        return nodo;
-                    }
-                    NodoFundamental operator()(Variavel<void>*& variavel) const {
-                        NodoFundamental nodo;
-                        nodo = variavel;
-                        return nodo;
-                    }
-            };
     };
 
     typedef variant<
@@ -127,40 +93,6 @@ namespace AnaliseSemantica {
 
                 return _definicao[tipo](tipo, identificador);
             }
-
-            class NodoConversorVisitor : public static_visitor<NodoFundamental>{
-                public:
-                    NodoFundamental operator()(Definicao<int>*& definicao) const {
-                        NodoFundamental nodo;
-                        nodo = definicao;
-                        return nodo;
-                    }
-                    NodoFundamental operator()(Definicao<double>*& definicao) const {
-                        NodoFundamental nodo;
-                        nodo = definicao;
-                        return nodo;
-                    }
-                    NodoFundamental operator()(Definicao<bool>*& definicao) const {
-                        NodoFundamental nodo;
-                        nodo = definicao;
-                        return nodo;
-                    }
-                    NodoFundamental operator()(Definicao<char>*& definicao) const {
-                        NodoFundamental nodo;
-                        nodo = definicao;
-                        return nodo;
-                    }
-                    NodoFundamental operator()(Definicao<string>*& definicao) const {
-                        NodoFundamental nodo;
-                        nodo = definicao;
-                        return nodo;
-                    }
-                    NodoFundamental operator()(Definicao<void>*& definicao) const {
-                        NodoFundamental nodo;
-                        nodo = definicao;
-                        return nodo;
-                    }
-            };
     };
 
     // template <typename T>

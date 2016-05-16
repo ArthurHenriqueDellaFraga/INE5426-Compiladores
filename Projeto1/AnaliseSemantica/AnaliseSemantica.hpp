@@ -34,6 +34,16 @@ namespace AnaliseSemantica {
         Nodo<void>*
     > NodoFundamental;
 
+    class NodoConversorVisitor : public static_visitor<NodoFundamental>{
+        public:
+            template <typename T>
+            NodoFundamental operator()(T& t) const {
+                NodoFundamental nodo;
+                nodo = t;
+                return nodo;
+            }
+    };
+
     class Bloco : public Nodo<void> {
         protected:
             vector<NodoFundamental> listaDeInstrucoes;
@@ -71,28 +81,9 @@ namespace AnaliseSemantica {
 
         class PrintFundamentalVisitor : public static_visitor<void>{
             public:
-                void operator()(Nodo<int>*& nodo) const {
-                    nodo->print();
-                    cout << endl;
-                }
-                void operator()(Nodo<double>*& nodo) const {
-                    nodo->print();
-                    cout << endl;
-                }
-                void operator()(Nodo<bool>*& nodo) const {
-                    nodo->print();
-                    cout << endl;
-                }
-                void operator()(Nodo<char>*& nodo) const {
-                    nodo->print();
-                    cout << endl;
-                }
-                void operator()(Nodo<string>*& nodo) const {
-                    nodo->print();
-                    cout << endl;
-                }
-                void operator()(Nodo<void>*& nodo) const {
-                    nodo->print();
+                template <typename T>
+                void operator()(T& instrucao) const {
+                    instrucao->print();
                     cout << endl;
                 }
         };
@@ -101,23 +92,9 @@ namespace AnaliseSemantica {
             public:
                 Contexto* contexto;
 
-                void operator()(Nodo<int>*& nodo) const {
-                    nodo->executar(contexto);
-                }
-                void operator()(Nodo<double>*& nodo) const {
-                    nodo->executar(contexto);
-                }
-                void operator()(Nodo<bool>*& nodo) const {
-                    nodo->executar(contexto);
-                }
-                void operator()(Nodo<char>*& nodo) const {
-                    nodo->executar(contexto);
-                }
-                void operator()(Nodo<string>*& nodo) const {
-                    nodo->executar(contexto);
-                }
-                void operator()(Nodo<void>*& nodo) const {
-                    nodo->executar(contexto);
+                template <typename T>
+                void operator()(T& instrucao) const {
+                    instrucao->executar(contexto);
                 }
         };
     };
