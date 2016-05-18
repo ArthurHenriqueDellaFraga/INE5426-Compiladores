@@ -1,7 +1,8 @@
 %code requires{
     #include "AnaliseSemantica/Primitivo.hpp"
     #include "AnaliseSemantica/Operacao.hpp"
-    #include "AnaliseSemantica/Contexto.hpp"
+    #include "AnaliseSemantica/Definicao.hpp"
+    #include "AnaliseSemantica/Atribuicao.hpp"
 
     #include <stdio.h>
     #include <stdlib.h>
@@ -35,7 +36,7 @@
 
     VariavelFundamental* variavel;
     DefinicaoFundamental* definicao;
-    // AtribuicaoFundamental* atribuicao;
+    AtribuicaoFundamental* atribuicao;
 
     Nodo<int>* inteiro;
     Nodo<double>* racional;
@@ -69,7 +70,7 @@
 
 %token VIRGULA
 %token PONTO
-
+odoFundamental
 %token ABRE_PARENTESES FECHA_PARENTESES
 %token ABRE_CHAVES FECHA_CHAVES
 
@@ -95,7 +96,7 @@
 %type <sentenca> sentenca
 
 %type <definicao> definicao
-// %type <atribuicao> atribuicao
+%type <atribuicao> atribuicao
 
 %type <variavel> variavel
 
@@ -169,11 +170,11 @@ instrucao
             $$ = &nF;
     }
 
-    // | atribuicao NOVA_LINHA {
-    //         NodoFundamental nF;
-    //         nF = new Primitivo<void>();
-    //         $$ = &nF;
-    // }
+    | atribuicao NOVA_LINHA {
+            NodoFundamental nF;
+            nF = apply_visitor(NodoConversorVisitor(), *$1);
+            $$ = &nF;
+    }
 
     | variavel NOVA_LINHA {
             NodoFundamental nF;
@@ -229,18 +230,16 @@ definicao
     }
 ;
 
-// atribuicao
-//     : variavel ATRIBUICAO instrucao {
-//         if(*$1.which() == *$3.which()){
-//             AtribuicaoVisitor visitor;
-//             visitor.valor = instrucao;
-//
-//             $$ = & apply_visitor(AtribuicaoVisitor (), variavel);
-//         }
-//         else{
-//             cout << "Tipos incompativeis" << endl;
-//         }
-//     }
+atribuicao
+    : variavel ATRIBUICAO instrucao {
+        if(*$1.which() == *$3.which()){
+            $$ = & Atribuicao<void>::atribuir(*$1, *$3);
+        }
+        else{
+            cout << "Tipos incompativeis" << endl;
+            exit(1);
+        }
+    }
 
 variavel
     : IDENTIFICADOR {

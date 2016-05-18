@@ -1,7 +1,7 @@
 # INE5426.Compiladores
 
 #### Template <typename T>
-* [A great guild](http://www.codeproject.com/Articles/257589/An-Idiots-Guide-to-Cplusplus-Templates-Part)
+* [A great guide](http://www.codeproject.com/Articles/257589/An-Idiots-Guide-to-Cplusplus-Templates-Part)
 * [Exemplo](cpp.sh/9tca4)
 
 **Void template specialization**

@@ -44,6 +44,17 @@ namespace AnaliseSemantica {
                 return *this;
             }
 
+            string getTipo(){
+                switch (this->which()){
+                    case 0: return "int";
+                    case 1: return "double";
+                    case 2: return "bool";
+                    case 3: return "char";
+                    case 4: return "string";
+                    default: return "void";
+                }
+            }
+
         protected:
             struct PrintVisitor : public static_visitor<void> {
                 template <typename T>
@@ -113,25 +124,6 @@ namespace AnaliseSemantica {
             Contexto* getContexto(){
                 return contexto;
             }
-
-        class PrintFundamentalVisitor : public static_visitor<void>{
-            public:
-                template <typename T>
-                void operator()(T& instrucao) const {
-                    instrucao->print();
-                    cout << endl;
-                }
-        };
-
-        class ExecutarFundamentalVisitor : public static_visitor<void>{
-            public:
-                Contexto* contexto;
-
-                template <typename T>
-                void operator()(T& instrucao) const {
-                    instrucao->executar(contexto);
-                }
-        };
     };
 
 }

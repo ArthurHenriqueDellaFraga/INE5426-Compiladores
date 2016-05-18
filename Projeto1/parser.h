@@ -44,7 +44,8 @@ extern int yydebug;
 
     #include "AnaliseSemantica/Primitivo.hpp"
     #include "AnaliseSemantica/Operacao.hpp"
-    #include "AnaliseSemantica/Contexto.hpp"
+    #include "AnaliseSemantica/Definicao.hpp"
+    #include "AnaliseSemantica/Atribuicao.hpp"
 
     #include <stdio.h>
     #include <stdlib.h>
@@ -62,7 +63,7 @@ extern int yydebug;
     extern int yylex();
     extern void yyerror(const char* s, ...);
 
-#line 66 "parser.h" /* yacc.c:1909  */
+#line 67 "parser.h" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -86,18 +87,19 @@ extern int yydebug;
     NEGACAO_BOOLEANA = 272,
     VIRGULA = 273,
     PONTO = 274,
-    ABRE_PARENTESES = 275,
-    FECHA_PARENTESES = 276,
-    ABRE_CHAVES = 277,
-    FECHA_CHAVES = 278,
-    INTEIRO = 279,
-    RACIONAL = 280,
-    BOOLEANO = 281,
-    CARACTER = 282,
-    SENTENCA = 283,
-    TIPO = 284,
-    IDENTIFICADOR = 285,
-    errord = 286
+    odoFundamental = 275,
+    ABRE_PARENTESES = 276,
+    FECHA_PARENTESES = 277,
+    ABRE_CHAVES = 278,
+    FECHA_CHAVES = 279,
+    INTEIRO = 280,
+    RACIONAL = 281,
+    BOOLEANO = 282,
+    CARACTER = 283,
+    SENTENCA = 284,
+    TIPO = 285,
+    IDENTIFICADOR = 286,
+    errord = 287
   };
 #endif
 
@@ -106,7 +108,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 26 "parser.y" /* yacc.c:1909  */
+#line 27 "parser.y" /* yacc.c:1909  */
 
     int _int;
     double _double;
@@ -119,7 +121,7 @@ union YYSTYPE
 
     VariavelFundamental* variavel;
     DefinicaoFundamental* definicao;
-    // AtribuicaoFundamental* atribuicao;
+    AtribuicaoFundamental* atribuicao;
 
     Nodo<int>* inteiro;
     Nodo<double>* racional;
@@ -128,7 +130,7 @@ union YYSTYPE
     Nodo<string>* sentenca;
     Nodo<void>* vazio;
 
-#line 132 "parser.h" /* yacc.c:1909  */
+#line 134 "parser.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
