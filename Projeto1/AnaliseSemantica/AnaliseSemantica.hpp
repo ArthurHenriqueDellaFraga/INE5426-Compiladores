@@ -15,10 +15,6 @@ namespace AnaliseSemantica {
 
     class Contexto;
 
-    typedef variant<
-        int, double, bool, char, string, void
-    > TipoFundamental;
-
     template <typename T>
     class Nodo {
         public:
@@ -27,21 +23,63 @@ namespace AnaliseSemantica {
             virtual T executar(Contexto* contexto) = 0;
     };
 
+    template <typename... Types>
+    class Polimorfo : public variant<Types...>{
+        public:
+            Polimorfo() : variant<Types...>(){}
+
+            void print(){
+                apply_visitor(PrintVisitor(), *this);
+            }
+
+            void executar(Contexto* contexto){
+                ExecutarVisitor visitor;
+                visitor.contexto = contexto;
+                apply_visitor(visitor, *this);
+            }
+
+            template<typename T>
+            Polimorfo<Types...>& operator=(const T& t){
+                variant<Types...>::operator=(t);
+                return *this;
+            }
+
+        protected:
+            struct PrintVisitor : public static_visitor<void> {
+                template <typename T>
+                void operator()(T t) const {
+                    t->print();
+                }
+            };
+
+            struct ExecutarVisitor : public static_visitor<void> {
+                Contexto* contexto;
+
+                template <typename T>
+                void operator()(T t) const {
+                    t->executar(contexto);
+                }
+            };
+    };
+
     typedef variant<
+        int, double, bool, char, string, void
+    > TipoFundamental;
+
+    typedef Polimorfo<
         Nodo<int>*, Nodo<double>*,
         Nodo<bool>*,
         Nodo<char>*, Nodo<string>*,
         Nodo<void>*
     > NodoFundamental;
 
-    class NodoConversorVisitor : public static_visitor<NodoFundamental>{
-        public:
-            template <typename T>
-            NodoFundamental operator()(T& t) const {
-                NodoFundamental nodo;
-                nodo = t;
-                return nodo;
-            }
+    struct NodoConversorVisitor : public static_visitor<NodoFundamental>{
+        template <typename T>
+        NodoFundamental operator()(T& t) const {
+            NodoFundamental nodo;
+            nodo = t;
+            return nodo;
+        }
     };
 
     class Bloco : public Nodo<void> {
@@ -53,14 +91,12 @@ namespace AnaliseSemantica {
 
             void print(){
                 for(int i=0; i < listaDeInstrucoes.size(); i++){
-                    apply_visitor(PrintFundamentalVisitor (), listaDeInstrucoes[i]);
+                    listaDeInstrucoes[i].print();
                 }
             }
             void executar(Contexto* contexto){
                 for(int i=0; i < listaDeInstrucoes.size(); i++){
-                    ExecutarFundamentalVisitor visitor;
-                    visitor.contexto = this->contexto;
-                    apply_visitor(visitor, listaDeInstrucoes[i]);
+                    listaDeInstrucoes[i].executar(contexto);
                 }
             }
 
@@ -68,11 +104,10 @@ namespace AnaliseSemantica {
                 listaDeInstrucoes.push_back(instrucao);
                 cout << "Bloco->addInstrucao :: ";
 
-                apply_visitor(PrintFundamentalVisitor (), instrucao);
+                instrucao.print();
+                cout << endl;
 
-                ExecutarFundamentalVisitor visitor;
-                visitor.contexto = this->contexto;
-                apply_visitor(visitor, instrucao);
+                instrucao.executar(contexto);
             }
 
             Contexto* getContexto(){

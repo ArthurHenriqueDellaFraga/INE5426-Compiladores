@@ -165,7 +165,7 @@ instrucao
 
     | definicao NOVA_LINHA {
             NodoFundamental nF;
-            nF = apply_visitor(NodoConversorVisitor (), *$1);
+            nF = apply_visitor(NodoConversorVisitor(), *$1);
             $$ = &nF;
     }
 
@@ -177,7 +177,7 @@ instrucao
 
     | variavel NOVA_LINHA {
             NodoFundamental nF;
-            nF = apply_visitor(NodoConversorVisitor (), *$1);
+            nF = apply_visitor(NodoConversorVisitor(), *$1);
             $$ = &nF;
     }
 

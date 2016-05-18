@@ -29,7 +29,7 @@ namespace AnaliseSemantica {
             }
     };
 
-    typedef variant<
+    typedef Polimorfo<
         Variavel<int>*, Variavel<double>*,
         Variavel<bool>*,
         Variavel<char>*, Variavel<string>*,
@@ -48,7 +48,7 @@ namespace AnaliseSemantica {
     template <typename T>
     class Definicao;
 
-    typedef variant<
+    typedef Polimorfo<
         Definicao<int>*, Definicao<double>*,
         Definicao<bool>*,
         Definicao<char>*, Definicao<string>*,
@@ -113,7 +113,7 @@ namespace AnaliseSemantica {
     //         }
     // }
     //
-    // typedef variant<
+    // typedef Polimorfo<
     //     Atribuicao<int>*, Atribuicao<double>*,
     //     Atribuicao<bool>*,
     //     Atribuicao<char>*, Atribuicao<string>*,

@@ -8,14 +8,14 @@
 * [Doc](http://www.cplusplus.com/doc/tutorial/templates/)
 * [Exemplo](cpp.sh/7e4k)
 
-#### Generic vectors
+#### Polymorphic variables
 **Boost::variant**
 * [Doc](http://theboostcpplibraries.com/boost.variant)
 * [StackOverflow](http://stackoverflow.com/questions/696399/how-to-put-different-template-types-into-one-vector)
 * [Exemplo](cpp.sh/6x2v)
 
-**vector<T>**
-* [Doc](http://www.cplusplus.com/reference/vector/vector/vector/)
+**Extends Boost::variant**
+* [Exemplo](cpp.sh/7cc4)
 
 #### Indentifying variant objects
 **Boost::static_visitor<T>**
@@ -23,6 +23,9 @@
 * [Exemplo 1](cpp.sh/9obd)
 * [Exemplo 2](cpp.sh/2w75)
 [StackOverflow 2](http://stackoverflow.com/questions/12954852/booststatic-visitor-with-multiple-arguments)
+
+**Boost::multivisitors**
+* [Exemplo 1](cpp.sh/973f3)
 
 #### Using a string for identify a type
 * [StackOverflow](http://stackoverflow.com/questions/3113139/how-to-create-mapstring-classmethod-in-c-and-be-able-to-search-for-functi)

@@ -44,7 +44,7 @@ namespace AnaliseSemantica {
     typedef Primitivo<string> Sentenca;
     typedef Primitivo<void> Vazio;
 
-    typedef variant<
+    typedef Polimorfo<
         Inteiro*, Racional*,
         Booleano*,
         Caracter*, Sentenca*,

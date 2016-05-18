@@ -1375,7 +1375,7 @@ yyreduce:
 #line 166 "parser.y" /* yacc.c:1646  */
     {
             NodoFundamental nF;
-            nF = apply_visitor(NodoConversorVisitor (), *(yyvsp[-1].definicao));
+            nF = apply_visitor(NodoConversorVisitor(), *(yyvsp[-1].definicao));
             (yyval.nodo) = &nF;
     }
 #line 1382 "parser.cpp" /* yacc.c:1646  */
@@ -1385,7 +1385,7 @@ yyreduce:
 #line 178 "parser.y" /* yacc.c:1646  */
     {
             NodoFundamental nF;
-            nF = apply_visitor(NodoConversorVisitor (), *(yyvsp[-1].variavel));
+            nF = apply_visitor(NodoConversorVisitor(), *(yyvsp[-1].variavel));
             (yyval.nodo) = &nF;
     }
 #line 1392 "parser.cpp" /* yacc.c:1646  */
