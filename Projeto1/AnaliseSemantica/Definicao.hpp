@@ -15,8 +15,7 @@ namespace AnaliseSemantica {
   typedef Polimorfo<
       Definicao<int>*, Definicao<double>*,
       Definicao<bool>*,
-      Definicao<char>*, Definicao<string>*,
-      Definicao<void>*
+      Definicao<char>*, Definicao<string>*
   > DefinicaoFundamental;
 
   template <typename T>
@@ -50,7 +49,7 @@ namespace AnaliseSemantica {
 
       protected:
           template<typename U>
-          static DefinicaoFundamental getDefinicao(string tipo, string identificador) {
+          static DefinicaoFundamental getDefinicao(string tipo, string identificador){
               DefinicaoFundamental definicao;
               definicao = new Definicao<U>(tipo, identificador);
 

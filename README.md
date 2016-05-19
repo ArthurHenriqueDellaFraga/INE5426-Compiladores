@@ -22,7 +22,10 @@
 * [StackOverflow ](http://stackoverflow.com/questions/13265156/boost-why-is-apply-visitor-not-working-in-this-code)
 * [Exemplo 1](cpp.sh/9obd)
 * [Exemplo 2](cpp.sh/2w75)
-[StackOverflow 2](http://stackoverflow.com/questions/12954852/booststatic-visitor-with-multiple-arguments)
+* [StackOverflow 2](http://stackoverflow.com/questions/12954852/booststatic-visitor-with-multiple-arguments)
+
+###Limiting template argument's type
+* [StackOverflow](http://stackoverflow.com/questions/20405101/limiting-c-templates-to-primitive-types)
 
 **Boost::multivisitors**
 * [Exemplo 1](cpp.sh/973f3)
@@ -34,4 +37,4 @@
 
 **Implicit inicialization by default constructor**
 [StackOverflow](http://stackoverflow.com/questions/3127454/how-do-c-class-members-get-initialized-if-i-dont-do-it-explicitly)
-[StackOverflow](http://stackoverflow.com/questions/5989652/initializing-variable-in-c-function-header)
+* [StackOverflow](http://stackoverflow.com/questions/5989652/initializing-variable-in-c-function-header)

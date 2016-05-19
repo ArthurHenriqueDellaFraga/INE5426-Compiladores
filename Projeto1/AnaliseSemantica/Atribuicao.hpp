@@ -15,55 +15,41 @@ namespace AnaliseSemantica {
     typedef Polimorfo<
         Atribuicao<int>*, Atribuicao<double>*,
         Atribuicao<bool>*,
-        Atribuicao<char>*, Atribuicao<string>*,
-        Atribuicao<void>*
+        Atribuicao<char>*, Atribuicao<string>*
     > AtribuicaoFundamental;
 
     template <typename T>
     class Atribuicao : public Nodo<void>{
         public:
             Variavel<T>* variavel;
-            Nodo<T>* valor;
+            NodoFundamental valor;
 
-            Atribuicao(Variavel<T>* variavel, Nodo<T>* valor) : variavel(variavel), valor(valor){ }
+            Atribuicao(Variavel<T>* variavel, NodoFundamental valor) : variavel(variavel), valor(valor){ }
 
             void print(){
                 variavel->print();
-                cout << ":=";
-                valor->print();
+                cout << " := ";
+                valor.print();
             }
             void executar(Contexto* contexto){
-                variavel->setReferencia(&(valor->executar(contexto)));
+                //variavel->setReferencia(&(valor->executar(contexto)));
             }
 
-            static AtribuicaoFundamental atribuir(VariavelFundamental variavel, NodoFundamental valor){
-                if(variavel.which() == valor.which()){
-                    return apply_visitor(AtribuicaoVisitor (), variavel, valor);
-                }
-            }
+            static AtribuicaoFundamental getAtribuicao(VariavelFundamental variavel, NodoFundamental valor){
+                return apply_visitor(AtribuicaoVisitor (), variavel, valor);
+            };
 
+        protected:
             struct AtribuicaoVisitor : public static_visitor<AtribuicaoFundamental>{
 
-                template <typename U, typename V>
-                AtribuicaoFundamental operator()(U& variavel, V& valor) const {
-                    variavel->print();
-                    cout << " := ";
-                    valor->print();
+                template <typename V, typename W>
+                AtribuicaoFundamental operator()(Variavel<V>*& variavel, Nodo<W>*& valor) const {
 
-                    return atribur(variavel, valor);
-                }
-
-                static AtribuicaoFundamental atribuir(VariavelFundamental variavel, NodoFundamental valor){
-                    map<string, AtribuicaoFundamental(*)(VariavelFundamental, NodoFundamental)> _atribuicao;
-                      _atribuicao["int"] = &(new AtribuicaoVisitor<int>);
-                      _atribuicao["double"] = &(new AtribuicaoVisitor<double>);
-                      _atribuicao["bool"] = &(new AtribuicaoVisitor<bool>);
-                      _atribuicao["char"] = &(new AtribuicaoVisitor<char>);
-                      _atribuicao["string"] = &(new AtribuicaoVisitor<string>);
-                      //CONTINUAR
+                    NodoFundamental nodo;
+                    nodo = valor;
 
                     AtribuicaoFundamental atribuicao;
-                    atribuicao = _atribuicao[variavel.getTipo()](variavel, valor);
+                    atribuicao = new Atribuicao<V>(variavel, nodo);
                     return atribuicao;
                 }
             };

@@ -170,7 +170,7 @@ instrucao
             $$ = &nF;
     }
 
-    | atribuicao NOVA_LINHA {
+    | atribuicao { // NOVA_LINHA - Avaliar!
             NodoFundamental nF;
             nF = apply_visitor(NodoConversorVisitor(), *$1);
             $$ = &nF;
@@ -232,13 +232,13 @@ definicao
 
 atribuicao
     : variavel ATRIBUICAO instrucao {
-        if(*$1.which() == *$3.which()){
-            $$ = & Atribuicao<void>::atribuir(*$1, *$3);
-        }
-        else{
+        if($1->which() != $3->which()){
             cout << "Tipos incompativeis" << endl;
             exit(1);
         }
+        AtribuicaoFundamental aF;
+        aF = Atribuicao<void>::getAtribuicao(*$1, *$3);
+        $$ = &aF;
     }
 
 variavel
