@@ -121,62 +121,68 @@ program
 
 
 bloco
-    : instrucao {
+    : NOVA_LINHA { }
+
+    | instrucao NOVA_LINHA {
             $$ = new Bloco(contexto);
             $$->addInstrucao(*$1);
     }
 
-    | bloco instrucao {
+    | bloco instrucao NOVA_LINHA{
             if($2 != NULL)
                 $1->addInstrucao(*$2);
     }
 
+    | bloco NOVA_LINHA { }
+
 instrucao
-    : NOVA_LINHA { $$ = NULL; }
+    : ABRE_PARENTESES instrucao FECHA_PARENTESES {
+            $$ = $2;
+    }
 
-    | inteiro NOVA_LINHA{
+    | inteiro {
             NodoFundamental nF;
             nF = $1;
             $$ = &nF;
     }
 
-    | racional NOVA_LINHA {
+    | racional {
             NodoFundamental nF;
             nF = $1;
             $$ = &nF;
     }
 
-    | booleano NOVA_LINHA {
+    | booleano {
             NodoFundamental nF;
             nF = $1;
             $$ = &nF;
     }
 
-    | caracter NOVA_LINHA {
+    | caracter {
             NodoFundamental nF;
             nF = $1;
             $$ = &nF;
     }
 
-    | sentenca NOVA_LINHA {
+    | sentenca {
             NodoFundamental nF;
             nF = $1;
             $$ = &nF;
     }
 
-    | definicao NOVA_LINHA {
+    | definicao {
             NodoFundamental nF;
             nF = apply_visitor(NodoConversorVisitor(), *$1);
             $$ = &nF;
     }
 
-    | atribuicao { // NOVA_LINHA - Avaliar!
+    | atribuicao {
             NodoFundamental nF;
             nF = apply_visitor(NodoConversorVisitor(), *$1);
             $$ = &nF;
     }
 
-    | variavel NOVA_LINHA {
+    | variavel {
             NodoFundamental nF;
             nF = apply_visitor(NodoConversorVisitor(), *$1);
             $$ = &nF;
