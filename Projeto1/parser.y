@@ -232,22 +232,22 @@ definicao
     : TIPO IDENTIFICADOR {
             TipoFundamental tF;
             tF = Tipo<>::instanciar(*$1);
-            tF.print();
+
             DefinicaoFundamental dF;
-            dF = Definicao<void>::definir(*$1, *$2);
+            dF = Definicao<>::instanciar(tF, *$2);
             $$ = &dF;
     }
 ;
 
 atribuicao
     : variavel ATRIBUICAO instrucao {
-        if($1->which() != $3->which()){
-            cout << "Tipos incompativeis" << endl;
-            exit(1);
-        }
-        AtribuicaoFundamental aF;
-        aF = Atribuicao<void>::getAtribuicao(*$1, *$3);
-        $$ = &aF;
+            if($1->which() != $3->which()){
+                cout << "Tipos incompativeis" << endl;
+                exit(1);
+            }
+            AtribuicaoFundamental aF;
+            //aF = Atribuicao<>::instanciar(*$1, *$3);
+            $$ = &aF;
     }
 
 variavel

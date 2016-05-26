@@ -1504,9 +1504,9 @@ yyreduce:
     {
             TipoFundamental tF;
             tF = Tipo<>::instanciar(*(yyvsp[-1]._string));
-            tF.print();
+
             DefinicaoFundamental dF;
-            dF = Definicao<void>::definir(*(yyvsp[-1]._string), *(yyvsp[0]._string));
+            dF = Definicao<>::instanciar(tF, *(yyvsp[0]._string));
             (yyval.definicao) = &dF;
     }
 #line 1513 "parser.cpp" /* yacc.c:1646  */
@@ -1515,13 +1515,13 @@ yyreduce:
   case 27:
 #line 243 "parser.y" /* yacc.c:1646  */
     {
-        if((yyvsp[-2].variavel)->which() != (yyvsp[0].nodo)->which()){
-            cout << "Tipos incompativeis" << endl;
-            exit(1);
-        }
-        AtribuicaoFundamental aF;
-        aF = Atribuicao<void>::getAtribuicao(*(yyvsp[-2].variavel), *(yyvsp[0].nodo));
-        (yyval.atribuicao) = &aF;
+            if((yyvsp[-2].variavel)->which() != (yyvsp[0].nodo)->which()){
+                cout << "Tipos incompativeis" << endl;
+                exit(1);
+            }
+            AtribuicaoFundamental aF;
+            //aF = Atribuicao<>::instanciar(*$1, *$3);
+            (yyval.atribuicao) = &aF;
     }
 #line 1527 "parser.cpp" /* yacc.c:1646  */
     break;

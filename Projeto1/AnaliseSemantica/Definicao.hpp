@@ -19,16 +19,17 @@ namespace AnaliseSemantica {
       Definicao<char>*, Definicao<string>*
   > DefinicaoFundamental;
 
-  template <typename T>
+  template <typename T = void>
   class Definicao : public Nodo<void>{
       public:
-          string tipo;
+          Tipo<T>* tipo;
           string identificador;
 
-          Definicao(string tipo, string identificador) : tipo(tipo), identificador(identificador){ }
+          Definicao(Tipo<T>* tipo, string identificador) : tipo(tipo), identificador(identificador){ }
 
           void print(){
-              cout << tipo << ": " << identificador;
+              tipo->print();
+              cout << " " << identificador;
           }
           void executar(Contexto* contexto){
               VariavelFundamental variavel;
@@ -37,24 +38,23 @@ namespace AnaliseSemantica {
               contexto->_variavel[identificador] = variavel;
           }
 
-          static DefinicaoFundamental definir(string tipo, string identificador){
-              map<string, DefinicaoFundamental(*)(string, string)> _definicao;
-                _definicao["int"] = &getDefinicao<int>;
-                _definicao["double"] = &getDefinicao<double>;
-                _definicao["bool"] = &getDefinicao<bool>;
-                _definicao["char"] = &getDefinicao<char>;
-                _definicao["string"] = &getDefinicao<string>;
-
-              return _definicao[tipo](tipo, identificador);
+          static DefinicaoFundamental instanciar(TipoFundamental tipo, string identificador){
+              DefinicaoVisitor visitor;
+              visitor.identificador = identificador;
+              return apply_visitor(visitor, tipo);
           }
 
       protected:
-          template<typename U>
-          static DefinicaoFundamental getDefinicao(string tipo, string identificador){
-              DefinicaoFundamental definicao;
-              definicao = new Definicao<U>(tipo, identificador);
+        struct DefinicaoVisitor : public static_visitor<DefinicaoFundamental>{
+            string identificador;
 
-              return definicao;
-          };
+            template <typename U>
+            DefinicaoFundamental operator()(Tipo<U>*& tipo) const {
+
+                DefinicaoFundamental definicao;
+                definicao = new Definicao<U>(tipo, identificador);
+                return definicao;
+            }
+        };
   };
 }
