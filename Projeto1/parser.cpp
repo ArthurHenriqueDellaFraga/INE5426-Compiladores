@@ -500,7 +500,7 @@ static const yytype_uint8 yyrline[] =
 {
        0,   120,   120,   124,   126,   131,   136,   139,   143,   149,
      155,   161,   167,   173,   179,   185,   192,   194,   199,   205,
-     207,   212,   217,   223,   226,   229,   232,   240,   251
+     207,   212,   217,   223,   226,   229,   232,   243,   254
 };
 #endif
 
@@ -1502,15 +1502,18 @@ yyreduce:
   case 26:
 #line 232 "parser.y" /* yacc.c:1646  */
     {
+            TipoFundamental tF;
+            tF = Tipo<>::instanciar(*(yyvsp[-1]._string));
+            tF.print();
             DefinicaoFundamental dF;
             dF = Definicao<void>::definir(*(yyvsp[-1]._string), *(yyvsp[0]._string));
             (yyval.definicao) = &dF;
     }
-#line 1510 "parser.cpp" /* yacc.c:1646  */
+#line 1513 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 240 "parser.y" /* yacc.c:1646  */
+#line 243 "parser.y" /* yacc.c:1646  */
     {
         if((yyvsp[-2].variavel)->which() != (yyvsp[0].nodo)->which()){
             cout << "Tipos incompativeis" << endl;
@@ -1520,11 +1523,11 @@ yyreduce:
         aF = Atribuicao<void>::getAtribuicao(*(yyvsp[-2].variavel), *(yyvsp[0].nodo));
         (yyval.atribuicao) = &aF;
     }
-#line 1524 "parser.cpp" /* yacc.c:1646  */
+#line 1527 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 251 "parser.y" /* yacc.c:1646  */
+#line 254 "parser.y" /* yacc.c:1646  */
     {
             if(contexto->_variavel.find(*(yyvsp[0]._string)) != contexto->_variavel.end()){
                 (yyval.variavel) = &(contexto->_variavel[*(yyvsp[0]._string)]);
@@ -1536,11 +1539,11 @@ yyreduce:
                 (yyval.variavel) = &vF;
             }
     }
-#line 1540 "parser.cpp" /* yacc.c:1646  */
+#line 1543 "parser.cpp" /* yacc.c:1646  */
     break;
 
 
-#line 1544 "parser.cpp" /* yacc.c:1646  */
+#line 1547 "parser.cpp" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1768,5 +1771,5 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 288 "parser.y" /* yacc.c:1906  */
+#line 291 "parser.y" /* yacc.c:1906  */
 

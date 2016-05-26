@@ -230,6 +230,9 @@ sentenca
 
 definicao
     : TIPO IDENTIFICADOR {
+            TipoFundamental tF;
+            tF = Tipo<>::instanciar(*$1);
+            tF.print();
             DefinicaoFundamental dF;
             dF = Definicao<void>::definir(*$1, *$2);
             $$ = &dF;

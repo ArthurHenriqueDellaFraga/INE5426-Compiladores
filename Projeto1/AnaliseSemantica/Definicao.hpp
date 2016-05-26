@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Contexto.hpp"
+#include "Tipo.hpp"
 
 #include <iostream>
 

@@ -12,7 +12,7 @@ namespace AnaliseSemantica {
 
     class Contexto {
         protected:
-            map<string, TipoFundamental(*)()> _tipo;
+            map<string, Fundamental(*)()> _tipo;
         public:
             map<string, VariavelFundamental> _variavel;
 
