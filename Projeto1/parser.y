@@ -3,7 +3,6 @@
     #include "AnaliseSemantica/Operacao.hpp"
     #include "AnaliseSemantica/Definicao.hpp"
     #include "AnaliseSemantica/Atribuicao.hpp"
-    #include "AnaliseSemantica/Conversao.hpp"
 
     #include <stdio.h>
     #include <stdlib.h>
@@ -268,9 +267,7 @@ variavel
             }
             else{
                 cout << "Variavel não definida: " << *$1 << endl;
-                VariavelFundamental vF;
-                vF = new Variavel<int>("null");
-                $$ = &vF;
+                exit(1);
             }
     }
 ;
