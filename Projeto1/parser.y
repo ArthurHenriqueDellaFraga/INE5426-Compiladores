@@ -3,6 +3,7 @@
     #include "AnaliseSemantica/Operacao.hpp"
     #include "AnaliseSemantica/Definicao.hpp"
     #include "AnaliseSemantica/Atribuicao.hpp"
+    #include "AnaliseSemantica/Conversao.hpp"
 
     #include <stdio.h>
     #include <stdlib.h>
@@ -96,7 +97,7 @@ odoFundamental
 %type <sentenca> sentenca
 
 %type <definicao> definicao
-%type <atribuicao> atribuicao
+%type <nodo> atribuicao
 
 %type <variavel> variavel
 
@@ -233,6 +234,14 @@ definicao
             TipoFundamental tF;
             tF = Tipo<>::instanciar(*$1);
 
+            // NodoFundamental cF;
+            //     NodoFundamental nF;
+            //       PrimitivoFundamental pF;
+            //       pF = new Inteiro(5);
+            //     nF = apply_visitor(NodoConversorVisitor(), pF);
+            // cF = Conversao<int, int>::instanciar(tF, nF);
+            // cF.print();
+
             DefinicaoFundamental dF;
             dF = Definicao<>::instanciar(tF, *$2);
             $$ = &dF;
@@ -241,12 +250,14 @@ definicao
 
 atribuicao
     : variavel ATRIBUICAO instrucao {
-            if($1->which() != $3->which()){
+            NodoFundamental aF;
+            try{
+                aF = Atribuicao<>::instanciar(*$1, *$3);
+            }
+            catch(string* erro){
                 cout << "Tipos incompativeis" << endl;
                 exit(1);
             }
-            AtribuicaoFundamental aF;
-            //aF = Atribuicao<>::instanciar(*$1, *$3);
             $$ = &aF;
     }
 

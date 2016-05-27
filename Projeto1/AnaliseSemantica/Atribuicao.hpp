@@ -9,7 +9,7 @@ using namespace std;
 
 namespace AnaliseSemantica {
 
-    template <typename T>
+    template <typename T = void, typename W = void>
     class Atribuicao;
 
     typedef Polimorfo<
@@ -18,38 +18,37 @@ namespace AnaliseSemantica {
         Atribuicao<char>*, Atribuicao<string>*
     > AtribuicaoFundamental;
 
-    template <typename T>
+    template <typename T, typename U>
     class Atribuicao : public Nodo<void>{
         public:
             Variavel<T>* variavel;
-            NodoFundamental valor;
+            Nodo<U>* valor;
 
-            Atribuicao(Variavel<T>* variavel, NodoFundamental valor) : variavel(variavel), valor(valor){ }
+            Atribuicao(Variavel<T>* variavel, Nodo<U>* valor) : variavel(variavel), valor(valor){
+                if(!std::is_convertible<T, U>::value){
+                    throw new string("erro");
+                }
+            }
 
             void print(){
                 variavel->print();
                 cout << " := ";
-                valor.print();
+                valor->print();
             }
             void executar(Contexto* contexto){
-                //variavel->setReferencia(&(valor->executar(contexto)));
+                //variavel->setReferencia(new T(valor->executar(contexto)));
             }
 
-            static AtribuicaoFundamental getAtribuicao(VariavelFundamental variavel, NodoFundamental valor){
+            static NodoFundamental instanciar(VariavelFundamental variavel, NodoFundamental valor){
                 return apply_visitor(AtribuicaoVisitor (), variavel, valor);
-            };
+            }
 
         protected:
-            struct AtribuicaoVisitor : public static_visitor<AtribuicaoFundamental>{
-
+            struct AtribuicaoVisitor : public static_visitor<NodoFundamental>{
                 template <typename V, typename W>
-                AtribuicaoFundamental operator()(Variavel<V>*& variavel, Nodo<W>*& valor) const {
-
-                    NodoFundamental nodo;
-                    nodo = valor;
-
-                    AtribuicaoFundamental atribuicao;
-                    atribuicao = new Atribuicao<V>(variavel, nodo);
+                NodoFundamental operator()(Variavel<V>*& variavel, Nodo<W>*& valor) const {
+                    NodoFundamental atribuicao;
+                    atribuicao = new Atribuicao<V, W>(variavel, valor);
                     return atribuicao;
                 }
             };

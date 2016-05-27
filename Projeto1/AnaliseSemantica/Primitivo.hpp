@@ -49,6 +49,6 @@ namespace AnaliseSemantica {
         Booleano*,
         Caracter*, Sentenca*,
         Vazio*
-    > TipoPrimitivo;
+    > PrimitivoFundamental;
 
 }
