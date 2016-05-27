@@ -1,11 +1,3 @@
-int: i
-
-double: d
-
-bool: b
-
-char: c
-
-string: s
-
-void: v
+int: a
+a
+a := 3

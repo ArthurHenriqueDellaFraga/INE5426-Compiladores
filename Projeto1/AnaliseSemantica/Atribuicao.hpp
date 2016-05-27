@@ -25,9 +25,10 @@ namespace AnaliseSemantica {
             Nodo<U>* valor;
 
             Atribuicao(Variavel<T>* variavel, Nodo<U>* valor) : variavel(variavel), valor(valor){
-                if(!std::is_convertible<T, U>::value){
-                    throw new string("erro");
-                }
+                // if(!std::is_convertible<T, U>::value){
+                //     throw new string("erro");
+                // }
+                cout << "Atribuição - ";
             }
 
             void print(){
@@ -36,7 +37,7 @@ namespace AnaliseSemantica {
                 valor->print();
             }
             void executar(Contexto* contexto){
-                //variavel->setReferencia(new T(valor->executar(contexto)));
+              //  variavel->setReferencia(new T(valor->executar(contexto)));
             }
 
             static NodoFundamental instanciar(VariavelFundamental variavel, NodoFundamental valor){
@@ -47,9 +48,7 @@ namespace AnaliseSemantica {
             struct AtribuicaoVisitor : public static_visitor<NodoFundamental>{
                 template <typename V, typename W>
                 NodoFundamental operator()(Variavel<V>*& variavel, Nodo<W>*& valor) const {
-                    NodoFundamental atribuicao;
-                    atribuicao = new Atribuicao<V, W>(variavel, valor);
-                    return atribuicao;
+                    throw new string("Erro");
                 }
             };
     };

@@ -29,7 +29,7 @@ namespace AnaliseSemantica {
               cout << identificador << ":";
           }
           void executar(Contexto* contexto){
-              // return new T()
+              // return new T();
           };
 
           static TipoFundamental instanciar(string identificador){
@@ -50,6 +50,21 @@ namespace AnaliseSemantica {
               tipo = new Tipo<U>(identificador);
               return tipo;
           }
+  };
+
+  template<>
+  class Tipo<int> : public Nodo<int>{
+      public:
+          string identificador = "inteito";
+
+          Tipo(string identificador) {}
+
+          void print(){
+              cout << identificador << ":";
+          }
+          int executar(Contexto* contexto){
+              return *(new int());
+          };
   };
 
 }
