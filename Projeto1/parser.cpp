@@ -99,6 +99,7 @@ extern int yydebug;
     #include "AnaliseSemantica/Operacao.hpp"
     #include "AnaliseSemantica/Definicao.hpp"
     #include "AnaliseSemantica/Atribuicao.hpp"
+    #include "AnaliseSemantica/Conversao.hpp"
 
     #include <stdio.h>
     #include <stdlib.h>
@@ -116,7 +117,7 @@ extern int yydebug;
     extern int yylex();
     extern void yyerror(const char* s, ...);
 
-#line 120 "parser.cpp" /* yacc.c:355  */
+#line 121 "parser.cpp" /* yacc.c:355  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -161,7 +162,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 27 "parser.y" /* yacc.c:355  */
+#line 28 "parser.y" /* yacc.c:355  */
 
     int _int;
     double _double;
@@ -183,7 +184,7 @@ union YYSTYPE
     Nodo<string>* sentenca;
     Nodo<void>* vazio;
 
-#line 187 "parser.cpp" /* yacc.c:355  */
+#line 188 "parser.cpp" /* yacc.c:355  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -198,7 +199,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 202 "parser.cpp" /* yacc.c:358  */
+#line 203 "parser.cpp" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -496,11 +497,11 @@ static const yytype_uint8 yytranslate[] =
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_uint8 yyrline[] =
+static const yytype_uint16 yyrline[] =
 {
-       0,   120,   120,   124,   126,   131,   136,   139,   144,   150,
+       0,   121,   121,   125,   127,   132,   137,   140,   144,   150,
      156,   162,   168,   174,   180,   186,   193,   195,   200,   206,
-     208,   213,   218,   224,   227,   230,   233,   241,   252
+     208,   213,   218,   224,   227,   230,   233,   252,   265
 };
 #endif
 
@@ -1301,45 +1302,44 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 120 "parser.y" /* yacc.c:1646  */
+#line 121 "parser.y" /* yacc.c:1646  */
     { raizDoPrograma = (yyvsp[0].bloco); }
-#line 1307 "parser.cpp" /* yacc.c:1646  */
+#line 1308 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 124 "parser.y" /* yacc.c:1646  */
+#line 125 "parser.y" /* yacc.c:1646  */
     { }
-#line 1313 "parser.cpp" /* yacc.c:1646  */
+#line 1314 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 126 "parser.y" /* yacc.c:1646  */
+#line 127 "parser.y" /* yacc.c:1646  */
     {
             (yyval.bloco) = new Bloco(contexto);
             (yyval.bloco)->addInstrucao(*(yyvsp[-1].nodo));
     }
-#line 1322 "parser.cpp" /* yacc.c:1646  */
+#line 1323 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 131 "parser.y" /* yacc.c:1646  */
+#line 132 "parser.y" /* yacc.c:1646  */
     {
             if((yyvsp[-1].nodo) != NULL)
                 (yyvsp[-2].bloco)->addInstrucao(*(yyvsp[-1].nodo));
     }
-#line 1331 "parser.cpp" /* yacc.c:1646  */
+#line 1332 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 136 "parser.y" /* yacc.c:1646  */
+#line 137 "parser.y" /* yacc.c:1646  */
     { }
-#line 1337 "parser.cpp" /* yacc.c:1646  */
+#line 1338 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 139 "parser.y" /* yacc.c:1646  */
+#line 140 "parser.y" /* yacc.c:1646  */
     {
-            cout << "!!!" << endl;
             (yyval.nodo) = (yyvsp[-1].nodo);
     }
 #line 1346 "parser.cpp" /* yacc.c:1646  */
@@ -1409,7 +1409,7 @@ yyreduce:
 #line 180 "parser.y" /* yacc.c:1646  */
     {
             NodoFundamental nF;
-            nF = apply_visitor(NodoConversorVisitor(), *(yyvsp[0].atribuicao));
+            nF = apply_visitor(NodoConversorVisitor(), *(yyvsp[0].nodo));
             (yyval.nodo) = &nF;
     }
 #line 1416 "parser.cpp" /* yacc.c:1646  */
@@ -1503,29 +1503,42 @@ yyreduce:
   case 26:
 #line 233 "parser.y" /* yacc.c:1646  */
     {
+            TipoFundamental tF;
+            tF = Tipo<>::instanciar(*(yyvsp[-1]._string));
+
+            // NodoFundamental cF;
+            //     NodoFundamental nF;
+            //       PrimitivoFundamental pF;
+            //       pF = new Inteiro(5);
+            //     nF = apply_visitor(NodoConversorVisitor(), pF);
+            // cF = Conversao<int, int>::instanciar(tF, nF);
+            // cF.print();
+
             DefinicaoFundamental dF;
-            dF = Definicao<void>::definir(*(yyvsp[-1]._string), *(yyvsp[0]._string));
+            dF = Definicao<>::instanciar(tF, *(yyvsp[0]._string));
             (yyval.definicao) = &dF;
     }
-#line 1511 "parser.cpp" /* yacc.c:1646  */
+#line 1522 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 241 "parser.y" /* yacc.c:1646  */
+#line 252 "parser.y" /* yacc.c:1646  */
     {
-        if((yyvsp[-2].variavel)->which() != (yyvsp[0].nodo)->which()){
-            cout << "Tipos incompativeis" << endl;
-            exit(1);
-        }
-        AtribuicaoFundamental aF;
-        aF = Atribuicao<void>::getAtribuicao(*(yyvsp[-2].variavel), *(yyvsp[0].nodo));
-        (yyval.atribuicao) = &aF;
+            NodoFundamental aF;
+            try{
+                aF = Atribuicao<>::instanciar(*(yyvsp[-2].variavel), *(yyvsp[0].nodo));
+            }
+            catch(string* erro){
+                cout << "Tipos incompativeis" << endl;
+                exit(1);
+            }
+            (yyval.nodo) = &aF;
     }
-#line 1525 "parser.cpp" /* yacc.c:1646  */
+#line 1538 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 252 "parser.y" /* yacc.c:1646  */
+#line 265 "parser.y" /* yacc.c:1646  */
     {
             if(contexto->_variavel.find(*(yyvsp[0]._string)) != contexto->_variavel.end()){
                 (yyval.variavel) = &(contexto->_variavel[*(yyvsp[0]._string)]);
@@ -1537,11 +1550,11 @@ yyreduce:
                 (yyval.variavel) = &vF;
             }
     }
-#line 1541 "parser.cpp" /* yacc.c:1646  */
+#line 1554 "parser.cpp" /* yacc.c:1646  */
     break;
 
 
-#line 1545 "parser.cpp" /* yacc.c:1646  */
+#line 1558 "parser.cpp" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1769,5 +1782,5 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 289 "parser.y" /* yacc.c:1906  */
+#line 302 "parser.y" /* yacc.c:1906  */
 

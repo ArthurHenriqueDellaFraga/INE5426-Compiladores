@@ -75,7 +75,7 @@ namespace AnaliseSemantica {
 
     typedef variant<
         int, double, bool, char, string, void
-    > TipoFundamental;
+    > Fundamental;
 
     typedef Polimorfo<
         Nodo<int>*, Nodo<double>*,
