@@ -193,12 +193,31 @@ inteiro
 
     | inteiro SOMA inteiro {
             $$ = new Soma_int_int($1, $3);
-            if(debug) cout << "inteiro: SOMA" << endl;
+            if(debug) cout << "SOMA INTEIRA" << endl;
+    }
+
+    | inteiro SUBTRACAO inteiro {
+            $$ = new Inteiro();
+            if(debug) cout << "SUBTRACAO INTEIRA" << endl;
     }
 
     | inteiro MULTIPLICACAO inteiro {
             $$ = new Multiplicacao_int_int($1, $3);
-            if(debug) cout << "inteiro: MULTIPLICACAO" << endl;
+            if(debug) cout << "MULTIPLICACAO INTEIRA" << endl;
+    }
+
+    | inteiro DIVISAO inteiro {
+            $$ = new Inteiro();
+            if(debug) cout << "DIVISAO INTEIRA" << endl;
+    }
+
+    | SUBTRACAO inteiro {
+            $$ = new Inteiro();
+            if(debug) cout << "SUBTRACAO UNARIA INTEIRA" << endl;
+    }
+
+    | ABRE_PARENTESES inteiro FECHA_PARENTESES {
+            $$ = $2;
     }
 
 racional
@@ -206,17 +225,71 @@ racional
 
     | racional SOMA inteiro {
             $$ = new Soma_double_int($1, $3);
-            if(debug) cout << "racional: SOMA" << endl;
+            if(debug) cout << "SOMA RACIONAL" << endl;
     }
 
     | inteiro SOMA racional {
             $$ = new Soma_double_int($3, $1);
-            if(debug) cout << "racional: SOMA" << endl;
+            if(debug) cout << "SOMA RACIONAL" << endl;
     }
 
     | racional SOMA racional {
             $$ = new Soma_double_double($1, $3);
-            if(debug) cout << "racional: SOMA" << endl;
+            if(debug) cout << "SOMA RACIONAL" << endl;
+    }
+
+    | racional SUBTRACAO inteiro {
+            $$ = new Racional();
+            if(debug) cout << "SUBTRACAO RACIONAL" << endl;
+    }
+
+    | inteiro SUBTRACAO racional {
+            $$ = new Racional();
+            if(debug) cout << "SUBTRACAO RACIONAL" << endl;
+    }
+
+    | racional SUBTRACAO racional {
+            $$ = new Racional();
+            if(debug) cout << "SUBTRACAO RACIONAL" << endl;
+    }
+
+    | racional MULTIPLICACAO inteiro {
+            $$ = new Racional();
+            if(debug) cout << "MULTIPLICACAO RACIONAL" << endl;
+    }
+
+    | inteiro MULTIPLICACAO racional {
+            $$ = new Racional();
+            if(debug) cout << "MULTIPLICACAO RACIONAL" << endl;
+    }
+
+    | racional MULTIPLICACAO racional {
+            $$ = new Racional();
+            if(debug) cout << "MULTIPLICACAO RACIONAL" << endl;
+    }
+
+    | racional DIVISAO inteiro {
+            $$ = new Racional();
+            if(debug) cout << "DIVISAO RACIONAL" << endl;
+    }
+
+    | inteiro DIVISAO racional {
+            $$ = new Racional();
+            if(debug) cout << "DIVISAO RACIONAL" << endl;
+    }
+
+    | racional DIVISAO racional {
+            $$ = new Racional();
+            if(debug) cout << "DIVISAO RACIONAL" << endl;
+    }
+
+    | SUBTRACAO racional {
+            $$ = new Racional();
+            if(debug) cout << "SUBTRACAO UNARIA RACIONAL" << endl;
+    }
+
+    | ABRE_PARENTESES racional FECHA_PARENTESES {
+            $$ = $2;
     }
 
 booleano
