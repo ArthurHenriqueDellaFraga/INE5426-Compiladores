@@ -44,8 +44,8 @@ namespace AnaliseSemantica {
   template<>
   class Tipo<int> {
       private:
-          string identificadorMasculino = " inteiro ";
-          string identificadorFeminino = " inteira ";
+          string identificadorMasculino = "inteiro";
+          string identificadorFeminino = "inteira";
 
 
       public:
@@ -61,7 +61,7 @@ namespace AnaliseSemantica {
   template<>
   class Tipo<double> {
       private:
-          string identificador = " real ";
+          string identificador = "real";
 
       public:
           string getIdentificadorMasculino(){
@@ -76,8 +76,8 @@ namespace AnaliseSemantica {
   template<>
   class Tipo<bool> {
       private:
-          string identificadorMasculino = " booleano ";
-          string identificadorFeminino = " booleana ";
+          string identificadorMasculino = "booleano";
+          string identificadorFeminino = "booleana";
 
 
       public:
@@ -93,7 +93,7 @@ namespace AnaliseSemantica {
   template<>
   class Tipo<char> {
       private:
-          string identificador = " char ";
+          string identificador = "char";
 
       public:
           string getIdentificadorMasculino(){
@@ -108,7 +108,7 @@ namespace AnaliseSemantica {
   template<>
   class Tipo<string> {
       private:
-          string identificador = " string ";
+          string identificador = "string";
 
       public:
           string getIdentificadorMasculino(){

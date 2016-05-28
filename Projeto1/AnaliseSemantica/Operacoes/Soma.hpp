@@ -9,10 +9,10 @@ using namespace std;
 
 namespace AnaliseSemantica {
 
-	class Soma_inteiro_inteiro : public Operacao<int, int, int> {
+	class Soma_inteiro_inteiro : public OperacaoBinaria<int, int, int> {
         
     public:
-    	Soma_inteiro_inteiro(Nodo<int>* left, Nodo<int>* right) : Operacao<int, int, int>(left, "(soma inteira)", right) { }
+    	Soma_inteiro_inteiro(Nodo<int>* left, Nodo<int>* right) : OperacaoBinaria<int, int, int>(left, "(soma inteira)", right) { }
 
     	int executar(Contexto* contexto){
     		return this->left->executar(contexto) + this->right->executar(contexto);
@@ -20,10 +20,10 @@ namespace AnaliseSemantica {
     };
 
     template <typename L, typename R>
-    class Soma_racional : public Operacao<double, L, R> {
+    class Soma_racional : public OperacaoBinaria<double, L, R> {
 	
     protected:
-    	Soma_racional(Nodo<L>* left, Nodo<R>* right) : Operacao<double, L, R>(left, "(soma real)", right) { }
+    	Soma_racional(Nodo<L>* left, Nodo<R>* right) : OperacaoBinaria<double, L, R>(left, "(soma real)", right) { }
     };
 
     class Soma_racional_racional : public Soma_racional<double, double> {

@@ -57,8 +57,7 @@ namespace AnaliseSemantica {
           }
 
           void print(){
-              // tipo->print();
-              cout << " " << listaDeIdentificadores[0];
+              cout << "Declaracao de variavel " << tipo->getIdentificadorFeminino() << ": " << listaDeIdentificadores[0];
 
               for(int i = 1; i < listaDeIdentificadores.size(); i++){
                   cout << ", " << listaDeIdentificadores[i];

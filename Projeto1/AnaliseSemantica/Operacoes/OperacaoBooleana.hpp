@@ -11,9 +11,9 @@ using namespace std;
 namespace AnaliseSemantica {
 
     template <typename L, typename R>
-    class OperacaoBooleana : public Operacao<bool, L, R> {
+    class OperacaoBinariaBooleana : public OperacaoBinaria<bool, L, R> {
         protected:
-            OperacaoBooleana(Nodo<L>* left, string simbolo, Nodo<R>* right) : Operacao<bool, L, R>(left, simbolo, right) { }
+            OperacaoBinariaBooleana(Nodo<L>* left, string simbolo, Nodo<R>* right) : OperacaoBinaria<bool, L, R>(left, simbolo, right) { }
         public:
             bool executar(Contexto* contexto){
                 // return left->executar(contexto) != right->executar(contexto);
@@ -22,9 +22,9 @@ namespace AnaliseSemantica {
     };
 
     template <typename L = void, typename R = void>
-    class Igual : public OperacaoBooleana<L, R>{
+    class Igual : public OperacaoBinariaBooleana<L, R>{
         public:
-            Igual(Nodo<L>* left, Nodo<R>* right) : OperacaoBooleana<L, R>(left, "=", right){ }
+            Igual(Nodo<L>* left, Nodo<R>* right) : OperacaoBinariaBooleana<L, R>(left, "=", right){ }
 
             static Nodo<bool>* instanciar(NodoFundamental left, NodoFundamental right){
                 return apply_visitor(createVisitor (), left, right);
@@ -40,9 +40,9 @@ namespace AnaliseSemantica {
     };
 
     template <typename L = void, typename R = void>
-    class Diferente : public OperacaoBooleana<L, R>{
+    class Diferente : public OperacaoBinariaBooleana<L, R>{
         public:
-            Diferente(Nodo<L>* left, Nodo<R>* right) : OperacaoBooleana<L, R>(left, "~=", right){ }
+            Diferente(Nodo<L>* left, Nodo<R>* right) : OperacaoBinariaBooleana<L, R>(left, "~=", right){ }
 
             static Nodo<bool>* instanciar(NodoFundamental left, NodoFundamental right){
                 return apply_visitor(createVisitor (), left, right);
@@ -58,9 +58,9 @@ namespace AnaliseSemantica {
     };
 
     template <typename L = void, typename R = void>
-    class Maior : public OperacaoBooleana<L, R>{
+    class Maior : public OperacaoBinariaBooleana<L, R>{
         public:
-            Maior(Nodo<L>* left, Nodo<R>* right) : OperacaoBooleana<L, R>(left, ">", right){ }
+            Maior(Nodo<L>* left, Nodo<R>* right) : OperacaoBinariaBooleana<L, R>(left, ">", right){ }
 
             static Nodo<bool>* instanciar(NodoFundamental left, NodoFundamental right){
                 return apply_visitor(createVisitor (), left, right);
@@ -76,9 +76,9 @@ namespace AnaliseSemantica {
     };
 
     template <typename L = void, typename R = void>
-    class Menor : public OperacaoBooleana<L, R>{
+    class Menor : public OperacaoBinariaBooleana<L, R>{
         public:
-            Menor(Nodo<L>* left, Nodo<R>* right) : OperacaoBooleana<L, R>(left, "<", right){ }
+            Menor(Nodo<L>* left, Nodo<R>* right) : OperacaoBinariaBooleana<L, R>(left, "<", right){ }
 
             static Nodo<bool>* instanciar(NodoFundamental left, NodoFundamental right){
                 return apply_visitor(createVisitor (), left, right);
@@ -94,9 +94,9 @@ namespace AnaliseSemantica {
     };
 
     template <typename L = void, typename R = void>
-    class MaiorIgual : public OperacaoBooleana<L, R>{
+    class MaiorIgual : public OperacaoBinariaBooleana<L, R>{
         public:
-            MaiorIgual(Nodo<L>* left, Nodo<R>* right) : OperacaoBooleana<L, R>(left, ">=", right){ }
+            MaiorIgual(Nodo<L>* left, Nodo<R>* right) : OperacaoBinariaBooleana<L, R>(left, ">=", right){ }
 
             static Nodo<bool>* instanciar(NodoFundamental left, NodoFundamental right){
                 return apply_visitor(createVisitor (), left, right);
@@ -112,9 +112,9 @@ namespace AnaliseSemantica {
     };
 
     template <typename L = void, typename R = void>
-    class MenorIgual : public OperacaoBooleana<L, R>{
+    class MenorIgual : public OperacaoBinariaBooleana<L, R>{
         public:
-            MenorIgual(Nodo<L>* left, Nodo<R>* right) : OperacaoBooleana<L, R>(left, "<=", right){ }
+            MenorIgual(Nodo<L>* left, Nodo<R>* right) : OperacaoBinariaBooleana<L, R>(left, "<=", right){ }
 
             static Nodo<bool>* instanciar(NodoFundamental left, NodoFundamental right){
                 return apply_visitor(createVisitor (), left, right);

@@ -9,10 +9,10 @@ using namespace std;
 
 namespace AnaliseSemantica {
 
-    class Multiplicacao_inteiro_inteiro : public Operacao<int, int, int> {
+    class Multiplicacao_inteiro_inteiro : public OperacaoBinaria<int, int, int> {
         
     public:
-        Multiplicacao_inteiro_inteiro(Nodo<int>* left, Nodo<int>* right) : Operacao<int, int, int>(left, "(multiplicacao inteira)", right) { }
+        Multiplicacao_inteiro_inteiro(Nodo<int>* left, Nodo<int>* right) : OperacaoBinaria<int, int, int>(left, "(multiplicacao inteira)", right) { }
 
         int executar(Contexto* contexto){
             return this->left->executar(contexto) * this->right->executar(contexto);
@@ -20,10 +20,10 @@ namespace AnaliseSemantica {
     };
 
     template <typename L, typename R>
-    class Multiplicacao_racional : public Operacao<double, L, R> {
+    class Multiplicacao_racional : public OperacaoBinaria<double, L, R> {
     
     protected:
-        Multiplicacao_racional(Nodo<L>* left, Nodo<R>* right) : Operacao<double, L, R>(left, "(multiplicacao real)", right) { }
+        Multiplicacao_racional(Nodo<L>* left, Nodo<R>* right) : OperacaoBinaria<double, L, R>(left, "(multiplicacao real)", right) { }
     };
 
     class Multiplicacao_racional_racional : public Multiplicacao_racional<double, double> {
