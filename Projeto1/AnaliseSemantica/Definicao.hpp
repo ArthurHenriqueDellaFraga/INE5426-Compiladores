@@ -28,7 +28,7 @@ namespace AnaliseSemantica {
           Definicao(Tipo<T>* tipo, string identificador) : tipo(tipo), identificador(identificador){ }
 
           void print(){
-              tipo->print();
+              // tipo->print();
               cout << " " << identificador;
           }
           void executar(Contexto* contexto){

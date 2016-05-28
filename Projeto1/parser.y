@@ -285,32 +285,26 @@ booleano
 
     | instrucao IGUAL instrucao {
         $$ = Igual<>::instanciar(*$1, *$3);
-        if(debug) cout << "IGUAL" << endl;
     }
 
     | instrucao DIFERENTE instrucao {
         $$ = Diferente<>::instanciar(*$1, *$3);
-        if(debug) cout << "DIFERENTE" << endl;
     }
 
     | instrucao MAIOR instrucao {
         $$ = Maior<>::instanciar(*$1, *$3);
-        if(debug) cout << "MAIOR" << endl;
     }
 
     | instrucao MENOR instrucao {
         $$ = Menor<>::instanciar(*$1, *$3);
-        if(debug) cout << "MENOR" << endl;
     }
 
     | instrucao MAIOR_IGUAL instrucao {
         $$ = MaiorIgual<>::instanciar(*$1, *$3);
-        if(debug) cout << "MAIOR_IGUAL" << endl;
     }
 
     | instrucao MENOR_IGUAL instrucao {
         $$ = MenorIgual<>::instanciar(*$1, *$3);
-        if(debug) cout << "MENOR_IGUAL" << endl;
     }
 
 caracter

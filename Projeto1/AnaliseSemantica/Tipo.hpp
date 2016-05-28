@@ -19,19 +19,8 @@ namespace AnaliseSemantica {
   > TipoFundamental;
 
   template <typename T = void>
-  class Tipo : public Nodo<void>{
+  class Tipo{
       public:
-          string identificador;
-
-          Tipo() : identificador("void"){}
-
-          void print(){
-              cout << identificador << ":";
-          }
-          void executar(Contexto* contexto){
-              // return new T();
-          };
-
           static TipoFundamental instanciar(string identificador){
               map<string, TipoFundamental(*)()> _tipo;
                 _tipo["int"] = &createTipo<int>;
@@ -53,77 +42,81 @@ namespace AnaliseSemantica {
   };
 
   template<>
-  class Tipo<int> : public Nodo<int>{
+  class Tipo<int> {
+      private:
+          string identificadorMasculino = " inteiro ";
+          string identificadorFeminino = " inteira ";
+
+
       public:
-          string identificador = "inteiro";
-
-          Tipo() {}
-
-          void print(){
-              cout << "valor " << identificador << " ";
+          string getIdentificadorMasculino(){
+              return identificadorMasculino;
           }
-          int executar(Contexto* contexto){
-              return *(new int());
+
+          string getIdentificadorFeminino(){
+              return identificadorFeminino;
           };
   };
 
   template<>
-  class Tipo<double> : public Nodo<double>{
+  class Tipo<double> {
+      private:
+          string identificador = " real ";
+
       public:
-          string identificador = "real";
-
-          Tipo() {}
-
-          void print(){
-              cout << "valor " << identificador << " ";
+          string getIdentificadorMasculino(){
+              return identificador;
           }
-          double executar(Contexto* contexto){
-              return *(new double());
+
+          string getIdentificadorFeminino(){
+              return identificador;
           };
   };
 
   template<>
-  class Tipo<bool> : public Nodo<bool>{
+  class Tipo<bool> {
+      private:
+          string identificadorMasculino = " booleano ";
+          string identificadorFeminino = " booleana ";
+
+
       public:
-          string identificador = "boolean";
-
-          Tipo() {}
-
-          void print(){
-              cout << "valor " << identificador << " ";
+          string getIdentificadorMasculino(){
+              return identificadorMasculino;
           }
-          bool executar(Contexto* contexto){
-              return *(new bool());
+
+          string getIdentificadorFeminino(){
+              return identificadorFeminino;
           };
   };
 
   template<>
-  class Tipo<char> : public Nodo<char>{
+  class Tipo<char> {
+      private:
+          string identificador = " char ";
+
       public:
-          string identificador = "char";
-
-          Tipo() {}
-
-          void print(){
-              cout << identificador << " ";
+          string getIdentificadorMasculino(){
+              return identificador;
           }
-          char executar(Contexto* contexto){
-              return *(new char());
+
+          string getIdentificadorFeminino(){
+              return identificador;
           };
   };
 
   template<>
-  class Tipo<string> : public Nodo<string>{
+  class Tipo<string> {
+      private:
+          string identificador = " string ";
+
       public:
-          string identificador = "string";
-
-          Tipo() {}
-
-          void print(){
-              cout << identificador << " ";
+          string getIdentificadorMasculino(){
+              return identificador;
           }
-          string executar(Contexto* contexto){
-              return *(new string());
+
+          string getIdentificadorFeminino(){
+              return identificador;
           };
   };
 

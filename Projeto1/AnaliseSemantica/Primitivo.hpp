@@ -19,7 +19,8 @@ namespace AnaliseSemantica {
             Primitivo() { }
 
             void print(){
-                this->getTipo().print();
+                cout << "valor";
+                cout << this->getTipo().getIdentificadorMasculino();
                 cout << valor;
 
             };

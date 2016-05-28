@@ -30,9 +30,10 @@ namespace AnaliseSemantica {
             }
 
             void print(){
+                cout << "Atribuicao de valor para ";
                 variavel->print();
-                cout << " := ";
-                valor->print();
+                cout << ": ";
+                valor-> print();
             }
             void executar(Contexto* contexto){
                 variavel->setReferencia(new T(valor->executar(contexto)));
