@@ -1,9 +1,9 @@
 %code requires{
     #include "AnaliseSemantica/Primitivo.hpp"
     #include "AnaliseSemantica/Operacao.hpp"
+    #include "AnaliseSemantica/OperacaoBooleana.hpp"
     #include "AnaliseSemantica/Definicao.hpp"
     #include "AnaliseSemantica/Atribuicao.hpp"
-    #include "AnaliseSemantica/Conversao.hpp"
 
     #include <stdio.h>
     #include <stdlib.h>
@@ -194,12 +194,31 @@ inteiro
 
     | inteiro SOMA inteiro {
             $$ = new Soma_int_int($1, $3);
-            if(debug) cout << "inteiro: SOMA" << endl;
+            if(debug) cout << "SOMA INTEIRA" << endl;
+    }
+
+    | inteiro SUBTRACAO inteiro {
+            $$ = new Inteiro();
+            if(debug) cout << "SUBTRACAO INTEIRA" << endl;
     }
 
     | inteiro MULTIPLICACAO inteiro {
             $$ = new Multiplicacao_int_int($1, $3);
-            if(debug) cout << "inteiro: MULTIPLICACAO" << endl;
+            if(debug) cout << "MULTIPLICACAO INTEIRA" << endl;
+    }
+
+    | inteiro DIVISAO inteiro {
+            $$ = new Inteiro();
+            if(debug) cout << "DIVISAO INTEIRA" << endl;
+    }
+
+    | SUBTRACAO inteiro {
+            $$ = new Inteiro();
+            if(debug) cout << "SUBTRACAO UNARIA INTEIRA" << endl;
+    }
+
+    | ABRE_PARENTESES inteiro FECHA_PARENTESES {
+            $$ = $2;
     }
 
 racional
@@ -207,21 +226,105 @@ racional
 
     | racional SOMA inteiro {
             $$ = new Soma_double_int($1, $3);
-            if(debug) cout << "racional: SOMA" << endl;
+            if(debug) cout << "SOMA RACIONAL" << endl;
     }
 
     | inteiro SOMA racional {
             $$ = new Soma_double_int($3, $1);
-            if(debug) cout << "racional: SOMA" << endl;
+            if(debug) cout << "SOMA RACIONAL" << endl;
     }
 
     | racional SOMA racional {
             $$ = new Soma_double_double($1, $3);
-            if(debug) cout << "racional: SOMA" << endl;
+            if(debug) cout << "SOMA RACIONAL" << endl;
+    }
+
+    | racional SUBTRACAO inteiro {
+            $$ = new Racional();
+            if(debug) cout << "SUBTRACAO RACIONAL" << endl;
+    }
+
+    | inteiro SUBTRACAO racional {
+            $$ = new Racional();
+            if(debug) cout << "SUBTRACAO RACIONAL" << endl;
+    }
+
+    | racional SUBTRACAO racional {
+            $$ = new Racional();
+            if(debug) cout << "SUBTRACAO RACIONAL" << endl;
+    }
+
+    | racional MULTIPLICACAO inteiro {
+            $$ = new Racional();
+            if(debug) cout << "MULTIPLICACAO RACIONAL" << endl;
+    }
+
+    | inteiro MULTIPLICACAO racional {
+            $$ = new Racional();
+            if(debug) cout << "MULTIPLICACAO RACIONAL" << endl;
+    }
+
+    | racional MULTIPLICACAO racional {
+            $$ = new Racional();
+            if(debug) cout << "MULTIPLICACAO RACIONAL" << endl;
+    }
+
+    | racional DIVISAO inteiro {
+            $$ = new Racional();
+            if(debug) cout << "DIVISAO RACIONAL" << endl;
+    }
+
+    | inteiro DIVISAO racional {
+            $$ = new Racional();
+            if(debug) cout << "DIVISAO RACIONAL" << endl;
+    }
+
+    | racional DIVISAO racional {
+            $$ = new Racional();
+            if(debug) cout << "DIVISAO RACIONAL" << endl;
+    }
+
+    | SUBTRACAO racional {
+            $$ = new Racional();
+            if(debug) cout << "SUBTRACAO UNARIA RACIONAL" << endl;
+    }
+
+    | ABRE_PARENTESES racional FECHA_PARENTESES {
+            $$ = $2;
     }
 
 booleano
     : BOOLEANO { $$ = new Booleano($1); }
+
+    | instrucao IGUAL instrucao {
+        $$ = Igual<>::instanciar(*$1, *$3);
+        if(debug) cout << "IGUAL" << endl;
+    }
+
+    | instrucao DIFERENTE instrucao {
+        $$ = Diferente<>::instanciar(*$1, *$3);
+        if(debug) cout << "DIFERENTE" << endl;
+    }
+
+    | instrucao MAIOR instrucao {
+        $$ = Maior<>::instanciar(*$1, *$3);
+        if(debug) cout << "MAIOR" << endl;
+    }
+
+    | instrucao MENOR instrucao {
+        $$ = Menor<>::instanciar(*$1, *$3);
+        if(debug) cout << "MENOR" << endl;
+    }
+
+    | instrucao MAIOR_IGUAL instrucao {
+        $$ = MaiorIgual<>::instanciar(*$1, *$3);
+        if(debug) cout << "MAIOR_IGUAL" << endl;
+    }
+
+    | instrucao MENOR_IGUAL instrucao {
+        $$ = MenorIgual<>::instanciar(*$1, *$3);
+        if(debug) cout << "MENOR_IGUAL" << endl;
+    }
 
 caracter
     : CARACTER { $$ = new Caracter($1); }
@@ -246,7 +349,6 @@ definicao
             dF = Definicao<>::instanciar(tF, *$2);
             $$ = &dF;
     }
-;
 
 atribuicao
     : variavel ATRIBUICAO instrucao {
@@ -268,35 +370,9 @@ variavel
             }
             else{
                 cout << "Variavel não definida: " << *$1 << endl;
-                VariavelFundamental vF;
-                vF = new Variavel<int>("null");
-                $$ = &vF;
+                exit(1);
             }
     }
 ;
-/*
-definicao_multipla
-    : definicao VIRGULA STRING {
-            $$ = new Identificador(*$3);
-            tabelaDeVariaveis[*$3] = VARIAVEL_INDEFINIDA;
-            cout << "DEFINICAO" << endl;
-    }
-;
 
-atribuicao
-    : STRING ATRIBUICAO inteiro {
-            if(tabelaDeVariaveis[*$1]){
-              tabelaDeVariaveis[*$1] = $3->computeTree();
-              cout << "ATRIBUICAO" << endl;
-            } else{
-              cout << "Variável '" << *$1 << "' não definida." << endl;
-            }
-    }
-
-    | definicao ATRIBUICAO inteiro {
-
-    }
-;
-
-*/
 %%
