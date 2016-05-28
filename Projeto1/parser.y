@@ -296,6 +296,30 @@ booleano
         $$ = MenorIgual<>::instanciar(*$1, *$3);
     }
 
+    | instrucao AND instrucao {
+        try{
+            $$ = And<>::instanciar(*$1, *$3);
+        }
+        catch(Erro* erro){
+            erro->print();
+            exit(1);
+        }
+    }
+
+    | instrucao OR instrucao {
+        try{
+            $$ = Or<>::instanciar(*$1, *$3);
+        }
+        catch(Erro* erro){
+            erro->print();
+            exit(1);
+        }
+    }
+
+    | NEGACAO_BOOLEANA booleano {
+        $$ = new Negacao_booleana($2);
+    }
+
 caracter
     : CARACTER { $$ = new Caracter($1); }
 
