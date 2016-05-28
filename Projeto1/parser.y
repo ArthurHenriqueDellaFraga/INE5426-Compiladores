@@ -4,7 +4,9 @@
     #include "AnaliseSemantica/Atribuicao.hpp"
     #include "AnaliseSemantica/Operacoes/OperacaoBooleana.hpp"
     #include "AnaliseSemantica/Operacoes/Soma.hpp"
+    #include "AnaliseSemantica/Operacoes/Subtracao.hpp"
     #include "AnaliseSemantica/Operacoes/Multiplicacao.hpp"
+    #include "AnaliseSemantica/Operacoes/Divisao.hpp"
 
     #include <stdio.h>
     #include <stdlib.h>
@@ -195,22 +197,18 @@ inteiro
 
     | inteiro SOMA inteiro {
             $$ = new Soma_inteiro_inteiro($1, $3);
-            if(debug) cout << "SOMA INTEIRA" << endl;
     }
 
     | inteiro SUBTRACAO inteiro {
-            $$ = new Inteiro();
-            if(debug) cout << "SUBTRACAO INTEIRA" << endl;
+            $$ = new Subtracao_inteiro_inteiro($1, $3);
     }
 
     | inteiro MULTIPLICACAO inteiro {
             $$ = new Multiplicacao_inteiro_inteiro($1, $3);
-            if(debug) cout << "MULTIPLICACAO INTEIRA" << endl;
     }
 
     | inteiro DIVISAO inteiro {
-            $$ = new Inteiro();
-            if(debug) cout << "DIVISAO INTEIRA" << endl;
+            $$ = new Divisao_inteiro_inteiro($1, $3);
     }
 
     | SUBTRACAO inteiro {
@@ -227,62 +225,50 @@ racional
 
     | racional SOMA inteiro {
             $$ = new Soma_racional_inteiro($1, $3);
-            if(debug) cout << "SOMA RACIONAL" << endl;
     }
 
     | inteiro SOMA racional {
             $$ = new Soma_inteiro_racional($1, $3);
-            if(debug) cout << "SOMA RACIONAL" << endl;
     }
 
     | racional SOMA racional {
             $$ = new Soma_racional_racional($1, $3);
-            if(debug) cout << "SOMA RACIONAL" << endl;
     }
 
     | racional SUBTRACAO inteiro {
-            $$ = new Racional();
-            if(debug) cout << "SUBTRACAO RACIONAL" << endl;
+            $$ = new Subtracao_racional_inteiro($1, $3);
     }
 
     | inteiro SUBTRACAO racional {
-            $$ = new Racional();
-            if(debug) cout << "SUBTRACAO RACIONAL" << endl;
+            $$ = new Subtracao_inteiro_racional($1, $3);
     }
 
     | racional SUBTRACAO racional {
-            $$ = new Racional();
-            if(debug) cout << "SUBTRACAO RACIONAL" << endl;
+            $$ = new Subtracao_racional_racional($1, $3);
     }
 
     | racional MULTIPLICACAO inteiro {
-            $$ = new Racional();
-            if(debug) cout << "MULTIPLICACAO RACIONAL" << endl;
+            $$ = new Multiplicacao_racional_inteiro($1, $3);
     }
 
     | inteiro MULTIPLICACAO racional {
-            $$ = new Racional();
-            if(debug) cout << "MULTIPLICACAO RACIONAL" << endl;
+            $$ = new Multiplicacao_inteiro_racional($1, $3);
     }
 
     | racional MULTIPLICACAO racional {
-            $$ = new Racional();
-            if(debug) cout << "MULTIPLICACAO RACIONAL" << endl;
+            $$ = new Multiplicacao_racional_racional($1, $3);
     }
 
     | racional DIVISAO inteiro {
-            $$ = new Racional();
-            if(debug) cout << "DIVISAO RACIONAL" << endl;
+            $$ = new Divisao_racional_inteiro($1, $3);
     }
 
     | inteiro DIVISAO racional {
-            $$ = new Racional();
-            if(debug) cout << "DIVISAO RACIONAL" << endl;
+            $$ = new Divisao_inteiro_racional($1, $3);
     }
 
     | racional DIVISAO racional {
-            $$ = new Racional();
-            if(debug) cout << "DIVISAO RACIONAL" << endl;
+            $$ = new Divisao_racional_racional($1, $3);
     }
 
     | SUBTRACAO racional {

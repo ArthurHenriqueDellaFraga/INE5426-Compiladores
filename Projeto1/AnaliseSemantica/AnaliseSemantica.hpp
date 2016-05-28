@@ -118,11 +118,8 @@ namespace AnaliseSemantica {
 
             void addInstrucao(NodoFundamental instrucao){
                 listaDeInstrucoes.push_back(instrucao);
-                cout << "Bloco->addInstrucao :: ";
-
                 instrucao.print();
                 cout << endl;
-
                 instrucao.executar(contexto);
             }
 
