@@ -1,18 +1,13 @@
 #pragma once
 
-#include "AnaliseSemantica.hpp"
 #include "Variavel.hpp"
 
-#include <map>
-
-using namespace boost;
 using namespace std;
 
 namespace AnaliseSemantica {
 
     class Contexto {
         protected:
-            map<string, Fundamental(*)()> _tipo;
             map<string, VariavelFundamental> _variavel;
         public:
             Contexto(){ }

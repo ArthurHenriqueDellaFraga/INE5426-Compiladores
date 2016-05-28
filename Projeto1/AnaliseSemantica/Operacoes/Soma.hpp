@@ -1,29 +1,24 @@
 #pragma once
 
 #include "Operacao.hpp"
-#include "../Contexto.hpp"
-
-#include <iostream>
 
 using namespace std;
 
 namespace AnaliseSemantica {
 
-	class Soma_inteiro_inteiro : public OperacaoBinaria<int, int, int> {
-        
-    public:
-    	Soma_inteiro_inteiro(Nodo<int>* left, Nodo<int>* right) : OperacaoBinaria<int, int, int>(left, "(soma inteira)", right) { }
+		class Soma_inteiro_inteiro : public OperacaoBinaria<int, int, int> {
+		    public:
+			    	Soma_inteiro_inteiro(Nodo<int>* left, Nodo<int>* right) : OperacaoBinaria<int, int, int>(left, "(soma inteira)", right) { }
 
-    	int executar(Contexto* contexto){
-    		return this->left->executar(contexto) + this->right->executar(contexto);
-    	}
+			    	int executar(Contexto* contexto){
+			    			return this->left->executar(contexto) + this->right->executar(contexto);
+			    	}
     };
 
     template <typename L, typename R>
     class Soma_racional : public OperacaoBinaria<double, L, R> {
-	
-    protected:
-    	Soma_racional(Nodo<L>* left, Nodo<R>* right) : OperacaoBinaria<double, L, R>(left, "(soma real)", right) { }
+		    protected:
+		    		Soma_racional(Nodo<L>* left, Nodo<R>* right) : OperacaoBinaria<double, L, R>(left, "(soma real)", right) { }
     };
 
     class Soma_racional_racional : public Soma_racional<double, double> {

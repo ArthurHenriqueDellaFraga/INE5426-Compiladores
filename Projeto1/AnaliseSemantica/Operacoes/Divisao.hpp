@@ -1,16 +1,13 @@
 #pragma once
 
 #include "Operacao.hpp"
-#include "../Contexto.hpp"
-
-#include <iostream>
 
 using namespace std;
 
 namespace AnaliseSemantica {
 
     class Divisao_inteiro_inteiro : public OperacaoBinaria<int, int, int> {
-        
+
     public:
         Divisao_inteiro_inteiro(Nodo<int>* left, Nodo<int>* right) : OperacaoBinaria<int, int, int>(left, "(divisao inteira)", right) { }
 
@@ -21,7 +18,7 @@ namespace AnaliseSemantica {
 
     template <typename L, typename R>
     class Divisao_racional : public OperacaoBinaria<double, L, R> {
-    
+
     protected:
         Divisao_racional(Nodo<L>* left, Nodo<R>* right) : OperacaoBinaria<double, L, R>(left, "(divisao real)", right) { }
     };

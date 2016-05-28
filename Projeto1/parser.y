@@ -1,7 +1,9 @@
 %code requires{
+    #include "AnaliseSemantica/Bloco.hpp"
     #include "AnaliseSemantica/Primitivo.hpp"
     #include "AnaliseSemantica/Definicao.hpp"
     #include "AnaliseSemantica/Atribuicao.hpp"
+
     #include "AnaliseSemantica/Operacoes/OperacaoBooleana.hpp"
     #include "AnaliseSemantica/Operacoes/Soma.hpp"
     #include "AnaliseSemantica/Operacoes/Subtracao.hpp"
@@ -177,19 +179,19 @@ instrucao
 
     | definicao {
             NodoFundamental nF;
-            nF = apply_visitor(NodoConversorVisitor(), *$1);
+            nF = Nodo<>::converter(*$1);
             $$ = &nF;
     }
 
     | atribuicao {
             NodoFundamental nF;
-            nF = apply_visitor(NodoConversorVisitor(), *$1);
+            nF = Nodo<>::converter(*$1);
             $$ = &nF;
     }
 
     | variavel {
             NodoFundamental nF;
-            nF = apply_visitor(NodoConversorVisitor(), *$1);
+            nF = Nodo<>::converter(*$1);
             $$ = &nF;
     }
 

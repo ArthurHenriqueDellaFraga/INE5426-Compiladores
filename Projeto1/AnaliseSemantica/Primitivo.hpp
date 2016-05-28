@@ -2,11 +2,6 @@
 
 #include "Contexto.hpp"
 
-#include <iostream>
-
-#include "boost/variant.hpp"
-
-using namespace boost;
 using namespace std;
 
 namespace AnaliseSemantica {
@@ -49,14 +44,14 @@ namespace AnaliseSemantica {
             void print(){
                 cout << "valor " << "booleano" << " ";
                 if(valor){
-                    cout << "TRUE"; 
+                    cout << "TRUE";
                 }else{
                     cout << "FALSE";
                 }
             }
-            
+
             bool executar(Contexto* contexto){
-                return valor;   
+                return valor;
             }
     };
 

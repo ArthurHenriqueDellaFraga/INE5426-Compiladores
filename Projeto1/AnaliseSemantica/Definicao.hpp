@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Contexto.hpp"
-#include "Tipo.hpp"
 
 using namespace boost;
 using namespace std;
@@ -40,7 +39,8 @@ namespace AnaliseSemantica {
   typedef DefinicaoPolimorfo<
       Definicao<int>*, Definicao<double>*,
       Definicao<bool>*,
-      Definicao<char>*, Definicao<string>*
+      Definicao<char>*, Definicao<string>*,
+      Definicao<void>*
   > DefinicaoFundamental;
 
   template <typename T = void>
@@ -85,7 +85,6 @@ namespace AnaliseSemantica {
 
             template <typename U>
             DefinicaoFundamental operator()(Tipo<U>*& tipo) const {
-
                 DefinicaoFundamental definicao;
                 definicao = new Definicao<U>(tipo, identificador);
                 return definicao;

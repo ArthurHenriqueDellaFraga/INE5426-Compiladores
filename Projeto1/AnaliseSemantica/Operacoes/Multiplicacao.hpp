@@ -1,16 +1,13 @@
 #pragma once
 
 #include "Operacao.hpp"
-#include "../Contexto.hpp"
-
-#include <iostream>
 
 using namespace std;
 
 namespace AnaliseSemantica {
 
     class Multiplicacao_inteiro_inteiro : public OperacaoBinaria<int, int, int> {
-        
+
     public:
         Multiplicacao_inteiro_inteiro(Nodo<int>* left, Nodo<int>* right) : OperacaoBinaria<int, int, int>(left, "(multiplicacao inteira)", right) { }
 
@@ -21,7 +18,7 @@ namespace AnaliseSemantica {
 
     template <typename L, typename R>
     class Multiplicacao_racional : public OperacaoBinaria<double, L, R> {
-    
+
     protected:
         Multiplicacao_racional(Nodo<L>* left, Nodo<R>* right) : OperacaoBinaria<double, L, R>(left, "(multiplicacao real)", right) { }
     };

@@ -1,9 +1,6 @@
 #pragma once
 
 #include "Contexto.hpp"
-#include "Tipo.hpp"
-
-#include <iostream>
 
 using namespace boost;
 using namespace std;
@@ -16,7 +13,8 @@ namespace AnaliseSemantica {
     typedef Polimorfo<
         Atribuicao<int>*, Atribuicao<double>*,
         Atribuicao<bool>*,
-        Atribuicao<char>*, Atribuicao<string>*
+        Atribuicao<char>*, Atribuicao<string>*,
+        Atribuicao<void>*
     > AtribuicaoFundamental;
 
     template <typename T, typename U>
@@ -55,6 +53,10 @@ namespace AnaliseSemantica {
                     NodoFundamental nodo;
                     nodo = new Atribuicao<V>(variavel, valor);
                     return nodo;
+                }
+
+                NodoFundamental operator()(Variavel<void>*& variavel, Nodo<void>*& valor) const {
+                    throw new string("erro");
                 }
 
                 NodoFundamental operator()(Variavel<int>*& variavel, Nodo<double>*& valor) const {

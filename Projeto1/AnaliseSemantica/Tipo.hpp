@@ -1,8 +1,8 @@
 #pragma once
 
-#include "AnaliseSemantica.hpp"
+#include "boost/variant.hpp"
 
-#include <iostream>
+#include <map>
 
 using namespace boost;
 using namespace std;
@@ -12,15 +12,28 @@ namespace AnaliseSemantica {
   template <typename T>
   class Tipo;
 
-  typedef Polimorfo<
+  typedef variant<
       Tipo<int>*, Tipo<double>*,
       Tipo<bool>*,
-      Tipo<char>*, Tipo<string>*
+      Tipo<char>*, Tipo<string>*,
+      Tipo<void>*
   > TipoFundamental;
 
   template <typename T = void>
   class Tipo{
+      private:
+          string identificadorMasculino = "desconhecido";
+          string identificadorFeminino = "desconhecida";
+
       public:
+          string getIdentificadorMasculino(){
+              return identificadorMasculino;
+          }
+
+          string getIdentificadorFeminino(){
+              return identificadorFeminino;
+          };
+
           static TipoFundamental instanciar(string identificador){
               map<string, TipoFundamental(*)()> _tipo;
                 _tipo["int"] = &createTipo<int>;
