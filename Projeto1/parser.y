@@ -1,6 +1,7 @@
 %code requires{
     #include "AnaliseSemantica/Primitivo.hpp"
     #include "AnaliseSemantica/Operacao.hpp"
+    #include "AnaliseSemantica/OperacaoBooleana.hpp"
     #include "AnaliseSemantica/Definicao.hpp"
     #include "AnaliseSemantica/Atribuicao.hpp"
 
@@ -295,6 +296,36 @@ racional
 booleano
     : BOOLEANO { $$ = new Booleano($1); }
 
+    | instrucao IGUAL instrucao {
+        $$ = Igual<>::instanciar(*$1, *$3);
+        if(debug) cout << "IGUAL" << endl;
+    }
+
+    | instrucao DIFERENTE instrucao {
+        $$ = Diferente<>::instanciar(*$1, *$3);
+        if(debug) cout << "DIFERENTE" << endl;
+    }
+
+    | instrucao MAIOR instrucao {
+        $$ = Maior<>::instanciar(*$1, *$3);
+        if(debug) cout << "MAIOR" << endl;
+    }
+
+    | instrucao MENOR instrucao {
+        $$ = Menor<>::instanciar(*$1, *$3);
+        if(debug) cout << "MENOR" << endl;
+    }
+
+    | instrucao MAIOR_IGUAL instrucao {
+        $$ = MaiorIgual<>::instanciar(*$1, *$3);
+        if(debug) cout << "MAIOR_IGUAL" << endl;
+    }
+
+    | instrucao MENOR_IGUAL instrucao {
+        $$ = MenorIgual<>::instanciar(*$1, *$3);
+        if(debug) cout << "MENOR_IGUAL" << endl;
+    }
+
 caracter
     : CARACTER { $$ = new Caracter($1); }
 
@@ -318,7 +349,6 @@ definicao
             dF = Definicao<>::instanciar(tF, *$2);
             $$ = &dF;
     }
-;
 
 atribuicao
     : variavel ATRIBUICAO instrucao {
@@ -344,29 +374,5 @@ variavel
             }
     }
 ;
-/*
-definicao_multipla
-    : definicao VIRGULA STRING {
-            $$ = new Identificador(*$3);
-            tabelaDeVariaveis[*$3] = VARIAVEL_INDEFINIDA;
-            cout << "DEFINICAO" << endl;
-    }
-;
 
-atribuicao
-    : STRING ATRIBUICAO inteiro {
-            if(tabelaDeVariaveis[*$1]){
-              tabelaDeVariaveis[*$1] = $3->computeTree();
-              cout << "ATRIBUICAO" << endl;
-            } else{
-              cout << "Variável '" << *$1 << "' não definida." << endl;
-            }
-    }
-
-    | definicao ATRIBUICAO inteiro {
-
-    }
-;
-
-*/
 %%

@@ -39,11 +39,11 @@ namespace AnaliseSemantica {
             }
 
             static NodoFundamental instanciar(VariavelFundamental variavel, NodoFundamental valor){
-                return apply_visitor(AtribuicaoVisitor (), variavel, valor);
+                return apply_visitor(createVisitor (), variavel, valor);
             }
 
         protected:
-            struct AtribuicaoVisitor : public static_visitor<NodoFundamental>{
+            struct createVisitor : public static_visitor<NodoFundamental>{
                 template <typename V, typename W>
                 NodoFundamental operator()(Variavel<V>*& variavel, Nodo<W>*& valor) const {
                     throw new string("erro");

@@ -23,3 +23,6 @@ clean:
 
 test: all
 	./${OUTPUT} < input_example
+
+execute: all
+	./${OUTPUT}

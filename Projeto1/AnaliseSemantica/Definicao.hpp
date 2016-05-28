@@ -39,13 +39,13 @@ namespace AnaliseSemantica {
           }
 
           static DefinicaoFundamental instanciar(TipoFundamental tipo, string identificador){
-              DefinicaoVisitor visitor;
+              createVisitor visitor;
               visitor.identificador = identificador;
               return apply_visitor(visitor, tipo);
           }
 
       protected:
-        struct DefinicaoVisitor : public static_visitor<DefinicaoFundamental>{
+        struct createVisitor : public static_visitor<DefinicaoFundamental>{
             string identificador;
 
             template <typename U>
