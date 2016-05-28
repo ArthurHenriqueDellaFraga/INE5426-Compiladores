@@ -1,16 +1,13 @@
 #pragma once
 
 #include "Operacao.hpp"
-#include "../Contexto.hpp"
-
-#include <iostream>
 
 using namespace std;
 
 namespace AnaliseSemantica {
 
     class Subtracao_inteiro_inteiro : public OperacaoBinaria<int, int, int> {
-        
+
     public:
         Subtracao_inteiro_inteiro(Nodo<int>* left, Nodo<int>* right) : OperacaoBinaria<int, int, int>(left, "(subtracao inteira)", right) { }
 
@@ -21,7 +18,7 @@ namespace AnaliseSemantica {
 
     template <typename L, typename R>
     class Subtracao_racional : public OperacaoBinaria<double, L, R> {
-    
+
     protected:
         Subtracao_racional(Nodo<L>* left, Nodo<R>* right) : OperacaoBinaria<double, L, R>(left, "(subtracao real)", right) { }
     };
@@ -63,7 +60,7 @@ namespace AnaliseSemantica {
             cout << "((menos unario " << this->nodo->getTipo().getIdentificadorMasculino() <<") ";
             this->nodo->print();
             cout << ")";
-            
+
         }
 
         T executar(Contexto* contexto){

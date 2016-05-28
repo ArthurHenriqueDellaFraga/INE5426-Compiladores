@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Operacao.hpp"
-#include "../Contexto.hpp"
 
 #include <iostream>
 
