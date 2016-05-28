@@ -3,6 +3,7 @@
 #include "AnaliseSemantica.hpp"
 #include "Variavel.hpp"
 
+#include <map>
 #include <iostream>
 
 using namespace boost;
