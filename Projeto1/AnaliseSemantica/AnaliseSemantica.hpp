@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <vector>
-#include <map>
 
 #include "boost/variant.hpp"
 #include "boost/variant/apply_visitor.hpp"

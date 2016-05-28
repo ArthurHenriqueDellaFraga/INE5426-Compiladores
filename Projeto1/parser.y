@@ -337,17 +337,13 @@ definicao
             TipoFundamental tF;
             tF = Tipo<>::instanciar(*$1);
 
-            // NodoFundamental cF;
-            //     NodoFundamental nF;
-            //       PrimitivoFundamental pF;
-            //       pF = new Inteiro(5);
-            //     nF = apply_visitor(NodoConversorVisitor(), pF);
-            // cF = Conversao<int, int>::instanciar(tF, nF);
-            // cF.print();
-
             DefinicaoFundamental dF;
             dF = Definicao<>::instanciar(tF, *$2);
             $$ = &dF;
+    }
+
+    | definicao VIRGULA IDENTIFICADOR {
+            $$->add(*$3);
     }
 
 atribuicao
