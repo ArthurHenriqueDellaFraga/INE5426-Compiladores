@@ -1,8 +1,6 @@
 #pragma once
 
-#include <iostream>
-#include <vector>
-#include <map>
+#include "Erro.hpp"
 
 #include "boost/variant.hpp"
 #include "boost/variant/apply_visitor.hpp"
@@ -14,6 +12,8 @@ using namespace std;
 namespace AnaliseSemantica {
 
     class Contexto;
+    template <typename T>
+    class Tipo;
 
     template <typename T>
     class Nodo {
@@ -21,6 +21,9 @@ namespace AnaliseSemantica {
             // virtual ~Nodo();
             virtual void print() = 0;
             virtual T executar(Contexto* contexto) = 0;
+            Tipo<T> getTipo(){
+                return *(new Tipo<T>());
+            }
     };
 
     template <typename... Types>
@@ -113,12 +116,15 @@ namespace AnaliseSemantica {
 
             void addInstrucao(NodoFundamental instrucao){
                 listaDeInstrucoes.push_back(instrucao);
-                cout << "Bloco->addInstrucao :: ";
-
                 instrucao.print();
                 cout << endl;
-
-                instrucao.executar(contexto);
+                try{
+                    instrucao.executar(contexto);
+                }
+                catch(Erro* erro){
+                    erro->print();
+                    exit(1);
+                }
             }
 
             Contexto* getContexto(){

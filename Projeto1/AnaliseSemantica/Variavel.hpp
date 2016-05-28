@@ -18,8 +18,9 @@ namespace AnaliseSemantica {
           Variavel(string identificador) : identificador(identificador), referencia(new T()){ }
 
           void print(){
-              cout << identificador << "->" << (*referencia);
+              cout << "variavel " << this->getTipo().getIdentificadorFeminino() << " "<< identificador;
           }
+          
           T executar(Contexto* contexto){
               return *referencia;
           }

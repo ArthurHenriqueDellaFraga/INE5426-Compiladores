@@ -84,13 +84,13 @@ letra [a-zA-Z]
                               }
 
 
-.                             {yyerror("Caracter desconhecido: %c\n", *yytext);}
+.                             {yyerror("léxico: simbolo desconhecido: %c\n", *yytext);}
 
 %%
 
 void yyerror(const char *s, ...){
     va_list ap;
     va_start(ap, s);
-    fprintf(stderr, "[Linha %d] Erro: ", yylineno);
+    fprintf(stderr, "[Linha %d] Erro ", yylineno);
     vfprintf(stderr, s, ap);
 }

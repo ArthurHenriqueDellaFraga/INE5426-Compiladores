@@ -1,9 +1,13 @@
 %code requires{
     #include "AnaliseSemantica/Primitivo.hpp"
-    #include "AnaliseSemantica/Operacao.hpp"
-    #include "AnaliseSemantica/OperacaoBooleana.hpp"
     #include "AnaliseSemantica/Definicao.hpp"
     #include "AnaliseSemantica/Atribuicao.hpp"
+    #include "AnaliseSemantica/Operacoes/OperacaoBooleana.hpp"
+    #include "AnaliseSemantica/Operacoes/Soma.hpp"
+    #include "AnaliseSemantica/Operacoes/Subtracao.hpp"
+    #include "AnaliseSemantica/Operacoes/Multiplicacao.hpp"
+    #include "AnaliseSemantica/Operacoes/Divisao.hpp"
+    #include "AnaliseSemantica/Operacoes/Parenteses.hpp"
 
     #include <stdio.h>
     #include <stdlib.h>
@@ -193,104 +197,86 @@ inteiro
     : INTEIRO { $$ = new Inteiro($1); }
 
     | inteiro SOMA inteiro {
-            $$ = new Soma_int_int($1, $3);
-            if(debug) cout << "SOMA INTEIRA" << endl;
+            $$ = new Soma_inteiro_inteiro($1, $3);
     }
 
     | inteiro SUBTRACAO inteiro {
-            $$ = new Inteiro();
-            if(debug) cout << "SUBTRACAO INTEIRA" << endl;
+            $$ = new Subtracao_inteiro_inteiro($1, $3);
     }
 
     | inteiro MULTIPLICACAO inteiro {
-            $$ = new Multiplicacao_int_int($1, $3);
-            if(debug) cout << "MULTIPLICACAO INTEIRA" << endl;
+            $$ = new Multiplicacao_inteiro_inteiro($1, $3);
     }
 
     | inteiro DIVISAO inteiro {
-            $$ = new Inteiro();
-            if(debug) cout << "DIVISAO INTEIRA" << endl;
+            $$ = new Divisao_inteiro_inteiro($1, $3);
     }
 
     | SUBTRACAO inteiro {
-            $$ = new Inteiro();
-            if(debug) cout << "SUBTRACAO UNARIA INTEIRA" << endl;
+            $$ = new Subtracao_unaria<int>($2);
     }
 
     | ABRE_PARENTESES inteiro FECHA_PARENTESES {
-            $$ = $2;
+            $$ = new Parenteses<int>($2);
     }
 
 racional
     : RACIONAL { $$ = new Racional($1); }
 
     | racional SOMA inteiro {
-            $$ = new Soma_double_int($1, $3);
-            if(debug) cout << "SOMA RACIONAL" << endl;
+            $$ = new Soma_racional_inteiro($1, $3);
     }
 
     | inteiro SOMA racional {
-            $$ = new Soma_double_int($3, $1);
-            if(debug) cout << "SOMA RACIONAL" << endl;
+            $$ = new Soma_inteiro_racional($1, $3);
     }
 
     | racional SOMA racional {
-            $$ = new Soma_double_double($1, $3);
-            if(debug) cout << "SOMA RACIONAL" << endl;
+            $$ = new Soma_racional_racional($1, $3);
     }
 
     | racional SUBTRACAO inteiro {
-            $$ = new Racional();
-            if(debug) cout << "SUBTRACAO RACIONAL" << endl;
+            $$ = new Subtracao_racional_inteiro($1, $3);
     }
 
     | inteiro SUBTRACAO racional {
-            $$ = new Racional();
-            if(debug) cout << "SUBTRACAO RACIONAL" << endl;
+            $$ = new Subtracao_inteiro_racional($1, $3);
     }
 
     | racional SUBTRACAO racional {
-            $$ = new Racional();
-            if(debug) cout << "SUBTRACAO RACIONAL" << endl;
+            $$ = new Subtracao_racional_racional($1, $3);
     }
 
     | racional MULTIPLICACAO inteiro {
-            $$ = new Racional();
-            if(debug) cout << "MULTIPLICACAO RACIONAL" << endl;
+            $$ = new Multiplicacao_racional_inteiro($1, $3);
     }
 
     | inteiro MULTIPLICACAO racional {
-            $$ = new Racional();
-            if(debug) cout << "MULTIPLICACAO RACIONAL" << endl;
+            $$ = new Multiplicacao_inteiro_racional($1, $3);
     }
 
     | racional MULTIPLICACAO racional {
-            $$ = new Racional();
-            if(debug) cout << "MULTIPLICACAO RACIONAL" << endl;
+            $$ = new Multiplicacao_racional_racional($1, $3);
     }
 
     | racional DIVISAO inteiro {
-            $$ = new Racional();
-            if(debug) cout << "DIVISAO RACIONAL" << endl;
+            $$ = new Divisao_racional_inteiro($1, $3);
     }
 
     | inteiro DIVISAO racional {
-            $$ = new Racional();
-            if(debug) cout << "DIVISAO RACIONAL" << endl;
+            $$ = new Divisao_inteiro_racional($1, $3);
     }
 
     | racional DIVISAO racional {
-            $$ = new Racional();
-            if(debug) cout << "DIVISAO RACIONAL" << endl;
+            $$ = new Divisao_racional_racional($1, $3);
     }
 
     | SUBTRACAO racional {
-            $$ = new Racional();
-            if(debug) cout << "SUBTRACAO UNARIA RACIONAL" << endl;
+            $$ = new Subtracao_unaria<double>($2);
     }
 
     | ABRE_PARENTESES racional FECHA_PARENTESES {
-            $$ = $2;
+            $$ = new Parenteses<double>($2);
     }
 
 booleano
@@ -298,32 +284,26 @@ booleano
 
     | instrucao IGUAL instrucao {
         $$ = Igual<>::instanciar(*$1, *$3);
-        if(debug) cout << "IGUAL" << endl;
     }
 
     | instrucao DIFERENTE instrucao {
         $$ = Diferente<>::instanciar(*$1, *$3);
-        if(debug) cout << "DIFERENTE" << endl;
     }
 
     | instrucao MAIOR instrucao {
         $$ = Maior<>::instanciar(*$1, *$3);
-        if(debug) cout << "MAIOR" << endl;
     }
 
     | instrucao MENOR instrucao {
         $$ = Menor<>::instanciar(*$1, *$3);
-        if(debug) cout << "MENOR" << endl;
     }
 
     | instrucao MAIOR_IGUAL instrucao {
         $$ = MaiorIgual<>::instanciar(*$1, *$3);
-        if(debug) cout << "MAIOR_IGUAL" << endl;
     }
 
     | instrucao MENOR_IGUAL instrucao {
         $$ = MenorIgual<>::instanciar(*$1, *$3);
-        if(debug) cout << "MENOR_IGUAL" << endl;
     }
 
 caracter
@@ -337,17 +317,19 @@ definicao
             TipoFundamental tF;
             tF = Tipo<>::instanciar(*$1);
 
-            // NodoFundamental cF;
-            //     NodoFundamental nF;
-            //       PrimitivoFundamental pF;
-            //       pF = new Inteiro(5);
-            //     nF = apply_visitor(NodoConversorVisitor(), pF);
-            // cF = Conversao<int, int>::instanciar(tF, nF);
-            // cF.print();
+            try{
+                DefinicaoFundamental dF;
+                dF = Definicao<>::instanciar(tF, *$2);
+                $$ = &dF;
+            }
+            catch(Erro* erro){
+                erro->print();
+                exit(1);
+            }
+    }
 
-            DefinicaoFundamental dF;
-            dF = Definicao<>::instanciar(tF, *$2);
-            $$ = &dF;
+    | definicao VIRGULA IDENTIFICADOR {
+            $$->add(*$3);
     }
 
 atribuicao
@@ -365,11 +347,13 @@ atribuicao
 
 variavel
     : IDENTIFICADOR {
-            if(contexto->_variavel.find(*$1) != contexto->_variavel.end()){
-                $$ = &(contexto->_variavel[*$1]);
+            try{
+                VariavelFundamental vF;
+                vF = contexto->getVariavel(*$1);
+                $$ = &vF;
             }
-            else{
-                cout << "Variavel não definida: " << *$1 << endl;
+            catch(Erro* erro){
+                erro->print();
                 exit(1);
             }
     }

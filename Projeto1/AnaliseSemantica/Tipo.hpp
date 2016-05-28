@@ -19,51 +19,104 @@ namespace AnaliseSemantica {
   > TipoFundamental;
 
   template <typename T = void>
-  class Tipo : public Nodo<void>{
+  class Tipo{
       public:
-          string identificador;
-
-          Tipo(string identificador) : identificador(identificador){}
-
-          void print(){
-              cout << identificador << ":";
-          }
-          void executar(Contexto* contexto){
-              // return new T();
-          };
-
           static TipoFundamental instanciar(string identificador){
-              map<string, TipoFundamental(*)(string)> _tipo;
+              map<string, TipoFundamental(*)()> _tipo;
                 _tipo["int"] = &createTipo<int>;
                 _tipo["double"] = &createTipo<double>;
                 _tipo["bool"] = &createTipo<bool>;
                 _tipo["char"] = &createTipo<char>;
                 _tipo["string"] = &createTipo<string>;
 
-                return _tipo[identificador](identificador);
+                return _tipo[identificador]();
           }
 
       protected:
           template <typename U>
-          static TipoFundamental createTipo(string identificador){
+          static TipoFundamental createTipo(){
               TipoFundamental tipo;
-              tipo = new Tipo<U>(identificador);
+              tipo = new Tipo<U>();
               return tipo;
           }
   };
 
   template<>
-  class Tipo<int> : public Nodo<int>{
+  class Tipo<int> {
+      private:
+          string identificadorMasculino = "inteiro";
+          string identificadorFeminino = "inteira";
+
+
       public:
-          string identificador = "inteito";
-
-          Tipo(string identificador) {}
-
-          void print(){
-              cout << identificador << ":";
+          string getIdentificadorMasculino(){
+              return identificadorMasculino;
           }
-          int executar(Contexto* contexto){
-              return *(new int());
+
+          string getIdentificadorFeminino(){
+              return identificadorFeminino;
+          };
+  };
+
+  template<>
+  class Tipo<double> {
+      private:
+          string identificador = "real";
+
+      public:
+          string getIdentificadorMasculino(){
+              return identificador;
+          }
+
+          string getIdentificadorFeminino(){
+              return identificador;
+          };
+  };
+
+  template<>
+  class Tipo<bool> {
+      private:
+          string identificadorMasculino = "booleano";
+          string identificadorFeminino = "booleana";
+
+
+      public:
+          string getIdentificadorMasculino(){
+              return identificadorMasculino;
+          }
+
+          string getIdentificadorFeminino(){
+              return identificadorFeminino;
+          };
+  };
+
+  template<>
+  class Tipo<char> {
+      private:
+          string identificador = "char";
+
+      public:
+          string getIdentificadorMasculino(){
+              return identificador;
+          }
+
+          string getIdentificadorFeminino(){
+              return identificador;
+          };
+  };
+
+  template<>
+  class Tipo<string> {
+      private:
+          string identificador = "string";
+
+      public:
+          string getIdentificadorMasculino(){
+              return identificador;
+          }
+
+          string getIdentificadorFeminino(){
+              return identificador;
           };
   };
 
