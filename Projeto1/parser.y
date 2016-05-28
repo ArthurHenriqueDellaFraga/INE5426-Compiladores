@@ -324,9 +324,15 @@ definicao
             TipoFundamental tF;
             tF = Tipo<>::instanciar(*$1);
 
-            DefinicaoFundamental dF;
-            dF = Definicao<>::instanciar(tF, *$2);
-            $$ = &dF;
+            try{
+                DefinicaoFundamental dF;
+                dF = Definicao<>::instanciar(tF, *$2);
+                $$ = &dF;
+            }
+            catch(Erro* erro){
+                erro->print();
+                exit(1);
+            }
     }
 
     | definicao VIRGULA IDENTIFICADOR {
@@ -348,11 +354,13 @@ atribuicao
 
 variavel
     : IDENTIFICADOR {
-            if(contexto->_variavel.find(*$1) != contexto->_variavel.end()){
-                $$ = &(contexto->_variavel[*$1]);
+            try{
+                VariavelFundamental vF;
+                vF = contexto->getVariavel(*$1);
+                $$ = &vF;
             }
-            else{
-                cout << "Variavel não definida: " << *$1 << endl;
+            catch(Erro* erro){
+                erro->print();
                 exit(1);
             }
     }

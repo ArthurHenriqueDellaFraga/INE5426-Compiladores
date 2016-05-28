@@ -3,8 +3,6 @@
 #include "Contexto.hpp"
 #include "Tipo.hpp"
 
-#include <iostream>
-
 using namespace boost;
 using namespace std;
 
@@ -68,7 +66,7 @@ namespace AnaliseSemantica {
               for(int i = 0; i < listaDeIdentificadores.size(); i++){
                   VariavelFundamental variavel;
                   variavel = new Variavel<T>(listaDeIdentificadores[i]);
-                  contexto->_variavel[listaDeIdentificadores[i]] = variavel;
+                  contexto->put(listaDeIdentificadores[i], variavel);
               }
           }
 
@@ -81,7 +79,6 @@ namespace AnaliseSemantica {
               visitor.identificador = identificador;
               return apply_visitor(visitor, tipo);
           }
-
 
       protected:
         struct createVisitor : public static_visitor<DefinicaoFundamental>{

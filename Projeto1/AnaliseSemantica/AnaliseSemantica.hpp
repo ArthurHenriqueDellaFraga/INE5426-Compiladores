@@ -1,7 +1,6 @@
 #pragma once
 
-#include <iostream>
-#include <vector>
+#include "Erro.hpp"
 
 #include "boost/variant.hpp"
 #include "boost/variant/apply_visitor.hpp"
@@ -119,7 +118,13 @@ namespace AnaliseSemantica {
                 listaDeInstrucoes.push_back(instrucao);
                 instrucao.print();
                 cout << endl;
-                instrucao.executar(contexto);
+                try{
+                    instrucao.executar(contexto);
+                }
+                catch(Erro* erro){
+                    erro->print();
+                    exit(1);
+                }
             }
 
             Contexto* getContexto(){
