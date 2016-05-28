@@ -7,6 +7,7 @@
     #include "AnaliseSemantica/Operacoes/Subtracao.hpp"
     #include "AnaliseSemantica/Operacoes/Multiplicacao.hpp"
     #include "AnaliseSemantica/Operacoes/Divisao.hpp"
+    #include "AnaliseSemantica/Operacoes/Parenteses.hpp"
 
     #include <stdio.h>
     #include <stdlib.h>
@@ -212,12 +213,11 @@ inteiro
     }
 
     | SUBTRACAO inteiro {
-            $$ = new Inteiro();
-            if(debug) cout << "SUBTRACAO UNARIA INTEIRA" << endl;
+            $$ = new Subtracao_unaria<int>($2);
     }
 
     | ABRE_PARENTESES inteiro FECHA_PARENTESES {
-            $$ = $2;
+            $$ = new Parenteses<int>($2);
     }
 
 racional
@@ -272,12 +272,11 @@ racional
     }
 
     | SUBTRACAO racional {
-            $$ = new Racional();
-            if(debug) cout << "SUBTRACAO UNARIA RACIONAL" << endl;
+            $$ = new Subtracao_unaria<double>($2);
     }
 
     | ABRE_PARENTESES racional FECHA_PARENTESES {
-            $$ = $2;
+            $$ = new Parenteses<double>($2);
     }
 
 booleano
@@ -285,32 +284,26 @@ booleano
 
     | instrucao IGUAL instrucao {
         $$ = Igual<>::instanciar(*$1, *$3);
-        if(debug) cout << "IGUAL" << endl;
     }
 
     | instrucao DIFERENTE instrucao {
         $$ = Diferente<>::instanciar(*$1, *$3);
-        if(debug) cout << "DIFERENTE" << endl;
     }
 
     | instrucao MAIOR instrucao {
         $$ = Maior<>::instanciar(*$1, *$3);
-        if(debug) cout << "MAIOR" << endl;
     }
 
     | instrucao MENOR instrucao {
         $$ = Menor<>::instanciar(*$1, *$3);
-        if(debug) cout << "MENOR" << endl;
     }
 
     | instrucao MAIOR_IGUAL instrucao {
         $$ = MaiorIgual<>::instanciar(*$1, *$3);
-        if(debug) cout << "MAIOR_IGUAL" << endl;
     }
 
     | instrucao MENOR_IGUAL instrucao {
         $$ = MenorIgual<>::instanciar(*$1, *$3);
-        if(debug) cout << "MENOR_IGUAL" << endl;
     }
 
 caracter

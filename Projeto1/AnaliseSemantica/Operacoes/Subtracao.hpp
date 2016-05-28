@@ -9,10 +9,10 @@ using namespace std;
 
 namespace AnaliseSemantica {
 
-    class Subtracao_inteiro_inteiro : public Operacao<int, int, int> {
+    class Subtracao_inteiro_inteiro : public OperacaoBinaria<int, int, int> {
         
     public:
-        Subtracao_inteiro_inteiro(Nodo<int>* left, Nodo<int>* right) : Operacao<int, int, int>(left, "(subtracao inteira)", right) { }
+        Subtracao_inteiro_inteiro(Nodo<int>* left, Nodo<int>* right) : OperacaoBinaria<int, int, int>(left, "(subtracao inteira)", right) { }
 
         int executar(Contexto* contexto){
             return this->left->executar(contexto) - this->right->executar(contexto);
@@ -20,10 +20,10 @@ namespace AnaliseSemantica {
     };
 
     template <typename L, typename R>
-    class Subtracao_racional : public Operacao<double, L, R> {
+    class Subtracao_racional : public OperacaoBinaria<double, L, R> {
     
     protected:
-        Subtracao_racional(Nodo<L>* left, Nodo<R>* right) : Operacao<double, L, R>(left, "(subtracao real)", right) { }
+        Subtracao_racional(Nodo<L>* left, Nodo<R>* right) : OperacaoBinaria<double, L, R>(left, "(subtracao real)", right) { }
     };
 
     class Subtracao_racional_racional : public Subtracao_racional<double, double> {
@@ -51,6 +51,23 @@ namespace AnaliseSemantica {
 
         double executar(Contexto* contexto){
             return this->left->executar(contexto) - this->right->executar(contexto);
+        }
+    };
+
+    template<typename T>
+    class Subtracao_unaria : public OperacaoUnaria<T> {
+    public:
+        Subtracao_unaria(Nodo<T>* nodo) : OperacaoUnaria<T>(nodo) { }
+
+        void print(){
+            cout << "((menos unario " << this->nodo->getTipo().getIdentificadorMasculino() <<") ";
+            this->nodo->print();
+            cout << ")";
+            
+        }
+
+        T executar(Contexto* contexto){
+            return this->nodo->executar(contexto);
         }
     };
 }

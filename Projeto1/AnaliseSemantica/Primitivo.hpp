@@ -19,10 +19,9 @@ namespace AnaliseSemantica {
             Primitivo() { }
 
             void print(){
-                this->getTipo().print();
-                cout << valor;
-
+                cout << "valor " << this->getTipo().getIdentificadorMasculino() << " " << valor;
             };
+
             T executar(Contexto* contexto){
                 return valor;
             }
@@ -36,7 +35,29 @@ namespace AnaliseSemantica {
             void print(){
                 cout << '@';
             }
+
             void executar(Contexto* contexto){ }
+    };
+
+
+    template<>
+    class Primitivo<bool> : public Nodo<bool>{
+        public:
+            bool valor;
+            Primitivo(bool valor) : valor(valor) { };
+
+            void print(){
+                cout << "valor " << "booleano" << " ";
+                if(valor){
+                    cout << "TRUE"; 
+                }else{
+                    cout << "FALSE";
+                }
+            }
+            
+            bool executar(Contexto* contexto){
+                return valor;   
+            }
     };
 
     typedef Primitivo<int> Inteiro;
