@@ -19,7 +19,9 @@ namespace AnaliseSemantica {
             Primitivo() { }
 
             void print(){
+                this->getTipo().print();
                 cout << valor;
+
             };
             T executar(Contexto* contexto){
                 return valor;

@@ -14,6 +14,8 @@ using namespace std;
 namespace AnaliseSemantica {
 
     class Contexto;
+    template <typename T>
+    class Tipo;
 
     template <typename T>
     class Nodo {
@@ -21,6 +23,9 @@ namespace AnaliseSemantica {
             // virtual ~Nodo();
             virtual void print() = 0;
             virtual T executar(Contexto* contexto) = 0;
+            Tipo<T> getTipo(){
+                return *(new Tipo<T>());
+            }
     };
 
     template <typename... Types>

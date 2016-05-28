@@ -23,7 +23,7 @@ namespace AnaliseSemantica {
       public:
           string identificador;
 
-          Tipo(string identificador) : identificador(identificador){}
+          Tipo() : identificador("void"){}
 
           void print(){
               cout << identificador << ":";
@@ -33,21 +33,21 @@ namespace AnaliseSemantica {
           };
 
           static TipoFundamental instanciar(string identificador){
-              map<string, TipoFundamental(*)(string)> _tipo;
+              map<string, TipoFundamental(*)()> _tipo;
                 _tipo["int"] = &createTipo<int>;
                 _tipo["double"] = &createTipo<double>;
                 _tipo["bool"] = &createTipo<bool>;
                 _tipo["char"] = &createTipo<char>;
                 _tipo["string"] = &createTipo<string>;
 
-                return _tipo[identificador](identificador);
+                return _tipo[identificador]();
           }
 
       protected:
           template <typename U>
-          static TipoFundamental createTipo(string identificador){
+          static TipoFundamental createTipo(){
               TipoFundamental tipo;
-              tipo = new Tipo<U>(identificador);
+              tipo = new Tipo<U>();
               return tipo;
           }
   };
@@ -55,15 +55,75 @@ namespace AnaliseSemantica {
   template<>
   class Tipo<int> : public Nodo<int>{
       public:
-          string identificador = "inteito";
+          string identificador = "inteiro";
 
-          Tipo(string identificador) {}
+          Tipo() {}
 
           void print(){
-              cout << identificador << ":";
+              cout << "valor " << identificador << " ";
           }
           int executar(Contexto* contexto){
               return *(new int());
+          };
+  };
+
+  template<>
+  class Tipo<double> : public Nodo<double>{
+      public:
+          string identificador = "real";
+
+          Tipo() {}
+
+          void print(){
+              cout << "valor " << identificador << " ";
+          }
+          double executar(Contexto* contexto){
+              return *(new double());
+          };
+  };
+
+  template<>
+  class Tipo<bool> : public Nodo<bool>{
+      public:
+          string identificador = "boolean";
+
+          Tipo() {}
+
+          void print(){
+              cout << "valor " << identificador << " ";
+          }
+          bool executar(Contexto* contexto){
+              return *(new bool());
+          };
+  };
+
+  template<>
+  class Tipo<char> : public Nodo<char>{
+      public:
+          string identificador = "char";
+
+          Tipo() {}
+
+          void print(){
+              cout << identificador << " ";
+          }
+          char executar(Contexto* contexto){
+              return *(new char());
+          };
+  };
+
+  template<>
+  class Tipo<string> : public Nodo<string>{
+      public:
+          string identificador = "string";
+
+          Tipo() {}
+
+          void print(){
+              cout << identificador << " ";
+          }
+          string executar(Contexto* contexto){
+              return *(new string());
           };
   };
 

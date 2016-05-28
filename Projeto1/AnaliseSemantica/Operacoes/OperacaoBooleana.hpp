@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Contexto.hpp"
+#include "Operacao.hpp"
+#include "../Contexto.hpp"
 
 #include <iostream>
 
@@ -9,20 +10,11 @@ using namespace std;
 
 namespace AnaliseSemantica {
 
-    template <typename T, typename L, typename R>
-    class OperacaoBooleana : public Nodo<T> {
+    template <typename L, typename R>
+    class OperacaoBooleana : public Operacao<bool, L, R> {
         protected:
-            Nodo<L>* left;
-            string simbolo;
-            Nodo<R>* right;
-            OperacaoBooleana(Nodo<L>* left, string simbolo, Nodo<R>* right) : left(left), simbolo(simbolo), right(right) { }
+            OperacaoBooleana(Nodo<L>* left, string simbolo, Nodo<R>* right) : Operacao<bool, L, R>(left, simbolo, right) { }
         public:
-            void print(){
-                left->print();
-                cout << " " << simbolo << " ";
-                right->print();
-            }
-
             bool executar(Contexto* contexto){
                 // return left->executar(contexto) != right->executar(contexto);
                 return true;
@@ -30,9 +22,9 @@ namespace AnaliseSemantica {
     };
 
     template <typename L = void, typename R = void>
-    class Igual : public OperacaoBooleana<bool, L, R>{
+    class Igual : public OperacaoBooleana<L, R>{
         public:
-            Igual(Nodo<L>* left, Nodo<R>* right) : OperacaoBooleana<bool, L, R>(left, "=", right){ }
+            Igual(Nodo<L>* left, Nodo<R>* right) : OperacaoBooleana<L, R>(left, "=", right){ }
 
             static Nodo<bool>* instanciar(NodoFundamental left, NodoFundamental right){
                 return apply_visitor(createVisitor (), left, right);
@@ -48,9 +40,9 @@ namespace AnaliseSemantica {
     };
 
     template <typename L = void, typename R = void>
-    class Diferente : public OperacaoBooleana<bool, L, R>{
+    class Diferente : public OperacaoBooleana<L, R>{
         public:
-            Diferente(Nodo<L>* left, Nodo<R>* right) : OperacaoBooleana<bool, L, R>(left, "~=", right){ }
+            Diferente(Nodo<L>* left, Nodo<R>* right) : OperacaoBooleana<L, R>(left, "~=", right){ }
 
             static Nodo<bool>* instanciar(NodoFundamental left, NodoFundamental right){
                 return apply_visitor(createVisitor (), left, right);
@@ -66,9 +58,9 @@ namespace AnaliseSemantica {
     };
 
     template <typename L = void, typename R = void>
-    class Maior : public OperacaoBooleana<bool, L, R>{
+    class Maior : public OperacaoBooleana<L, R>{
         public:
-            Maior(Nodo<L>* left, Nodo<R>* right) : OperacaoBooleana<bool, L, R>(left, ">", right){ }
+            Maior(Nodo<L>* left, Nodo<R>* right) : OperacaoBooleana<L, R>(left, ">", right){ }
 
             static Nodo<bool>* instanciar(NodoFundamental left, NodoFundamental right){
                 return apply_visitor(createVisitor (), left, right);
@@ -84,9 +76,9 @@ namespace AnaliseSemantica {
     };
 
     template <typename L = void, typename R = void>
-    class Menor : public OperacaoBooleana<bool, L, R>{
+    class Menor : public OperacaoBooleana<L, R>{
         public:
-            Menor(Nodo<L>* left, Nodo<R>* right) : OperacaoBooleana<bool, L, R>(left, "<", right){ }
+            Menor(Nodo<L>* left, Nodo<R>* right) : OperacaoBooleana<L, R>(left, "<", right){ }
 
             static Nodo<bool>* instanciar(NodoFundamental left, NodoFundamental right){
                 return apply_visitor(createVisitor (), left, right);
@@ -102,9 +94,9 @@ namespace AnaliseSemantica {
     };
 
     template <typename L = void, typename R = void>
-    class MaiorIgual : public OperacaoBooleana<bool, L, R>{
+    class MaiorIgual : public OperacaoBooleana<L, R>{
         public:
-            MaiorIgual(Nodo<L>* left, Nodo<R>* right) : OperacaoBooleana<bool, L, R>(left, ">=", right){ }
+            MaiorIgual(Nodo<L>* left, Nodo<R>* right) : OperacaoBooleana<L, R>(left, ">=", right){ }
 
             static Nodo<bool>* instanciar(NodoFundamental left, NodoFundamental right){
                 return apply_visitor(createVisitor (), left, right);
@@ -120,9 +112,9 @@ namespace AnaliseSemantica {
     };
 
     template <typename L = void, typename R = void>
-    class MenorIgual : public OperacaoBooleana<bool, L, R>{
+    class MenorIgual : public OperacaoBooleana<L, R>{
         public:
-            MenorIgual(Nodo<L>* left, Nodo<R>* right) : OperacaoBooleana<bool, L, R>(left, "<=", right){ }
+            MenorIgual(Nodo<L>* left, Nodo<R>* right) : OperacaoBooleana<L, R>(left, "<=", right){ }
 
             static Nodo<bool>* instanciar(NodoFundamental left, NodoFundamental right){
                 return apply_visitor(createVisitor (), left, right);
@@ -136,9 +128,4 @@ namespace AnaliseSemantica {
                 }
             };
     };
-
-
-
-
-
 }

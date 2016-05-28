@@ -1,9 +1,10 @@
 %code requires{
     #include "AnaliseSemantica/Primitivo.hpp"
-    #include "AnaliseSemantica/Operacao.hpp"
-    #include "AnaliseSemantica/OperacaoBooleana.hpp"
     #include "AnaliseSemantica/Definicao.hpp"
     #include "AnaliseSemantica/Atribuicao.hpp"
+    #include "AnaliseSemantica/Operacoes/OperacaoBooleana.hpp"
+    #include "AnaliseSemantica/Operacoes/Soma.hpp"
+    #include "AnaliseSemantica/Operacoes/Multiplicacao.hpp"
 
     #include <stdio.h>
     #include <stdlib.h>
@@ -193,7 +194,7 @@ inteiro
     : INTEIRO { $$ = new Inteiro($1); }
 
     | inteiro SOMA inteiro {
-            $$ = new Soma_int_int($1, $3);
+            $$ = new Soma_inteiro_inteiro($1, $3);
             if(debug) cout << "SOMA INTEIRA" << endl;
     }
 
@@ -203,7 +204,7 @@ inteiro
     }
 
     | inteiro MULTIPLICACAO inteiro {
-            $$ = new Multiplicacao_int_int($1, $3);
+            $$ = new Multiplicacao_inteiro_inteiro($1, $3);
             if(debug) cout << "MULTIPLICACAO INTEIRA" << endl;
     }
 
@@ -225,17 +226,17 @@ racional
     : RACIONAL { $$ = new Racional($1); }
 
     | racional SOMA inteiro {
-            $$ = new Soma_double_int($1, $3);
+            $$ = new Soma_racional_inteiro($1, $3);
             if(debug) cout << "SOMA RACIONAL" << endl;
     }
 
     | inteiro SOMA racional {
-            $$ = new Soma_double_int($3, $1);
+            $$ = new Soma_inteiro_racional($1, $3);
             if(debug) cout << "SOMA RACIONAL" << endl;
     }
 
     | racional SOMA racional {
-            $$ = new Soma_double_double($1, $3);
+            $$ = new Soma_racional_racional($1, $3);
             if(debug) cout << "SOMA RACIONAL" << endl;
     }
 
