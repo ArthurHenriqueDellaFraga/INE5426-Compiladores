@@ -195,24 +195,60 @@ instrucao
             $$ = &nF;
     }
 
+    | instrucao SOMA instrucao {
+            NodoFundamental nF;
+
+            try{
+                nF = Soma<>::instanciar(*$1, *$3);
+            }
+            catch(Erro* erro){
+                erro->print();
+                exit(1);
+            }
+            $$ = &nF;
+    }
+
+    | instrucao SUBTRACAO instrucao {
+            NodoFundamental nF;
+
+            try{
+                nF = Subtracao<>::instanciar(*$1, *$3);
+            }
+            catch(Erro* erro){
+                erro->print();
+                exit(1);
+            }
+            $$ = &nF;
+    }
+
+    | instrucao MULTIPLICACAO instrucao {
+            NodoFundamental nF;
+
+            try{
+                nF = Multiplicacao<>::instanciar(*$1, *$3);
+            }
+            catch(Erro* erro){
+                erro->print();
+                exit(1);
+            }
+            $$ = &nF;
+    }
+
+    | instrucao DIVISAO instrucao {
+            NodoFundamental nF;
+
+            try{
+                nF = Divisao<>::instanciar(*$1, *$3);
+            }
+            catch(Erro* erro){
+                erro->print();
+                exit(1);
+            }
+            $$ = &nF;
+    }
+
 inteiro
     : INTEIRO { $$ = new Inteiro($1); }
-
-    | inteiro SOMA inteiro {
-            $$ = new Soma_inteiro_inteiro($1, $3);
-    }
-
-    | inteiro SUBTRACAO inteiro {
-            $$ = new Subtracao_inteiro_inteiro($1, $3);
-    }
-
-    | inteiro MULTIPLICACAO inteiro {
-            $$ = new Multiplicacao_inteiro_inteiro($1, $3);
-    }
-
-    | inteiro DIVISAO inteiro {
-            $$ = new Divisao_inteiro_inteiro($1, $3);
-    }
 
     | SUBTRACAO inteiro {
             $$ = new Subtracao_unaria<int>($2);
@@ -224,54 +260,6 @@ inteiro
 
 racional
     : RACIONAL { $$ = new Racional($1); }
-
-    | racional SOMA inteiro {
-            $$ = new Soma_racional_inteiro($1, $3);
-    }
-
-    | inteiro SOMA racional {
-            $$ = new Soma_inteiro_racional($1, $3);
-    }
-
-    | racional SOMA racional {
-            $$ = new Soma_racional_racional($1, $3);
-    }
-
-    | racional SUBTRACAO inteiro {
-            $$ = new Subtracao_racional_inteiro($1, $3);
-    }
-
-    | inteiro SUBTRACAO racional {
-            $$ = new Subtracao_inteiro_racional($1, $3);
-    }
-
-    | racional SUBTRACAO racional {
-            $$ = new Subtracao_racional_racional($1, $3);
-    }
-
-    | racional MULTIPLICACAO inteiro {
-            $$ = new Multiplicacao_racional_inteiro($1, $3);
-    }
-
-    | inteiro MULTIPLICACAO racional {
-            $$ = new Multiplicacao_inteiro_racional($1, $3);
-    }
-
-    | racional MULTIPLICACAO racional {
-            $$ = new Multiplicacao_racional_racional($1, $3);
-    }
-
-    | racional DIVISAO inteiro {
-            $$ = new Divisao_racional_inteiro($1, $3);
-    }
-
-    | inteiro DIVISAO racional {
-            $$ = new Divisao_inteiro_racional($1, $3);
-    }
-
-    | racional DIVISAO racional {
-            $$ = new Divisao_racional_racional($1, $3);
-    }
 
     | SUBTRACAO racional {
             $$ = new Subtracao_unaria<double>($2);
