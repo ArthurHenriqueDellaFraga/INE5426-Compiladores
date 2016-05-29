@@ -29,8 +29,8 @@ namespace AnaliseSemantica {
             }
 
             template <typename U>
-            static NodoFundamental* converter(U* u){
-                return apply_visitor(ConverterVisitor (), *u);
+            static NodoFundamental* converter(U u){
+                return apply_visitor(ConverterVisitor (), u);
             }
 
             template <typename U>

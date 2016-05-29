@@ -179,15 +179,15 @@ instrucao
     }
 
     | definicao {
-            $$ = Nodo<>::converter($1);
+            $$ = Nodo<>::converter(*$1);
     }
 
     | atribuicao {
-            $$ = Nodo<>::converter($1);
+            $$ = Nodo<>::converter(*$1);
     }
 
     | variavel {
-            $$ = Nodo<>::converter($1);
+            $$ = Nodo<>::converter(*$1);
     }
 
     | instrucao SOMA instrucao {
