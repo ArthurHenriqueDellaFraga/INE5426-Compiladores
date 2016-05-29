@@ -203,9 +203,10 @@ namespace AnaliseSemantica {
             };
     };
 
-    class Negacao_booleana : public OperacaoUnaria<bool> {
+    template<typename T = void>
+    class Negacao_booleana : public OperacaoUnaria<T> {
         public:
-            Negacao_booleana(Nodo<bool>* nodo) : OperacaoUnaria<bool>(nodo) { }
+            Negacao_booleana(Nodo<T>* nodo) : OperacaoUnaria<T>(nodo) { }
 
             void print(){
                 cout << "((negacao " << this->nodo->getTipo().getIdentificadorFeminino() <<") ";
@@ -214,8 +215,26 @@ namespace AnaliseSemantica {
 
             }
 
-            bool executar(Contexto* contexto){
+            T executar(Contexto* contexto){
                 return !this->nodo->executar(contexto);
             }
+
+            static Nodo<bool>* instanciar(NodoFundamental nodo) {
+                return apply_visitor(createVisitor (), nodo);
+            }
+
+        protected:
+            struct createVisitor : public static_visitor<Nodo<bool>*>{
+                string errorMessage = "operacao negacao booleana espera booleano mas recebeu ";
+
+                Nodo<bool>* operator()(Nodo<bool>*& nodo) const {
+                    return new Negacao_booleana<bool>(nodo);
+                }
+
+                template <typename V>
+                Nodo<bool>* operator()(Nodo<V>*& nodo) const {
+                    throw new Erro(errorMessage + nodo->getTipo().getIdentificadorMasculino() + ".");
+                }
+            };
     };
 }
