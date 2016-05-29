@@ -13,6 +13,11 @@ namespace AnaliseSemantica {
   template <typename... Types>
   class DefinicaoPolimorfo : public Polimorfo<Types...>{
       public:
+          template<typename T>
+          DefinicaoPolimorfo(Definicao<T>* definicao){
+              *this = definicao;
+          };
+
           void add(string identificador){
               AddVisitor visitor;
               visitor.identificador = identificador;
@@ -21,7 +26,8 @@ namespace AnaliseSemantica {
 
           template<typename T>
           DefinicaoPolimorfo<Types...>& operator=(const T& t){
-              variant<Types...>::operator=(t);
+              Polimorfo<Types...>::operator=(t);
+              //this->inicializado = true;
               return *this;
           }
 
@@ -73,21 +79,19 @@ namespace AnaliseSemantica {
               listaDeIdentificadores.push_back(identificador);
           }
 
-          static DefinicaoFundamental instanciar(TipoFundamental tipo, string identificador){
+          static DefinicaoFundamental* instanciar(TipoFundamental tipo, string identificador){
               createVisitor visitor;
               visitor.identificador = identificador;
               return apply_visitor(visitor, tipo);
           }
 
       protected:
-        struct createVisitor : public static_visitor<DefinicaoFundamental>{
+        struct createVisitor : public static_visitor<DefinicaoFundamental*>{
             string identificador;
 
             template <typename U>
-            DefinicaoFundamental operator()(Tipo<U>*& tipo) const {
-                DefinicaoFundamental definicao;
-                definicao = new Definicao<U>(tipo, identificador);
-                return definicao;
+            DefinicaoFundamental* operator()(Tipo<U>*& tipo) const {
+                return new DefinicaoFundamental(new Definicao<U>(tipo, identificador));
             }
         };
   };

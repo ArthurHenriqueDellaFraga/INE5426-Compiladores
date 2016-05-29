@@ -28,18 +28,21 @@ namespace AnaliseSemantica {
                 return *(new Tipo<T>());
             }
 
-            template <typename F>
-            static NodoFundamental converter(F f){
-                return apply_visitor(ConverterVisitor (), f);
+            template <typename U>
+            static NodoFundamental* converter(U* u){
+                return apply_visitor(ConverterVisitor (), *u);
+            }
+
+            template <typename U>
+            static NodoFundamental* converter(Nodo<U>* nodo){
+                return new NodoFundamental(nodo);
             }
 
         protected:
-            struct ConverterVisitor : public static_visitor<NodoFundamental>{
+            struct ConverterVisitor : public static_visitor<NodoFundamental*>{
                 template <typename U>
-                NodoFundamental operator()(U& u) const {
-                    NodoFundamental nodo;
-                    nodo = u;
-                    return nodo;
+                NodoFundamental* operator()(U& u) const {
+                    return new NodoFundamental(u);
                 }
             };
     };

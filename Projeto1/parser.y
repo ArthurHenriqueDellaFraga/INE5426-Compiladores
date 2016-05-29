@@ -111,6 +111,12 @@ odoFundamental
  * The latest it is listed, the highest the precedence
  */
 
+%left AND
+%left OR
+%right NEGACAO_BOOLEANA
+
+%left IGUAL DIFERENTE MAIOR MENOR MAIOR_IGUAL MENOR_IGUAL
+
 %left SOMA
 %left SUBTRACAO
 %left MULTIPLICACAO
@@ -142,57 +148,46 @@ bloco
 
     | bloco NOVA_LINHA { }
 
+    | definicao VIRGULA definicao {
+            $1->print();
+            $3->print();
+    }
+
 instrucao
     : ABRE_PARENTESES instrucao FECHA_PARENTESES {
             $$ = $2;
     }
 
     | inteiro {
-            NodoFundamental nF;
-            nF = $1;
-            $$ = &nF;
+            $$ = Nodo<>::converter($1);
     }
 
     | racional {
-            NodoFundamental nF;
-            nF = $1;
-            $$ = &nF;
+            $$ = Nodo<>::converter($1);
     }
 
     | booleano {
-            NodoFundamental nF;
-            nF = $1;
-            $$ = &nF;
+            $$ = Nodo<>::converter($1);
     }
 
     | caracter {
-            NodoFundamental nF;
-            nF = $1;
-            $$ = &nF;
+            $$ = Nodo<>::converter($1);
     }
 
     | sentenca {
-            NodoFundamental nF;
-            nF = $1;
-            $$ = &nF;
+            $$ = Nodo<>::converter($1);
     }
 
     | definicao {
-            NodoFundamental nF;
-            nF = Nodo<>::converter(*$1);
-            $$ = &nF;
+            $$ = Nodo<>::converter($1);
     }
 
     | atribuicao {
-            NodoFundamental nF;
-            nF = Nodo<>::converter(*$1);
-            $$ = &nF;
+            $$ = Nodo<>::converter($1);
     }
 
     | variavel {
-            NodoFundamental nF;
-            nF = Nodo<>::converter(*$1);
-            $$ = &nF;
+            $$ = Nodo<>::converter($1);
     }
 
     | instrucao SOMA instrucao {
@@ -298,7 +293,7 @@ booleano
 
     | instrucao AND instrucao {
         try{
-            $$ = And<>::instanciar(*$1, *$3);
+            $$ = And::instanciar(*$1, *$3);
         }
         catch(Erro* erro){
             erro->print();
@@ -332,9 +327,7 @@ definicao
             tF = Tipo<>::instanciar(*$1);
 
             try{
-                DefinicaoFundamental dF;
-                dF = Definicao<>::instanciar(tF, *$2);
-                $$ = &dF;
+                $$ = Definicao<>::instanciar(tF, *$2);
             }
             catch(Erro* erro){
                 erro->print();
@@ -348,15 +341,13 @@ definicao
 
 atribuicao
     : variavel ATRIBUICAO instrucao {
-            NodoFundamental aF;
             try{
-                aF = Atribuicao<>::instanciar(*$1, *$3);
+                $$ = Atribuicao<>::instanciar(*$1, *$3);
             }
             catch(string* erro){
                 cout << "Tipos incompativeis" << endl;
                 exit(1);
             }
-            $$ = &aF;
     }
 
 variavel

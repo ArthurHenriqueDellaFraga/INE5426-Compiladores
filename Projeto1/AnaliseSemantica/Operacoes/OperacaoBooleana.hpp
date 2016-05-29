@@ -136,10 +136,9 @@ namespace AnaliseSemantica {
             };
     };
 
-    template <typename L = void, typename R = void>
-    class And : public OperacaoBinariaBooleana<L, R>{
+    class And : public OperacaoBinariaBooleana<bool, bool>{
         public:
-            And(Nodo<L>* left, Nodo<R>* right) : OperacaoBinariaBooleana<L, R>(left, "and", right){ }
+            And(Nodo<bool>* left, Nodo<bool>* right) : OperacaoBinariaBooleana<bool, bool>(left, "and", right){ }
 
             static Nodo<bool>* instanciar(NodoFundamental left, NodoFundamental right){
                 return apply_visitor(createVisitor (), left, right);
@@ -150,7 +149,7 @@ namespace AnaliseSemantica {
                 string errorMessage = "operacao and espera booleano mas recebeu ";
 
                 Nodo<bool>* operator()(Nodo<bool>*& left, Nodo<bool>*& right) const {
-                    return new And<bool, bool>(left, right);
+                    return new And(left, right);
                 }
 
                 template <typename V, typename W>
