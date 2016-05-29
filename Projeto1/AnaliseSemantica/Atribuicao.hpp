@@ -37,92 +37,69 @@ namespace AnaliseSemantica {
                 variavel->setReferencia(new T(valor->executar(contexto)));
             }
 
-            static NodoFundamental instanciar(VariavelFundamental variavel, NodoFundamental valor){
+            static NodoFundamental* instanciar(VariavelFundamental variavel, NodoFundamental valor){
                 return apply_visitor(createVisitor (), variavel, valor);
             }
 
         protected:
-            struct createVisitor : public static_visitor<NodoFundamental>{
+            struct createVisitor : public static_visitor<NodoFundamental*>{
                 template <typename V, typename W>
-                NodoFundamental operator()(Variavel<V>*& variavel, Nodo<W>*& valor) const {
+                NodoFundamental* operator()(Variavel<V>*& variavel, Nodo<W>*& valor) const {
                     throw new string("erro");
+
                 }
 
                 template <typename V>
-                NodoFundamental operator()(Variavel<V>*& variavel, Nodo<V>*& valor) const {
-                    NodoFundamental nodo;
-                    nodo = new Atribuicao<V>(variavel, valor);
-                    return nodo;
+                NodoFundamental* operator()(Variavel<V>*& variavel, Nodo<V>*& valor) const {
+                    return new NodoFundamental(new Atribuicao<V>(variavel, valor));
                 }
 
-                NodoFundamental operator()(Variavel<void>*& variavel, Nodo<void>*& valor) const {
+                NodoFundamental* operator()(Variavel<void>*& variavel, Nodo<void>*& valor) const {
                     throw new string("erro");
                 }
 
-                NodoFundamental operator()(Variavel<int>*& variavel, Nodo<double>*& valor) const {
-                    NodoFundamental nodo;
-                    nodo = new Atribuicao<int, double>(variavel, valor);
-                    return nodo;
+                NodoFundamental* operator()(Variavel<int>*& variavel, Nodo<double>*& valor) const {
+                    return new NodoFundamental(new Atribuicao<int, double>(variavel, valor));
                 }
 
-                NodoFundamental operator()(Variavel<int>*& variavel, Nodo<bool>*& valor) const {
-                    NodoFundamental nodo;
-                    nodo = new Atribuicao<int, bool>(variavel, valor);
-                    return nodo;
+                NodoFundamental* operator()(Variavel<int>*& variavel, Nodo<bool>*& valor) const {
+                    return new NodoFundamental(new Atribuicao<int, bool>(variavel, valor));
                 }
 
-                NodoFundamental operator()(Variavel<int>*& variavel, Nodo<char>*& valor) const {
-                    NodoFundamental nodo;
-                    nodo = new Atribuicao<int, char>(variavel, valor);
-                    return nodo;
+                NodoFundamental* operator()(Variavel<int>*& variavel, Nodo<char>*& valor) const {
+                    return new NodoFundamental(new Atribuicao<int, char>(variavel, valor));
                 }
 
-                NodoFundamental operator()(Variavel<double>*& variavel, Nodo<int>*& valor) const {
-                    NodoFundamental nodo;
-                    nodo = new Atribuicao<double, int>(variavel, valor);
-                    return nodo;
+                NodoFundamental* operator()(Variavel<double>*& variavel, Nodo<int>*& valor) const {
+                    return new NodoFundamental(new Atribuicao<double, int>(variavel, valor));
                 }
 
-                NodoFundamental operator()(Variavel<double>*& variavel, Nodo<bool>*& valor) const {
-                    NodoFundamental nodo;
-                    nodo = new Atribuicao<double, bool>(variavel, valor);
-                    return nodo;
+                NodoFundamental* operator()(Variavel<double>*& variavel, Nodo<bool>*& valor) const {
+                    return new NodoFundamental(new Atribuicao<double, bool>(variavel, valor));
                 }
 
-                NodoFundamental operator()(Variavel<double>*& variavel, Nodo<char>*& valor) const {
-                    NodoFundamental nodo;
-                    nodo = new Atribuicao<double, char>(variavel, valor);
-                    return nodo;
+                NodoFundamental* operator()(Variavel<double>*& variavel, Nodo<char>*& valor) const {
+                    return new NodoFundamental(new Atribuicao<double, char>(variavel, valor));
                 }
 
-                NodoFundamental operator()(Variavel<bool>*& variavel, Nodo<int>*& valor) const {
-                    NodoFundamental nodo;
-                    nodo = new Atribuicao<bool, int>(variavel, valor);
-                    return nodo;
+                NodoFundamental* operator()(Variavel<bool>*& variavel, Nodo<int>*& valor) const {
+                    return new NodoFundamental(new Atribuicao<bool, int>(variavel, valor));
                 }
 
-                NodoFundamental operator()(Variavel<bool>*& variavel, Nodo<double>*& valor) const {
-                    NodoFundamental nodo;
-                    nodo = new Atribuicao<bool, double>(variavel, valor);
-                    return nodo;
+                NodoFundamental* operator()(Variavel<bool>*& variavel, Nodo<double>*& valor) const {
+                    return new NodoFundamental(new Atribuicao<bool, double>(variavel, valor));
                 }
 
-                NodoFundamental operator()(Variavel<char>*& variavel, Nodo<int>*& valor) const {
-                    NodoFundamental nodo;
-                    nodo = new Atribuicao<char, int>(variavel, valor);
-                    return nodo;
+                NodoFundamental* operator()(Variavel<char>*& variavel, Nodo<int>*& valor) const {
+                    return new NodoFundamental(new Atribuicao<char, int>(variavel, valor));
                 }
 
-                NodoFundamental operator()(Variavel<char>*& variavel, Nodo<double>*& valor) const {
-                    NodoFundamental nodo;
-                    nodo = new Atribuicao<char, double>(variavel, valor);
-                    return nodo;
+                NodoFundamental* operator()(Variavel<char>*& variavel, Nodo<double>*& valor) const {
+                    return new NodoFundamental(new Atribuicao<char, double>(variavel, valor));
                 }
 
-                NodoFundamental operator()(Variavel<char>*& variavel, Nodo<bool>*& valor) const {
-                    NodoFundamental nodo;
-                    nodo = new Atribuicao<char, bool>(variavel, valor);
-                    return nodo;
+                NodoFundamental* operator()(Variavel<char>*& variavel, Nodo<bool>*& valor) const {
+                    return new NodoFundamental(new Atribuicao<char, bool>(variavel, valor));
                 }
             };
     };

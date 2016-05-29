@@ -111,6 +111,12 @@ odoFundamental
  * The latest it is listed, the highest the precedence
  */
 
+%left AND
+%left OR
+%right NEGACAO_BOOLEANA
+
+%left IGUAL DIFERENTE MAIOR MENOR MAIOR_IGUAL MENOR_IGUAL
+
 %left SOMA
 %left SUBTRACAO
 %left MULTIPLICACAO
@@ -142,77 +148,102 @@ bloco
 
     | bloco NOVA_LINHA { }
 
+    | definicao VIRGULA definicao {
+            $1->print();
+            $3->print();
+    }
+
 instrucao
     : ABRE_PARENTESES instrucao FECHA_PARENTESES {
             $$ = $2;
     }
 
     | inteiro {
-            NodoFundamental nF;
-            nF = $1;
-            $$ = &nF;
+            $$ = Nodo<>::converter($1);
     }
 
     | racional {
-            NodoFundamental nF;
-            nF = $1;
-            $$ = &nF;
+            $$ = Nodo<>::converter($1);
     }
 
     | booleano {
-            NodoFundamental nF;
-            nF = $1;
-            $$ = &nF;
+            $$ = Nodo<>::converter($1);
     }
 
     | caracter {
-            NodoFundamental nF;
-            nF = $1;
-            $$ = &nF;
+            $$ = Nodo<>::converter($1);
     }
 
     | sentenca {
-            NodoFundamental nF;
-            nF = $1;
-            $$ = &nF;
+            $$ = Nodo<>::converter($1);
     }
 
     | definicao {
-            NodoFundamental nF;
-            nF = Nodo<>::converter(*$1);
-            $$ = &nF;
+            $$ = Nodo<>::converter($1);
     }
 
     | atribuicao {
-            NodoFundamental nF;
-            nF = Nodo<>::converter(*$1);
-            $$ = &nF;
+            $$ = Nodo<>::converter($1);
     }
 
     | variavel {
+            $$ = Nodo<>::converter($1);
+    }
+
+    | instrucao SOMA instrucao {
             NodoFundamental nF;
-            nF = Nodo<>::converter(*$1);
+
+            try{
+                nF = Soma<>::instanciar(*$1, *$3);
+            }
+            catch(Erro* erro){
+                erro->print();
+                exit(1);
+            }
+            $$ = &nF;
+    }
+
+    | instrucao SUBTRACAO instrucao {
+            NodoFundamental nF;
+
+            try{
+                nF = Subtracao<>::instanciar(*$1, *$3);
+            }
+            catch(Erro* erro){
+                erro->print();
+                exit(1);
+            }
+            $$ = &nF;
+    }
+
+    | instrucao MULTIPLICACAO instrucao {
+            NodoFundamental nF;
+
+            try{
+                nF = Multiplicacao<>::instanciar(*$1, *$3);
+            }
+            catch(Erro* erro){
+                erro->print();
+                exit(1);
+            }
+            $$ = &nF;
+    }
+
+    | instrucao DIVISAO instrucao {
+            NodoFundamental nF;
+
+            try{
+                nF = Divisao<>::instanciar(*$1, *$3);
+            }
+            catch(Erro* erro){
+                erro->print();
+                exit(1);
+            }
             $$ = &nF;
     }
 
 inteiro
     : INTEIRO { $$ = new Inteiro($1); }
-
-    | inteiro SOMA inteiro {
-            $$ = new Soma_inteiro_inteiro($1, $3);
-    }
-
-    | inteiro SUBTRACAO inteiro {
-            $$ = new Subtracao_inteiro_inteiro($1, $3);
-    }
-
-    | inteiro MULTIPLICACAO inteiro {
-            $$ = new Multiplicacao_inteiro_inteiro($1, $3);
-    }
-
-    | inteiro DIVISAO inteiro {
-            $$ = new Divisao_inteiro_inteiro($1, $3);
-    }
 
     | SUBTRACAO inteiro {
             $$ = new Subtracao_unaria<int>($2);
@@ -224,54 +255,6 @@ inteiro
 
 racional
     : RACIONAL { $$ = new Racional($1); }
-
-    | racional SOMA inteiro {
-            $$ = new Soma_racional_inteiro($1, $3);
-    }
-
-    | inteiro SOMA racional {
-            $$ = new Soma_inteiro_racional($1, $3);
-    }
-
-    | racional SOMA racional {
-            $$ = new Soma_racional_racional($1, $3);
-    }
-
-    | racional SUBTRACAO inteiro {
-            $$ = new Subtracao_racional_inteiro($1, $3);
-    }
-
-    | inteiro SUBTRACAO racional {
-            $$ = new Subtracao_inteiro_racional($1, $3);
-    }
-
-    | racional SUBTRACAO racional {
-            $$ = new Subtracao_racional_racional($1, $3);
-    }
-
-    | racional MULTIPLICACAO inteiro {
-            $$ = new Multiplicacao_racional_inteiro($1, $3);
-    }
-
-    | inteiro MULTIPLICACAO racional {
-            $$ = new Multiplicacao_inteiro_racional($1, $3);
-    }
-
-    | racional MULTIPLICACAO racional {
-            $$ = new Multiplicacao_racional_racional($1, $3);
-    }
-
-    | racional DIVISAO inteiro {
-            $$ = new Divisao_racional_inteiro($1, $3);
-    }
-
-    | inteiro DIVISAO racional {
-            $$ = new Divisao_inteiro_racional($1, $3);
-    }
-
-    | racional DIVISAO racional {
-            $$ = new Divisao_racional_racional($1, $3);
-    }
 
     | SUBTRACAO racional {
             $$ = new Subtracao_unaria<double>($2);
@@ -308,6 +291,30 @@ booleano
         $$ = MenorIgual<>::instanciar(*$1, *$3);
     }
 
+    | instrucao AND instrucao {
+        try{
+            $$ = And::instanciar(*$1, *$3);
+        }
+        catch(Erro* erro){
+            erro->print();
+            exit(1);
+        }
+    }
+
+    | instrucao OR instrucao {
+        try{
+            $$ = Or<>::instanciar(*$1, *$3);
+        }
+        catch(Erro* erro){
+            erro->print();
+            exit(1);
+        }
+    }
+
+    | NEGACAO_BOOLEANA booleano {
+        $$ = new Negacao_booleana($2);
+    }
+
 caracter
     : CARACTER { $$ = new Caracter($1); }
 
@@ -320,9 +327,7 @@ definicao
             tF = Tipo<>::instanciar(*$1);
 
             try{
-                DefinicaoFundamental dF;
-                dF = Definicao<>::instanciar(tF, *$2);
-                $$ = &dF;
+                $$ = Definicao<>::instanciar(tF, *$2);
             }
             catch(Erro* erro){
                 erro->print();
@@ -336,15 +341,13 @@ definicao
 
 atribuicao
     : variavel ATRIBUICAO instrucao {
-            NodoFundamental aF;
             try{
-                aF = Atribuicao<>::instanciar(*$1, *$3);
+                $$ = Atribuicao<>::instanciar(*$1, *$3);
             }
             catch(string* erro){
                 cout << "Tipos incompativeis" << endl;
                 exit(1);
             }
-            $$ = &aF;
     }
 
 variavel

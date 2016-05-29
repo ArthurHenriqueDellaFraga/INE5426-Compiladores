@@ -6,48 +6,75 @@ using namespace std;
 
 namespace AnaliseSemantica {
 
-    class Divisao_inteiro_inteiro : public OperacaoBinaria<int, int, int> {
+    template <typename T = void, typename L = void, typename R = void>
+    class Divisao : public OperacaoBinaria<T, L, R>{
 
-    public:
-        Divisao_inteiro_inteiro(Nodo<int>* left, Nodo<int>* right) : OperacaoBinaria<int, int, int>(left, "(divisao inteira)", right) { }
+        public:
+            Divisao(Nodo<L>* left, Nodo<R>* right) : OperacaoBinaria<T, L, R>(left, "divisao", right){ }
 
-        int executar(Contexto* contexto){
-            return this->left->executar(contexto) / this->right->executar(contexto);
-        }
-    };
+        public:
 
-    template <typename L, typename R>
-    class Divisao_racional : public OperacaoBinaria<double, L, R> {
+            T executar(Contexto* contexto){
+                return *(new T);
+                // return left->executar(contexto) + right->executar(contexto);
+            }
 
-    protected:
-        Divisao_racional(Nodo<L>* left, Nodo<R>* right) : OperacaoBinaria<double, L, R>(left, "(divisao real)", right) { }
-    };
+            static NodoFundamental instanciar(NodoFundamental left, NodoFundamental right){
+                return apply_visitor(createVisitor (), left, right);
+            }
 
-    class Divisao_racional_racional : public Divisao_racional<double, double> {
+        protected:
+        struct createVisitor : public static_visitor<NodoFundamental>{
+            string errorMessage = "operacao divisao espera inteiro ou real mas recebeu ";
 
-    public:
-        Divisao_racional_racional(Nodo<double>* left, Nodo<double>* right) : Divisao_racional<double, double>(left, right) { }
+            NodoFundamental operator()(Nodo<int>*& left, Nodo<int>*& right) const {
+                NodoFundamental nodo;
+                nodo = new Divisao<int, int, int>(left, right);
+                return nodo;
+            }
 
-        double executar(Contexto* contexto){
-            return this->left->executar(contexto) / this->right->executar(contexto);
-        }
-    };
+            NodoFundamental operator()(Nodo<double>*& left, Nodo<double>*& right) const {
+                NodoFundamental nodo;
+                nodo = new Divisao<double, double, double>(left, right);
+                return nodo;
+            }
 
-    class Divisao_racional_inteiro : public Divisao_racional<double, int> {
-    public:
-        Divisao_racional_inteiro(Nodo<double>* left, Nodo<int>* right) : Divisao_racional<double, int>(left, right) { }
+            NodoFundamental operator()(Nodo<double>*& left, Nodo<int>*& right) const {
+                NodoFundamental nodo;
+                nodo = new Divisao<double, double, int>(left, right);
+                return nodo;
+            }
 
-        double executar(Contexto* contexto){
-            return this->left->executar(contexto) / this->right->executar(contexto);
-        }
-    };
+            NodoFundamental operator()(Nodo<int>*& left, Nodo<double>*& right) const {
+                NodoFundamental nodo;
+                nodo = new Divisao<double, int, double>(left, right);
+                return nodo;
+            }
 
-    class Divisao_inteiro_racional : public Divisao_racional<int, double> {
-    public:
-        Divisao_inteiro_racional(Nodo<int>* left, Nodo<double>* right) : Divisao_racional<int, double>(left, right) { }
+            template <typename V, typename W>
+            NodoFundamental operator()(Nodo<V>*& left, Nodo<W>*& right) const {
+                throw new Erro(errorMessage + left->getTipo().getIdentificadorMasculino() + " e " + right->getTipo().getIdentificadorMasculino() + ".");
+            }
 
-        double executar(Contexto* contexto){
-            return this->left->executar(contexto) / this->right->executar(contexto);
-        }
+            template<typename V>
+            NodoFundamental operator()(Nodo<int>*& left, Nodo<V>*& right) const {
+                throw new Erro(errorMessage + right->getTipo().getIdentificadorMasculino() + ".");
+            }
+
+            template<typename V>
+            NodoFundamental operator()(Nodo<V>*& left, Nodo<int>*& right) const {
+                throw new Erro(errorMessage + left->getTipo().getIdentificadorMasculino() + ".");
+            }
+
+            template<typename V>
+            NodoFundamental operator()(Nodo<double>*& left, Nodo<V>*& right) const {
+                throw new Erro(errorMessage + right->getTipo().getIdentificadorMasculino() + ".");
+            }
+
+            template<typename V>
+            NodoFundamental operator()(Nodo<V>*& left, Nodo<double>*& right) const {
+                throw new Erro(errorMessage + left->getTipo().getIdentificadorMasculino() + ".");
+            }
+        };
     };
 }

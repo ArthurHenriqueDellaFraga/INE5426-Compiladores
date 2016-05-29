@@ -6,46 +6,75 @@ using namespace std;
 
 namespace AnaliseSemantica {
 
-		class Soma_inteiro_inteiro : public OperacaoBinaria<int, int, int> {
-		    public:
-			    	Soma_inteiro_inteiro(Nodo<int>* left, Nodo<int>* right) : OperacaoBinaria<int, int, int>(left, "(soma inteira)", right) { }
+    template <typename T = void, typename L = void, typename R = void>
+    class Soma : public OperacaoBinaria<T, L, R>{
 
-			    	int executar(Contexto* contexto){
-			    			return this->left->executar(contexto) + this->right->executar(contexto);
-			    	}
-    };
+        public:
+            Soma(Nodo<L>* left, Nodo<R>* right) : OperacaoBinaria<T, L, R>(left, "soma", right){ }
 
-    template <typename L, typename R>
-    class Soma_racional : public OperacaoBinaria<double, L, R> {
-		    protected:
-		    		Soma_racional(Nodo<L>* left, Nodo<R>* right) : OperacaoBinaria<double, L, R>(left, "(soma real)", right) { }
-    };
+        public:
 
-    class Soma_racional_racional : public Soma_racional<double, double> {
+            T executar(Contexto* contexto){
+                return *(new T);
+                // return left->executar(contexto) + right->executar(contexto);
+            }
 
-    public:
-    	Soma_racional_racional(Nodo<double>* left, Nodo<double>* right) : Soma_racional<double, double>(left, right) { }
+            static NodoFundamental instanciar(NodoFundamental left, NodoFundamental right){
+                return apply_visitor(createVisitor (), left, right);
+            }
 
-		double executar(Contexto* contexto){
-    		return this->left->executar(contexto) + this->right->executar(contexto);
-    	}
-    };
+        protected:
+        struct createVisitor : public static_visitor<NodoFundamental>{
+            string errorMessage = "operacao soma espera inteiro ou real mas recebeu ";
 
-    class Soma_racional_inteiro : public Soma_racional<double, int> {
-    public:
-    	Soma_racional_inteiro(Nodo<double>* left, Nodo<int>* right) : Soma_racional<double, int>(left, right) { }
+            NodoFundamental operator()(Nodo<int>*& left, Nodo<int>*& right) const {
+                NodoFundamental nodo;
+                nodo = new Soma<int, int, int>(left, right);
+                return nodo;
+            }
 
-    	double executar(Contexto* contexto){
-    		return this->left->executar(contexto) + this->right->executar(contexto);
-    	}
-    };
+            NodoFundamental operator()(Nodo<double>*& left, Nodo<double>*& right) const {
+                NodoFundamental nodo;
+                nodo = new Soma<double, double, double>(left, right);
+                return nodo;
+            }
 
-    class Soma_inteiro_racional : public Soma_racional<int, double> {
-    public:
-    	Soma_inteiro_racional(Nodo<int>* left, Nodo<double>* right) : Soma_racional<int, double>(left, right) { }
+            NodoFundamental operator()(Nodo<double>*& left, Nodo<int>*& right) const {
+                NodoFundamental nodo;
+                nodo = new Soma<double, double, int>(left, right);
+                return nodo;
+            }
 
-    	double executar(Contexto* contexto){
-    		return this->left->executar(contexto) + this->right->executar(contexto);
-    	}
+            NodoFundamental operator()(Nodo<int>*& left, Nodo<double>*& right) const {
+                NodoFundamental nodo;
+                nodo = new Soma<double, int, double>(left, right);
+                return nodo;
+            }
+
+            template <typename V, typename W>
+            NodoFundamental operator()(Nodo<V>*& left, Nodo<W>*& right) const {
+                throw new Erro(errorMessage + left->getTipo().getIdentificadorMasculino() + " e " + right->getTipo().getIdentificadorMasculino() + ".");
+            }
+
+            template<typename V>
+            NodoFundamental operator()(Nodo<int>*& left, Nodo<V>*& right) const {
+                throw new Erro(errorMessage + right->getTipo().getIdentificadorMasculino() + ".");
+            }
+
+            template<typename V>
+            NodoFundamental operator()(Nodo<V>*& left, Nodo<int>*& right) const {
+                throw new Erro(errorMessage + left->getTipo().getIdentificadorMasculino() + ".");
+            }
+
+            template<typename V>
+            NodoFundamental operator()(Nodo<double>*& left, Nodo<V>*& right) const {
+                throw new Erro(errorMessage + right->getTipo().getIdentificadorMasculino() + ".");
+            }
+
+            template<typename V>
+            NodoFundamental operator()(Nodo<V>*& left, Nodo<double>*& right) const {
+                throw new Erro(errorMessage + left->getTipo().getIdentificadorMasculino() + ".");
+            }
+        };
     };
 }
