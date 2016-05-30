@@ -11,6 +11,8 @@
     #include "AnaliseSemantica/Operacoes/Divisao.hpp"
     #include "AnaliseSemantica/Operacoes/Parenteses.hpp"
 
+    #include "AnaliseSemantica/Arranjo.hpp"
+
     #include <stdio.h>
     #include <stdlib.h>
 
@@ -58,6 +60,7 @@
 %token NOVA_LINHA
 
 %token ATRIBUICAO
+%token DEFINICAO
 
 %token SOMA
 %token SUBTRACAO
@@ -77,9 +80,10 @@
 
 %token VIRGULA
 %token PONTO
-odoFundamental
+
 %token ABRE_PARENTESES FECHA_PARENTESES
 %token ABRE_CHAVES FECHA_CHAVES
+%token ABRE_COLCHETE FECHA_COLCHETE
 
 %token <_int> INTEIRO
 %token <_double> RACIONAL
@@ -148,11 +152,6 @@ bloco
     }
 
     | bloco NOVA_LINHA { }
-
-    | definicao VIRGULA definicao {
-            $1->print();
-            $3->print();
-    }
 
 instrucao
     : ABRE_PARENTESES instrucao FECHA_PARENTESES {
@@ -347,6 +346,12 @@ definicao
             $$->add(*$3);
     }
 
+    | IDENTIFICADOR ABRE_COLCHETE instrucao FECHA_COLCHETE DEFINICAO IDENTIFICADOR {
+            TipoFundamental tF;
+            tF = Tipo<>::instanciar(*$1);
+            $$ = DefinicaoArranjo<>::instanciarArranjo(tF, *$3, *$6);
+    }       
+
 atribuicao
     : variavel ATRIBUICAO instrucao {
             try{
@@ -357,6 +362,18 @@ atribuicao
                 exit(1);
             }
     }
+
+    // | IDENTIFICADOR ABRE_COLCHETE instrucao FECHA_COLCHETE ATRIBUICAO instrucao {
+    //         try{
+    //             ArranjoFundamental arranjo = contexto->getArranjo(*$1);
+
+    //             $$ = Atribuicao<>::instanciar(*$1, *$3);
+    //         }
+    //         catch(string* erro){
+    //             cout << "Tipos incompativeis" << endl;
+    //             exit(1);
+    //         }
+    // }
 
 variavel
     : IDENTIFICADOR {
@@ -370,6 +387,5 @@ variavel
                 exit(1);
             }
     }
-;
 
 %%
