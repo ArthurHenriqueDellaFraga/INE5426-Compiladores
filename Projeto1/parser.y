@@ -111,17 +111,14 @@ odoFundamental
  * The latest it is listed, the highest the precedence
  */
 
-%left AND
-%left OR
+%left AND OR
 
 %right NEGACAO_BOOLEANA
 
 %left IGUAL DIFERENTE MAIOR MENOR MAIOR_IGUAL MENOR_IGUAL
 
-%left SOMA
-%left SUBTRACAO
-%left MULTIPLICACAO
-%left DIVISAO
+%left SOMA SUBTRACAO
+%left MULTIPLICACAO DIVISAO
 %nonassoc errord
 
 /* Gramatica Sintática */
@@ -155,11 +152,7 @@ bloco
     }
 
 instrucao
-    : ABRE_PARENTESES instrucao FECHA_PARENTESES {
-            $$ = $2;
-    }
-
-    | inteiro {
+    : inteiro {
             $$ = Nodo<>::converter($1);
     }
 
@@ -189,6 +182,10 @@ instrucao
 
     | variavel {
             $$ = Nodo<>::converter(*$1);
+    }
+
+    | ABRE_PARENTESES instrucao FECHA_PARENTESES {
+            $$ = Parenteses<>::instanciar(*$2);
     }
 
     | instrucao SOMA instrucao {
@@ -269,6 +266,10 @@ booleano
     : BOOLEANO {
         $$ = new Booleano($1); }
 
+    | ABRE_PARENTESES booleano FECHA_PARENTESES {
+            $$ = new Parenteses<bool>($2);
+    }
+
     | NEGACAO_BOOLEANA instrucao {
         try{
             $$ = Negacao_booleana<>::instanciar(*$2);
@@ -326,15 +327,23 @@ booleano
 caracter
     : CARACTER { $$ = new Caracter($1); }
 
+    | ABRE_PARENTESES caracter FECHA_PARENTESES {
+            $$ = new Parenteses<char>($2);
+    }
+
 sentenca
     : SENTENCA { $$ = new Sentenca(*$1); }
 
+    | ABRE_PARENTESES sentenca FECHA_PARENTESES {
+            $$ = new Parenteses<string>($2);
+    }
+
 definicao
     : TIPO IDENTIFICADOR {
-            TipoFundamental tF;
-            tF = Tipo<>::instanciar(*$1);
-
             try{
+                TipoFundamental tF;
+                tF = Tipo<>::instanciar(*$1);
+
                 $$ = Definicao<>::instanciar(tF, *$2);
             }
             catch(Erro* erro){

@@ -17,7 +17,7 @@ namespace AnaliseSemantica {
                 it = _variavel.find(identificador);
 
                 if(it != _variavel.end()){
-                    throw new Erro("variavel sofrendo redefinicao");
+                    throw new Erro("variavel " + identificador + " sofrendo redefinicao");
                 }
 
                 _variavel[identificador] = variavel;

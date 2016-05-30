@@ -52,7 +52,11 @@ letra [a-zA-Z]
                                   yylval._int = atoi(yytext);
                                   return INTEIRO;
                               }
-{digito}+"."{digito}+         {
+{digito}*"."{digito}+         {
+                                  yylval._double = atof(yytext);
+                                  return RACIONAL;
+                              }
+{digito}+"."{digito}*         {
                                   yylval._double = atof(yytext);
                                   return RACIONAL;
                               }
