@@ -16,7 +16,7 @@ namespace AnaliseSemantica {
           Arranjo(string identificador, int tamanho) : identificador(identificador), tamanho(tamanho){ }
 
           void print(){
-              cout << "arranjo " << this->getTipo().getIdentificadorMasculino();
+              cout << "arranjo " << this->getTipo()->getIdentificadorMasculino();
           }
 
           T executar(Contexto* contexto){
@@ -34,7 +34,7 @@ namespace AnaliseSemantica {
           Arranjo(string identificador, int tamanho) : identificador(identificador), tamanho(tamanho){ }
 
           void print(){
-              cout << "variavel " << this->getTipo().getIdentificadorFeminino() << " "<< identificador;
+              cout << "variavel " << this->getTipo()->getIdentificadorFeminino() << " "<< identificador;
           }
 
           void executar(Contexto* contexto){ }

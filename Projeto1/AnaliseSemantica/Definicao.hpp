@@ -147,7 +147,7 @@ namespace AnaliseSemantica {
 
             template <typename U>
             int operator()(Nodo<U>*& tamanho) const {
-                throw new Erro(errorMessage + tamanho->getTipo().getIdentificadorMasculino() + ".");
+                throw new Erro(errorMessage + tamanho->getTipo()->getIdentificadorMasculino() + ".");
             }
 
             int operator()(Nodo<int>*& tamanho) const {

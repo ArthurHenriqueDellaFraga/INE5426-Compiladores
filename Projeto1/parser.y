@@ -367,7 +367,7 @@ atribuicao
     //         try{
     //             ArranjoFundamental arranjo = contexto->getArranjo(*$1);
 
-    //             $$ = Atribuicao<>::instanciar(*$1, *$3);
+    //             $$ = AtribuicaoArranjo<int>::instanciarArranjo(arranjo, *$3, *$6);
     //         }
     //         catch(string* erro){
     //             cout << "Tipos incompativeis" << endl;
