@@ -113,6 +113,7 @@ odoFundamental
 
 %left AND
 %left OR
+
 %right NEGACAO_BOOLEANA
 
 %left IGUAL DIFERENTE MAIOR MENOR MAIOR_IGUAL MENOR_IGUAL
@@ -265,7 +266,18 @@ racional
     }
 
 booleano
-    : BOOLEANO { $$ = new Booleano($1); }
+    : BOOLEANO { 
+        $$ = new Booleano($1); }
+
+    | NEGACAO_BOOLEANA instrucao {
+        try{
+            $$ = Negacao_booleana<>::instanciar(*$2);
+        }
+        catch(Erro* erro){
+            erro->print();
+            exit(1);            
+        }
+    }
 
     | instrucao IGUAL instrucao {
         $$ = Igual<>::instanciar(*$1, *$3);
@@ -309,10 +321,6 @@ booleano
             erro->print();
             exit(1);
         }
-    }
-
-    | NEGACAO_BOOLEANA booleano {
-        $$ = new Negacao_booleana($2);
     }
 
 caracter
