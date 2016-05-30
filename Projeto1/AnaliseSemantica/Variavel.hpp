@@ -15,7 +15,7 @@ namespace AnaliseSemantica {
           Variavel(string identificador) : identificador(identificador), referencia(new T()){ }
 
           void print(){
-              cout << "variavel " << this->getTipo().getIdentificadorFeminino() << " "<< identificador;
+              cout << "variavel " << this->getTipo()->getIdentificadorFeminino() << " "<< identificador;
           }
 
           T executar(Contexto* contexto){
@@ -35,7 +35,7 @@ namespace AnaliseSemantica {
           Variavel(string identificador) : identificador(identificador){ }
 
           void print(){
-              cout << "variavel " << this->getTipo().getIdentificadorFeminino() << " "<< identificador;
+              cout << "variavel " << this->getTipo()->getIdentificadorFeminino() << " "<< identificador;
           }
 
           void executar(Contexto* contexto){ }

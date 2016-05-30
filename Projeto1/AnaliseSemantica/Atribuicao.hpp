@@ -34,7 +34,7 @@ namespace AnaliseSemantica {
                 valor-> print();
             }
             void executar(Contexto* contexto){
-                variavel->setReferencia(new T(valor->executar(contexto)));
+                //variavel->setReferencia(new T(valor->executar(contexto)));
             }
 
             static NodoFundamental* instanciar(VariavelFundamental variavel, NodoFundamental valor){
@@ -51,13 +51,18 @@ namespace AnaliseSemantica {
                       nF = valor;
 
                       NodoFundamental conversao = *(Conversao<>::instanciar(vF.getTipo(), nF));
-                      return Atribuicao<>::instanciar(vF, conversao);
+                      return Atribuicao<int>::instanciar(vF, conversao);
                 }
 
                 template <typename V>
                 NodoFundamental* operator()(Variavel<V>*& variavel, Nodo<V>*& valor) const {
                     return new NodoFundamental(new Atribuicao<V>(variavel, valor));
                 }
+
+                NodoFundamental* operator()(Variavel<void>*& variavel, Nodo<void>*& valor) const {
+                    throw new Erro("erro");
+                }
+
 
 
             };

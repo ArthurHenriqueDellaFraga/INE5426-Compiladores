@@ -17,7 +17,7 @@ namespace AnaliseSemantica {
             void print(){
                 cout << "(";
                 left->print();
-                cout << " (" << simbolo << " " << this->getTipo().getIdentificadorFeminino() << ") ";
+                cout << " (" << simbolo << " " << this->getTipo()->getIdentificadorFeminino() << ") ";
                 right->print();
                 cout << ")";
             };

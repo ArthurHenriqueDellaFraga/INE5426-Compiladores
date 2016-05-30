@@ -19,6 +19,7 @@ namespace AnaliseSemantica {
 
           void print(){
               valor->print();
+              cout << " para " <<  tipo->getIdentificadorMasculino();
           }
           T executar(Contexto* contexto){
               return *(new T(valor->executar(contexto)));
