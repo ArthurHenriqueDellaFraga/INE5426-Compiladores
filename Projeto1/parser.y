@@ -179,15 +179,15 @@ instrucao
     }
 
     | definicao {
-            $$ = Nodo<>::converter($1);
+            $$ = Nodo<>::converter(*$1);
     }
 
     | atribuicao {
-            $$ = Nodo<>::converter($1);
+            $$ = Nodo<>::converter(*$1);
     }
 
     | variavel {
-            $$ = Nodo<>::converter($1);
+            $$ = Nodo<>::converter(*$1);
     }
 
     | instrucao SOMA instrucao {
@@ -265,7 +265,7 @@ racional
     }
 
 booleano
-    : BOOLEANO { 
+    : BOOLEANO {
         $$ = new Booleano($1); }
 
     | NEGACAO_BOOLEANA instrucao {
@@ -274,7 +274,7 @@ booleano
         }
         catch(Erro* erro){
             erro->print();
-            exit(1);            
+            exit(1);
         }
     }
 
@@ -355,7 +355,7 @@ definicao
 atribuicao
     : variavel ATRIBUICAO instrucao {
             try{
-                $$ = Atribuicao<>::instanciar(*$1, *$3);
+                $$ = Atribuicao<int>::instanciar(*$1, *$3);
             }
             catch(string* erro){
                 cout << "Tipos incompativeis" << endl;

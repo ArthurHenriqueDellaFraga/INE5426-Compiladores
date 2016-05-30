@@ -53,27 +53,27 @@ namespace AnaliseSemantica {
 
             template <typename V, typename W>
             NodoFundamental operator()(Nodo<V>*& left, Nodo<W>*& right) const {
-                throw new Erro(errorMessage + left->getTipo().getIdentificadorMasculino() + " e " + right->getTipo().getIdentificadorMasculino() + ".");
+                throw new Erro(errorMessage + left->getTipo()->getIdentificadorMasculino() + " e " + right->getTipo()->getIdentificadorMasculino() + ".");
             }
 
             template<typename V>
             NodoFundamental operator()(Nodo<int>*& left, Nodo<V>*& right) const {
-                throw new Erro(errorMessage + right->getTipo().getIdentificadorMasculino() + ".");
+                throw new Erro(errorMessage + right->getTipo()->getIdentificadorMasculino() + ".");
             }
 
             template<typename V>
             NodoFundamental operator()(Nodo<V>*& left, Nodo<int>*& right) const {
-                throw new Erro(errorMessage + left->getTipo().getIdentificadorMasculino() + ".");
+                throw new Erro(errorMessage + left->getTipo()->getIdentificadorMasculino() + ".");
             }
 
             template<typename V>
             NodoFundamental operator()(Nodo<double>*& left, Nodo<V>*& right) const {
-                throw new Erro(errorMessage + right->getTipo().getIdentificadorMasculino() + ".");
+                throw new Erro(errorMessage + right->getTipo()->getIdentificadorMasculino() + ".");
             }
 
             template<typename V>
             NodoFundamental operator()(Nodo<V>*& left, Nodo<double>*& right) const {
-                throw new Erro(errorMessage + left->getTipo().getIdentificadorMasculino() + ".");
+                throw new Erro(errorMessage + left->getTipo()->getIdentificadorMasculino() + ".");
             }
         };
     };
@@ -84,7 +84,7 @@ namespace AnaliseSemantica {
             Subtracao_unaria(Nodo<T>* nodo) : OperacaoUnaria<T>(nodo) { }
 
             void print(){
-                cout << "((menos unario " << this->nodo->getTipo().getIdentificadorMasculino() <<") ";
+                cout << "((menos unario " << this->nodo->getTipo()->getIdentificadorMasculino() <<") ";
                 this->nodo->print();
                 cout << ")";
 

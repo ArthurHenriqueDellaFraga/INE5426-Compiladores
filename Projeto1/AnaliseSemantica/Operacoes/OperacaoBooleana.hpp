@@ -17,7 +17,7 @@ namespace AnaliseSemantica {
             void print(){
                 cout << "(";
                 this->left->print();
-                cout << " (" << this->simbolo << " " << this->getTipo().getIdentificadorMasculino() << ") ";
+                cout << " (" << this->simbolo << " " << this->getTipo()->getIdentificadorMasculino() << ") ";
                 this->right->print();
                 cout << ")";
             }
@@ -154,17 +154,17 @@ namespace AnaliseSemantica {
 
                 template <typename V, typename W>
                 Nodo<bool>* operator()(Nodo<V>*& left, Nodo<W>*& right) const {
-                    throw new Erro(errorMessage + left->getTipo().getIdentificadorMasculino() + " e " + right->getTipo().getIdentificadorMasculino() + ".");
+                    throw new Erro(errorMessage + left->getTipo()->getIdentificadorMasculino() + " e " + right->getTipo()->getIdentificadorMasculino() + ".");
                 }
 
                 template <typename V>
                 Nodo<bool>* operator()(Nodo<bool>*& left, Nodo<V>*& right) const {
-                    throw new Erro(errorMessage + right->getTipo().getIdentificadorMasculino() + ".");
+                    throw new Erro(errorMessage + right->getTipo()->getIdentificadorMasculino() + ".");
                 }
 
                 template <typename V>
                 Nodo<bool>* operator()(Nodo<V>*& left, Nodo<bool>*& right) const {
-                    throw new Erro(errorMessage + left->getTipo().getIdentificadorMasculino() + ".");
+                    throw new Erro(errorMessage + left->getTipo()->getIdentificadorMasculino() + ".");
                 }
             };
     };
@@ -188,17 +188,17 @@ namespace AnaliseSemantica {
 
                 template <typename V, typename W>
                 Nodo<bool>* operator()(Nodo<V>*& left, Nodo<W>*& right) const {
-                    throw new Erro(errorMessage + left->getTipo().getIdentificadorMasculino() + " e " + right->getTipo().getIdentificadorMasculino() + ".");
+                    throw new Erro(errorMessage + left->getTipo()->getIdentificadorMasculino() + " e " + right->getTipo()->getIdentificadorMasculino() + ".");
                 }
 
                 template <typename V>
                 Nodo<bool>* operator()(Nodo<bool>*& left, Nodo<V>*& right) const {
-                    throw new Erro(errorMessage + right->getTipo().getIdentificadorMasculino() + ".");
+                    throw new Erro(errorMessage + right->getTipo()->getIdentificadorMasculino() + ".");
                 }
 
                 template <typename V>
                 Nodo<bool>* operator()(Nodo<V>*& left, Nodo<bool>*& right) const {
-                    throw new Erro(errorMessage + left->getTipo().getIdentificadorMasculino() + ".");
+                    throw new Erro(errorMessage + left->getTipo()->getIdentificadorMasculino() + ".");
                 }
             };
     };
@@ -209,7 +209,7 @@ namespace AnaliseSemantica {
             Negacao_booleana(Nodo<T>* nodo) : OperacaoUnaria<T>(nodo) { }
 
             void print(){
-                cout << "((negacao " << this->nodo->getTipo().getIdentificadorFeminino() <<") ";
+                cout << "((negacao " << this->nodo->getTipo()->getIdentificadorFeminino() <<") ";
                 this->nodo->print();
                 cout << ")";
 
@@ -233,7 +233,7 @@ namespace AnaliseSemantica {
 
                 template <typename V>
                 Nodo<bool>* operator()(Nodo<V>*& nodo) const {
-                    throw new Erro(errorMessage + nodo->getTipo().getIdentificadorMasculino() + ".");
+                    throw new Erro(errorMessage + nodo->getTipo()->getIdentificadorMasculino() + ".");
                 }
             };
     };
