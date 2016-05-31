@@ -215,16 +215,13 @@ instrucao
     }
 
     | instrucao MULTIPLICACAO instrucao {
-            NodoFundamental nF;
-
             try{
-                nF = Multiplicacao<>::instanciar(*$1, *$3);
+                $$ = Multiplicacao<>::instanciar(*$1, *$3);
             }
             catch(Erro* erro){
                 erro->print();
                 exit(1);
             }
-            $$ = &nF;
     }
 
     | instrucao DIVISAO instrucao {
