@@ -43,7 +43,6 @@ letra [a-zA-Z]
 
 "~"                           {return NEGACAO_BOOLEANA;}
 
-":"                           {return DEFINICAO;}
 ":="                          {return ATRIBUICAO;}
 ":"                           {return DEFINICAO;}
 

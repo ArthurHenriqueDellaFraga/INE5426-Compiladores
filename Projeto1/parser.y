@@ -1,7 +1,7 @@
 %code requires{
     #include "AnaliseSemantica/Funcoes/Funcao.hpp"
     #include "AnaliseSemantica/Primitivo.hpp"
-    #include "AnaliseSemantica/Definicao.hpp"
+    #include "AnaliseSemantica/Funcoes/DefinicaoDeFuncao.hpp"
     #include "AnaliseSemantica/Atribuicao.hpp"
 
     #include "AnaliseSemantica/Operacoes/OperacaoBooleana.hpp"
@@ -48,6 +48,7 @@
     AtribuicaoFundamental* atribuicao;
 
     FuncaoFundamental* funcao;
+    vector<VariavelFundamental>* listaDeArgumentos;
 
     Nodo<int>* inteiro;
     Nodo<double>* racional;
@@ -63,6 +64,7 @@
 
 %token ATRIBUICAO
 %token DEFINICAO
+%token DECLARACAO
 
 %token SOMA
 %token SUBTRACAO
@@ -112,6 +114,7 @@
 %type <nodo> atribuicao
 
 %type <funcao> funcao
+%type <listaDeArgumentos> listaDeArgumentos
 
 /* Operator precedence for mathematical operators
  * The latest it is listed, the highest the precedence
@@ -151,6 +154,10 @@ bloco
     }
 
     | bloco NOVA_LINHA { }
+
+    | bloco funcao NOVA_LINHA {
+        $1->addInstrucao(*(new NodoFundamental(*$2)));
+    }
 
 instrucao
     : inteiro {
@@ -345,9 +352,14 @@ variavel
             $$ = contexto->getVariavel(*$1);
     }
 
-// funcao
-//     : DECLARACAO IDENTIFICADOR IDENTIFICADOR DEFINICAO IDENTIFICADOR
-//
-// declaracao
+funcao
+    : DECLARACAO IDENTIFICADOR IDENTIFICADOR DEFINICAO IDENTIFICADOR listaDeArgumentos {
+        $$ = new FuncaoFundamental();
+    }
+
+listaDeArgumentos
+    : ABRE_PARENTESES definicao {
+        $$ = new vector<VariavelFundamental>;
+    }
 
 %%
