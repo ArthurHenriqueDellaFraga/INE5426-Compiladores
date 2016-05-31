@@ -7,14 +7,15 @@ using namespace std;
 
 namespace AnaliseSemantica {
 
-  class Bloco : public Nodo<void> {
+  template <typename T = void>
+  class Bloco : public Nodo<T> {
       protected:
           vector<NodoFundamental> listaDeInstrucoes;
           Contexto* contexto;
       public:
-          Bloco(Contexto* contexto) : contexto(contexto), Nodo() { }
+          Bloco(Contexto* contexto) : contexto(contexto) { }
 
-          void print(){
+          virtual void print(){
               for(int i=0; i < listaDeInstrucoes.size(); i++){
                   listaDeInstrucoes[i].print();
                   cout << endl;
@@ -26,7 +27,7 @@ namespace AnaliseSemantica {
               }
           }
 
-          void addInstrucao(NodoFundamental instrucao){
+          virtual void addInstrucao(NodoFundamental instrucao){
               listaDeInstrucoes.push_back(instrucao);
 
               instrucao.print();

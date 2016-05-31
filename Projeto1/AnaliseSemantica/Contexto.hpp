@@ -6,11 +6,11 @@ using namespace std;
 
 namespace AnaliseSemantica {
 
-    class Contexto {
+    class TabelaDeVariaveis {
         protected:
             map<string, VariavelFundamental*> _variavel;
         public:
-            Contexto(){ }
+            TabelaDeVariaveis(){ }
 
             void put(string identificador, VariavelFundamental* variavel){
                 map<string, VariavelFundamental*>::iterator it;
@@ -36,5 +36,10 @@ namespace AnaliseSemantica {
 
                 return _variavel[identificador];
             }
+    };
+
+    class Contexto : public TabelaDeVariaveis {
+        public:
+            Contexto(){};
     };
 }

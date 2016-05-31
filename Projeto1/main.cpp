@@ -4,7 +4,7 @@
 
 using namespace AnaliseSemantica;
 
-Bloco* raizDoPrograma; //set on Bison file
+Bloco<>* raizDoPrograma; //set on Bison file
 Contexto* contexto;
 bool debug = true;
 
@@ -21,7 +21,7 @@ int main(int argc, char **argv){
         erro->print();
         exit(1);
     }
-                 
+
     cout << endl << endl;
     raizDoPrograma->print();
     //raizDoPrograma->executar(contexto);

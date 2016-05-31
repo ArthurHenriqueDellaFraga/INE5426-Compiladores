@@ -1,5 +1,5 @@
 %code requires{
-    #include "AnaliseSemantica/Bloco.hpp"
+    #include "AnaliseSemantica/Funcoes/Funcao.hpp"
     #include "AnaliseSemantica/Primitivo.hpp"
     #include "AnaliseSemantica/Definicao.hpp"
     #include "AnaliseSemantica/Atribuicao.hpp"
@@ -20,7 +20,7 @@
     using namespace AnaliseSemantica;
     using namespace std;
 
-    extern Bloco* raizDoPrograma; /* the root node of our program */
+    extern Bloco<>* raizDoPrograma; /* the root node of our program */
     extern Contexto* contexto;
     extern bool debug;
 
@@ -38,12 +38,14 @@
     char _char;
     string* _string;
 
-    Bloco* bloco;
+    Bloco<>* bloco;
     NodoFundamental* nodo;
 
     VariavelFundamental* variavel;
     DefinicaoFundamental* definicao;
     AtribuicaoFundamental* atribuicao;
+
+    FuncaoFundamental* funcao;
 
     Nodo<int>* inteiro;
     Nodo<double>* racional;
@@ -102,10 +104,11 @@ odoFundamental
 %type <caracter> caracter
 %type <sentenca> sentenca
 
+%type <variavel> variavel
 %type <definicao> definicao
 %type <nodo> atribuicao
 
-%type <variavel> variavel
+%type <funcao> funcao
 
 /* Operator precedence for mathematical operators
  * The latest it is listed, the highest the precedence
@@ -135,7 +138,7 @@ bloco
     : NOVA_LINHA { }
 
     | instrucao NOVA_LINHA {
-            $$ = new Bloco(contexto);
+            $$ = new Bloco<>(contexto);
             $$->addInstrucao(*$1);
     }
 
@@ -207,23 +210,11 @@ instrucao
     }
 
     | instrucao MULTIPLICACAO instrucao {
-            try{
-                $$ = Multiplicacao<>::instanciar(*$1, *$3);
-            }
-            catch(Erro* erro){
-                erro->print();
-                exit(1);
-            }
+            $$ = Multiplicacao<>::instanciar(*$1, *$3);
     }
 
     | instrucao DIVISAO instrucao {
-            try{
-                $$ = Divisao<>::instanciar(*$1, *$3);
-            }
-            catch(Erro* erro){
-                erro->print();
-                exit(1);
-            }
+            $$ = Divisao<>::instanciar(*$1, *$3);
     }
 
 inteiro
@@ -330,6 +321,10 @@ variavel
     : IDENTIFICADOR {
             $$ = contexto->getVariavel(*$1);
     }
-;
+
+// funcao
+//     : DECLARACAO IDENTIFICADOR IDENTIFICADOR DEFINICAO IDENTIFICADOR
+//
+// declaracao
 
 %%
