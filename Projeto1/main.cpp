@@ -21,9 +21,9 @@ int main(int argc, char **argv){
         erro->print();
         exit(1);
     }
-                 
+
     cout << endl << endl;
-    raizDoPrograma->print();
+    //raizDoPrograma->print();
     //raizDoPrograma->executar(contexto);
 
     return 0;

@@ -27,7 +27,6 @@ namespace AnaliseSemantica {
           template<typename T>
           DefinicaoPolimorfo<Types...>& operator=(const T& t){
               Polimorfo<Types...>::operator=(t);
-              //this->inicializado = true;
               return *this;
           }
 
