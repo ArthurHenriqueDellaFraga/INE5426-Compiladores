@@ -62,27 +62,37 @@ namespace AnaliseSemantica {
 
                 template <typename V, typename W>
                 Nodo<bool>* operator()(Nodo<V>*& left, Nodo<W>*& right) const {
-                    throw new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + " e " + right->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + " e " + right->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new Igual<V, W>(left, right);
                 }
 
                 template<typename V>
                 Nodo<bool>* operator()(Nodo<int>*& left, Nodo<V>*& right) const {
-                    throw new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new Igual<int, V>(left, right);
                 }
 
                 template<typename V>
                 Nodo<bool>* operator()(Nodo<V>*& left, Nodo<int>*& right) const {
-                    throw new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new Igual<V, int>(left, right);
                 }
 
                 template<typename V>
                 Nodo<bool>* operator()(Nodo<double>*& left, Nodo<V>*& right) const {
-                    throw new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new Igual<double, V>(left, right);
                 }
 
                 template<typename V>
                 Nodo<bool>* operator()(Nodo<V>*& left, Nodo<double>*& right) const {
-                    throw new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new Igual<V, double>(left, right);
                 }
             };
     };
@@ -122,27 +132,37 @@ namespace AnaliseSemantica {
 
                 template <typename V, typename W>
                 Nodo<bool>* operator()(Nodo<V>*& left, Nodo<W>*& right) const {
-                    throw new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + " e " + right->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + " e " + right->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new Diferente<V, W>(left, right);
                 }
 
                 template<typename V>
                 Nodo<bool>* operator()(Nodo<int>*& left, Nodo<V>*& right) const {
-                    throw new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new Diferente<int, V>(left, right);
                 }
 
                 template<typename V>
                 Nodo<bool>* operator()(Nodo<V>*& left, Nodo<int>*& right) const {
-                    throw new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new Diferente<V, int>(left, right);
                 }
 
                 template<typename V>
                 Nodo<bool>* operator()(Nodo<double>*& left, Nodo<V>*& right) const {
-                    throw new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new Diferente<double, V>(left, right);
                 }
 
                 template<typename V>
                 Nodo<bool>* operator()(Nodo<V>*& left, Nodo<double>*& right) const {
-                    throw new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new Diferente<V, double>(left, right);
                 }
             };
     };
@@ -182,27 +202,37 @@ namespace AnaliseSemantica {
 
                 template <typename V, typename W>
                 Nodo<bool>* operator()(Nodo<V>*& left, Nodo<W>*& right) const {
-                    throw new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + " e " + right->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + " e " + right->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new Maior<V, W>(left, right);
                 }
 
                 template<typename V>
                 Nodo<bool>* operator()(Nodo<int>*& left, Nodo<V>*& right) const {
-                    throw new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new Maior<int, V>(left, right);
                 }
 
                 template<typename V>
                 Nodo<bool>* operator()(Nodo<V>*& left, Nodo<int>*& right) const {
-                    throw new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new Maior<V, int>(left, right);
                 }
 
                 template<typename V>
                 Nodo<bool>* operator()(Nodo<double>*& left, Nodo<V>*& right) const {
-                    throw new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new Maior<double, V>(left, right);
                 }
 
                 template<typename V>
                 Nodo<bool>* operator()(Nodo<V>*& left, Nodo<double>*& right) const {
-                    throw new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new Maior<V, double>(left, right);
                 }
             };
     };
@@ -242,27 +272,37 @@ namespace AnaliseSemantica {
 
                 template <typename V, typename W>
                 Nodo<bool>* operator()(Nodo<V>*& left, Nodo<W>*& right) const {
-                    throw new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + " e " + right->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + " e " + right->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new Menor<V, W>(left, right);
                 }
 
                 template<typename V>
                 Nodo<bool>* operator()(Nodo<int>*& left, Nodo<V>*& right) const {
-                    throw new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new Menor<int, V>(left, right);
                 }
 
                 template<typename V>
                 Nodo<bool>* operator()(Nodo<V>*& left, Nodo<int>*& right) const {
-                    throw new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new Menor<V, int>(left, right);
                 }
 
                 template<typename V>
                 Nodo<bool>* operator()(Nodo<double>*& left, Nodo<V>*& right) const {
-                    throw new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new Menor<double, V>(left, right);
                 }
 
                 template<typename V>
                 Nodo<bool>* operator()(Nodo<V>*& left, Nodo<double>*& right) const {
-                    throw new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new Menor<V, double>(left, right);
                 }
             };
     };
@@ -302,27 +342,37 @@ namespace AnaliseSemantica {
 
                 template <typename V, typename W>
                 Nodo<bool>* operator()(Nodo<V>*& left, Nodo<W>*& right) const {
-                    throw new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + " e " + right->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + " e " + right->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new MaiorIgual<V, W>(left, right);
                 }
 
                 template<typename V>
                 Nodo<bool>* operator()(Nodo<int>*& left, Nodo<V>*& right) const {
-                    throw new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new MaiorIgual<int, V>(left, right);
                 }
 
                 template<typename V>
                 Nodo<bool>* operator()(Nodo<V>*& left, Nodo<int>*& right) const {
-                    throw new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new MaiorIgual<V, int>(left, right);
                 }
 
                 template<typename V>
                 Nodo<bool>* operator()(Nodo<double>*& left, Nodo<V>*& right) const {
-                    throw new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new MaiorIgual<double, V>(left, right);
                 }
 
                 template<typename V>
                 Nodo<bool>* operator()(Nodo<V>*& left, Nodo<double>*& right) const {
-                    throw new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new MaiorIgual<V, double>(left, right);
                 }
             };
     };
@@ -362,27 +412,37 @@ namespace AnaliseSemantica {
 
                 template <typename V, typename W>
                 Nodo<bool>* operator()(Nodo<V>*& left, Nodo<W>*& right) const {
-                    throw new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + " e " + right->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + " e " + right->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new MenorIgual<V, W>(left, right);
                 }
 
                 template<typename V>
                 Nodo<bool>* operator()(Nodo<int>*& left, Nodo<V>*& right) const {
-                    throw new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new MenorIgual<int, V>(left, right);
                 }
 
                 template<typename V>
                 Nodo<bool>* operator()(Nodo<V>*& left, Nodo<int>*& right) const {
-                    throw new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new MenorIgual<V, int>(left, right);
                 }
 
                 template<typename V>
                 Nodo<bool>* operator()(Nodo<double>*& left, Nodo<V>*& right) const {
-                    throw new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new MenorIgual<double, V>(left, right);
                 }
 
                 template<typename V>
                 Nodo<bool>* operator()(Nodo<V>*& left, Nodo<double>*& right) const {
-                    throw new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new MenorIgual<V, double>(left, right);
                 }
             };
     };

@@ -263,72 +263,46 @@ racional
     }
 
 booleano
-    : BOOLEANO {
-        $$ = new Booleano($1); }
+    : BOOLEANO { $$ = new Booleano($1); }
 
     | ABRE_PARENTESES booleano FECHA_PARENTESES {
             $$ = new Parenteses<bool>($2);
     }
 
     | NEGACAO_BOOLEANA instrucao {
-        try{
             $$ = NegacaoBooleana<>::instanciar(*$2);
-        }
-        catch(Erro* erro){
-            erro->print();
-            exit(1);
-        }
     }
 
     | instrucao IGUAL instrucao {
-        try{
             $$ = Igual<>::instanciar(*$1, *$3);
-        }
-        catch(Erro* erro){
-            erro->print();
-            exit(1);
-        }
-
     }
 
     | instrucao DIFERENTE instrucao {
-        $$ = Diferente<>::instanciar(*$1, *$3);
+            $$ = Diferente<>::instanciar(*$1, *$3);
     }
 
     | instrucao MAIOR instrucao {
-        $$ = Maior<>::instanciar(*$1, *$3);
+            $$ = Maior<>::instanciar(*$1, *$3);
     }
 
     | instrucao MENOR instrucao {
-        $$ = Menor<>::instanciar(*$1, *$3);
+            $$ = Menor<>::instanciar(*$1, *$3);
     }
 
     | instrucao MAIOR_IGUAL instrucao {
-        $$ = MaiorIgual<>::instanciar(*$1, *$3);
+            $$ = MaiorIgual<>::instanciar(*$1, *$3);
     }
 
     | instrucao MENOR_IGUAL instrucao {
-        $$ = MenorIgual<>::instanciar(*$1, *$3);
+            $$ = MenorIgual<>::instanciar(*$1, *$3);
     }
 
     | instrucao AND instrucao {
-        try{
             $$ = And<>::instanciar(*$1, *$3);
-        }
-        catch(Erro* erro){
-            erro->print();
-            exit(1);
-        }
     }
 
     | instrucao OR instrucao {
-        try{
             $$ = Or<>::instanciar(*$1, *$3);
-        }
-        catch(Erro* erro){
-            erro->print();
-            exit(1);
-        }
     }
 
 caracter
