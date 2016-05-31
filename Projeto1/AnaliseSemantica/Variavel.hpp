@@ -10,20 +10,20 @@ namespace AnaliseSemantica {
   class Variavel : public Nodo<T> {
       private:
           string identificador;
-          T* referencia;
+          T* valor;
       public:
-          Variavel(string identificador) : identificador(identificador), referencia(new T()){ }
+          Variavel(string identificador) : identificador(identificador), valor(new T()){ }
 
           void print(){
               cout << "variavel " << this->getTipo()->getIdentificadorFeminino() << " "<< identificador;
           }
 
           T executar(Contexto* contexto){
-              return *referencia;
+              return *valor;
           }
 
-          void setReferencia(T* referencia){
-              this->referencia = referencia;
+          void setReferencia(T* valor){
+              this->valor = valor;
           }
   };
 
@@ -40,7 +40,7 @@ namespace AnaliseSemantica {
 
           void executar(Contexto* contexto){ }
 
-          // void setReferencia(T* referencia){ }
+          // void setReferencia(T* valor){ }
   };
 
   typedef Polimorfo<

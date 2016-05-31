@@ -8,12 +8,12 @@ namespace AnaliseSemantica {
 
     class Contexto {
         protected:
-            map<string, VariavelFundamental> _variavel;
+            map<string, VariavelFundamental*> _variavel;
         public:
             Contexto(){ }
 
-            void put(string identificador, VariavelFundamental variavel){
-                map<string, VariavelFundamental>::iterator it;
+            void put(string identificador, VariavelFundamental* variavel){
+                map<string, VariavelFundamental*>::iterator it;
                 it = _variavel.find(identificador);
 
                 if(it != _variavel.end()){
@@ -23,13 +23,12 @@ namespace AnaliseSemantica {
                 _variavel[identificador] = variavel;
             }
 
-            VariavelFundamental getVariavel(string identificador){
-                map<string, VariavelFundamental>::iterator it;
+            VariavelFundamental* getVariavel(string identificador){
+                map<string, VariavelFundamental*>::iterator it;
                 it = _variavel.find(identificador);
 
-                if(it != _variavel.end()){
-                    // char* mensagem = "";
-                    // throw new Erro(mensagem);
+                if(it == _variavel.end()){
+                    return new VariavelFundamental(new Variavel<void>(identificador));
                 }
 
                 return _variavel[identificador];

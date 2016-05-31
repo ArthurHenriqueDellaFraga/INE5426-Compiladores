@@ -10,7 +10,6 @@ extern int yylineno;
 namespace AnaliseSemantica {
 
     struct Erro {
-        //void (*yy) (const char* s, ...) = &yyerror;
         vector<string> listaDeMensagens;
 
         Erro(string mensagem){

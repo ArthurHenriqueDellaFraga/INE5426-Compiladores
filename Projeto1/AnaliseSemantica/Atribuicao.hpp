@@ -24,7 +24,7 @@ namespace AnaliseSemantica {
             Nodo<U>* valor;
 
             Atribuicao(Variavel<T>* variavel, Nodo<U>* valor) : variavel(variavel), valor(valor){
-                static_assert(std::is_convertible<T, U>::value, "Atribuicao incompatível");
+                //static_assert(std::is_convertible<T, U>::value, "Atribuicao incompatível");
             }
 
             void print(){
@@ -45,13 +45,11 @@ namespace AnaliseSemantica {
             struct createVisitor : public static_visitor<NodoFundamental*>{
                 template <typename V, typename W>
                 NodoFundamental* operator()(Variavel<V>*& variavel, Nodo<W>*& valor) const {
-                      VariavelFundamental vF;
-                      vF = variavel;
-                      NodoFundamental nF;
-                      nF = valor;
+                      VariavelFundamental* vF = new VariavelFundamental(variavel);
+                      NodoFundamental* nF = new NodoFundamental(valor);
 
-                      NodoFundamental conversao = *(Conversao<>::instanciar(vF.getTipo(), nF));
-                      return Atribuicao<int>::instanciar(vF, conversao);
+                      NodoFundamental* conversao = Conversao<>::instanciar(vF->getTipo(), *nF);
+                      return Atribuicao<int>::instanciar(*vF, *conversao);
                 }
 
                 template <typename V>
@@ -59,12 +57,14 @@ namespace AnaliseSemantica {
                     return new NodoFundamental(new Atribuicao<V>(variavel, valor));
                 }
 
-                NodoFundamental* operator()(Variavel<void>*& variavel, Nodo<void>*& valor) const {
-                    throw new Erro("erro");
+                template <typename V>
+                NodoFundamental* operator()(Variavel<void>*& variavel, Nodo<V>*& valor) const {
+                    return new NodoFundamental(new Atribuicao<void, V>(variavel, valor));
                 }
 
-
-
+                NodoFundamental* operator()(Variavel<void>*& variavel, Nodo<void>*& valor) const {
+                    throw new Erro("Atribuicao invalida");
+                }
             };
     };
 }

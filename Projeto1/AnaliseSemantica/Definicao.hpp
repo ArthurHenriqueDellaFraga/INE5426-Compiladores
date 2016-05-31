@@ -69,9 +69,12 @@ namespace AnaliseSemantica {
           }
           void executar(Contexto* contexto){
               for(int i = 0; i < listaDeIdentificadores.size(); i++){
-                  VariavelFundamental variavel;
-                  variavel = new Variavel<T>(listaDeIdentificadores[i]);
-                  contexto->put(listaDeIdentificadores[i], variavel);
+                  try{
+                      contexto->put(listaDeIdentificadores[i], new VariavelFundamental(new Variavel<T>(listaDeIdentificadores[i])));
+                  }
+                  catch(Erro* erro){
+                      erro->print();
+                  }
               }
           }
 
@@ -89,9 +92,9 @@ namespace AnaliseSemantica {
         struct createVisitor : public static_visitor<DefinicaoFundamental*>{
             string identificador;
 
-            template <typename U>
-            DefinicaoFundamental* operator()(Tipo<U>*& tipo) const {
-                return new DefinicaoFundamental(new Definicao<U>(tipo, identificador));
+            template <typename V>
+            DefinicaoFundamental* operator()(Tipo<V>*& tipo) const {
+                return new DefinicaoFundamental(new Definicao<V>(tipo, identificador));
             }
         };
   };

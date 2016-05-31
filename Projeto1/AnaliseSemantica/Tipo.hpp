@@ -54,10 +54,10 @@ namespace AnaliseSemantica {
           }
 
       protected:
-          template <typename U>
+          template <typename V>
           static TipoFundamental createTipo(){
               TipoFundamental tipo;
-              tipo = new Tipo<U>();
+              tipo = new Tipo<V>();
               return tipo;
           }
   };

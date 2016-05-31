@@ -40,9 +40,9 @@ namespace AnaliseSemantica {
 
         protected:
             struct ConverterVisitor : public static_visitor<NodoFundamental*>{
-                template <typename U>
-                NodoFundamental* operator()(U& u) const {
-                    return new NodoFundamental(u);
+                template <typename V>
+                NodoFundamental* operator()(V& v) const {
+                    return new NodoFundamental(v);
                 }
             };
     };

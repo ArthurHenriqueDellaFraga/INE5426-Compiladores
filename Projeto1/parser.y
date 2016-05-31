@@ -359,25 +359,17 @@ definicao
 atribuicao
     : variavel ATRIBUICAO instrucao {
             try{
-                $$ = Atribuicao<int>::instanciar(*$1, *$3);
+              $$ = Atribuicao<int>::instanciar(*$1, *$3);
             }
-            catch(string* erro){
-                cout << "Tipos incompativeis" << endl;
+            catch(Erro* erro){
+                erro->print();
                 exit(1);
             }
     }
 
 variavel
     : IDENTIFICADOR {
-            try{
-                VariavelFundamental vF;
-                vF = contexto->getVariavel(*$1);
-                $$ = &vF;
-            }
-            catch(Erro* erro){
-                erro->print();
-                exit(1);
-            }
+            $$ = contexto->getVariavel(*$1);
     }
 ;
 
