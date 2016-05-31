@@ -42,7 +42,12 @@ namespace AnaliseSemantica {
             Primitivo(bool valor) : valor(valor) { };
 
             void print(){
-                cout << boolalpha << valor;
+                cout << "valor booleano ";
+                if(valor){
+                    cout << "TRUE";
+                }else{
+                    cout << "FALSE";
+                }
             }
 
             bool executar(Contexto* contexto){
@@ -64,7 +69,7 @@ namespace AnaliseSemantica {
             };
 
             void print(){
-                cout << valor;
+                cout << "valor real " << valor;
             }
 
             double executar(Contexto* contexto){

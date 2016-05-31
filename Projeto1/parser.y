@@ -57,6 +57,7 @@
 
 %token NOVA_LINHA
 
+%token DEFINICAO
 %token ATRIBUICAO
 
 %token SOMA
@@ -87,7 +88,6 @@ odoFundamental
 %token <_char> CARACTER
 %token <_string> SENTENCA
 
-%token <_string> TIPO
 %token <_string> IDENTIFICADOR
 
 // type defines the type of our nonterminal symbols.
@@ -228,16 +228,13 @@ instrucao
     }
 
     | instrucao DIVISAO instrucao {
-            NodoFundamental nF;
-
             try{
-                nF = Divisao<>::instanciar(*$1, *$3);
+                $$ = Divisao<>::instanciar(*$1, *$3);
             }
             catch(Erro* erro){
                 erro->print();
                 exit(1);
             }
-            $$ = &nF;
     }
 
 inteiro
@@ -339,12 +336,12 @@ sentenca
     }
 
 definicao
-    : TIPO IDENTIFICADOR {
+    : IDENTIFICADOR DEFINICAO IDENTIFICADOR {
             try{
                 TipoFundamental tF;
                 tF = Tipo<>::instanciar(*$1);
 
-                $$ = Definicao<>::instanciar(tF, *$2);
+                $$ = Definicao<>::instanciar(tF, *$3);
             }
             catch(Erro* erro){
                 erro->print();
