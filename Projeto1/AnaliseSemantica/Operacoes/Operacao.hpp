@@ -23,11 +23,25 @@ namespace AnaliseSemantica {
             };
     };
 
-    template <typename T>
+    template <typename T = void, typename N = T>
     class OperacaoUnaria : public Nodo<T> {
         protected:
-            Nodo<T>* nodo;
+            Nodo<N>* nodo;
 
-            OperacaoUnaria(Nodo<T>* nodo) : nodo(nodo) { }
+            OperacaoUnaria(Nodo<N>* nodo) : nodo(nodo) { }
+
+            T executar(Contexto* contexto){
+                return *(new T());
+            }
+    };
+
+    template <typename N>
+    class OperacaoUnaria<void, N> : public Nodo<void> {
+        protected:
+            Nodo<N>* nodo;
+
+            OperacaoUnaria(Nodo<N>* nodo) : nodo(nodo) { }
+
+            void executar(Contexto* contexto){ }
     };
 }

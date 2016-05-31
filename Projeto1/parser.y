@@ -272,7 +272,7 @@ booleano
 
     | NEGACAO_BOOLEANA instrucao {
         try{
-            $$ = NegacaoBooleana::instanciar(*$2);
+            $$ = NegacaoBooleana<>::instanciar(*$2);
         }
         catch(Erro* erro){
             erro->print();
@@ -313,7 +313,7 @@ booleano
 
     | instrucao AND instrucao {
         try{
-            $$ = And::instanciar(*$1, *$3);
+            $$ = And<>::instanciar(*$1, *$3);
         }
         catch(Erro* erro){
             erro->print();
@@ -323,7 +323,7 @@ booleano
 
     | instrucao OR instrucao {
         try{
-            $$ = Or::instanciar(*$1, *$3);
+            $$ = Or<>::instanciar(*$1, *$3);
         }
         catch(Erro* erro){
             erro->print();

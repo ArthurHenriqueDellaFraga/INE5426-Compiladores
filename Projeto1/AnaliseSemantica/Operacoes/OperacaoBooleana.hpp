@@ -387,9 +387,10 @@ namespace AnaliseSemantica {
             };
     };
 
-    class And : public OperacaoBinariaBooleana<bool, bool>{
+    template <typename L = void, typename R = L>
+    class And : public OperacaoBinariaBooleana<L, R>{
         public:
-            And(Nodo<bool>* left, Nodo<bool>* right) : OperacaoBinariaBooleana<bool, bool>(left, "and", right){ }
+            And(Nodo<L>* left, Nodo<R>* right) : OperacaoBinariaBooleana<L, R>(left, "and", right){ }
 
             static Nodo<bool>* instanciar(NodoFundamental left, NodoFundamental right){
                 return apply_visitor(createVisitor (), left, right);
@@ -397,34 +398,41 @@ namespace AnaliseSemantica {
 
         protected:
             struct createVisitor : public static_visitor<Nodo<bool>*>{
-                string errorMessage = "operacao And espera booleano mas recebeu ";
+                string mensagemDeErro = "operacao And espera booleano mas recebeu ";
 
                 Nodo<bool>* operator()(Nodo<bool>*& left, Nodo<bool>*& right) const {
-                    return new And(left, right);
+                    return new And<bool, bool>(left, right);
                 }
 
 
 
                 template <typename V, typename W>
                 Nodo<bool>* operator()(Nodo<V>*& left, Nodo<W>*& right) const {
-                    throw new Erro(errorMessage + left->getTipo()->getIdentificadorMasculino() + " e " + right->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + " e " + right->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new And<V, W>(left, right);
                 }
 
                 template <typename V>
                 Nodo<bool>* operator()(Nodo<bool>*& left, Nodo<V>*& right) const {
-                    throw new Erro(errorMessage + right->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new And<bool, V>(left, right);
                 }
 
                 template <typename V>
                 Nodo<bool>* operator()(Nodo<V>*& left, Nodo<bool>*& right) const {
-                    throw new Erro(errorMessage + left->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new And<V, bool>(left, right);
                 }
             };
     };
 
-    class Or : public OperacaoBinariaBooleana<bool, bool>{
+    template <typename L = void, typename R = L>
+    class Or : public OperacaoBinariaBooleana<L, R>{
         public:
-            Or(Nodo<bool>* left, Nodo<bool>* right) : OperacaoBinariaBooleana<bool, bool>(left, "or", right){ }
+            Or(Nodo<L>* left, Nodo<R>* right) : OperacaoBinariaBooleana<L, R>(left, "or", right){ }
 
             static Nodo<bool>* instanciar(NodoFundamental left, NodoFundamental right){
                 return apply_visitor(createVisitor (), left, right);
@@ -432,34 +440,41 @@ namespace AnaliseSemantica {
 
         protected:
             struct createVisitor : public static_visitor<Nodo<bool>*>{
-                string errorMessage = "operacao Or espera booleano mas recebeu ";
+                string mensagemDeErro = "operacao Or espera booleano mas recebeu ";
 
                 Nodo<bool>* operator()(Nodo<bool>*& left, Nodo<bool>*& right) const {
-                    return new Or(left, right);
+                    return new Or<bool, bool>(left, right);
                 }
 
 
 
                 template <typename V, typename W>
                 Nodo<bool>* operator()(Nodo<V>*& left, Nodo<W>*& right) const {
-                    throw new Erro(errorMessage + left->getTipo()->getIdentificadorMasculino() + " e " + right->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + " e " + right->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new Or<V, W>(left, right);
                 }
 
                 template <typename V>
                 Nodo<bool>* operator()(Nodo<bool>*& left, Nodo<V>*& right) const {
-                    throw new Erro(errorMessage + right->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new Or<bool, V>(left, right);
                 }
 
                 template <typename V>
                 Nodo<bool>* operator()(Nodo<V>*& left, Nodo<bool>*& right) const {
-                    throw new Erro(errorMessage + left->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new Or<V, bool>(left, right);
                 }
             };
     };
 
-    class NegacaoBooleana : public OperacaoUnaria<bool> {
+    template <typename T = void>
+    class NegacaoBooleana : public OperacaoUnaria<bool, T> {
         public:
-            NegacaoBooleana(Nodo<bool>* nodo) : OperacaoUnaria<bool>(nodo) { }
+            NegacaoBooleana(Nodo<T>* nodo) : OperacaoUnaria<bool, T>(nodo) { }
 
             void print(){
                 cout << "((negacao booleana) ";
@@ -468,25 +483,25 @@ namespace AnaliseSemantica {
 
             }
 
-            bool executar(Contexto* contexto){
-                return !this->nodo->executar(contexto);
-            }
-
             static Nodo<bool>* instanciar(NodoFundamental nodo) {
                 return apply_visitor(createVisitor (), nodo);
             }
 
         protected:
             struct createVisitor : public static_visitor<Nodo<bool>*>{
-                string errorMessage = "operacao NegacaoBooleana espera booleano mas recebeu ";
+                string mensagemDeErro = "operacao NegacaoBooleana espera booleano mas recebeu ";
 
                 Nodo<bool>* operator()(Nodo<bool>*& nodo) const {
-                    return new NegacaoBooleana(nodo);
+                    return new NegacaoBooleana<bool>(nodo);
                 }
+
+
 
                 template <typename V>
                 Nodo<bool>* operator()(Nodo<V>*& nodo) const {
-                    throw new Erro(errorMessage + nodo->getTipo()->getIdentificadorMasculino() + ".");
+                    Erro* erro = new Erro(mensagemDeErro + nodo->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new NegacaoBooleana<V>(nodo);
                 }
             };
     };
