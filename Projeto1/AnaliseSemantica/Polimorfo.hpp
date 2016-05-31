@@ -21,7 +21,6 @@ namespace AnaliseSemantica {
                 *this = t;
             };
 
-            bool inicializado;
             Polimorfo() : variant<Types...>(){}
 
             void print(){
@@ -37,7 +36,6 @@ namespace AnaliseSemantica {
             template<typename T>
             Polimorfo<Types...>& operator=(const T& t){
                 variant<Types...>::operator=(t);
-                inicializado = true;
                 return *this;
             }
 

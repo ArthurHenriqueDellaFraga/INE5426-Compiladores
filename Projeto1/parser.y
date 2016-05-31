@@ -181,6 +181,12 @@ instrucao
     }
 
     | variavel {
+            try{
+                $1->checkInicializacao();
+            }
+            catch(Erro* erro){
+                erro->print();
+            }
             $$ = Nodo<>::converter(*$1);
     }
 

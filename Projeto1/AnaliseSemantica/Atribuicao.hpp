@@ -34,6 +34,7 @@ namespace AnaliseSemantica {
                 valor-> print();
             }
             void executar(Contexto* contexto){
+                variavel->setReferencia();
                 //variavel->setReferencia(new T(valor->executar(contexto)));
             }
 
@@ -63,7 +64,7 @@ namespace AnaliseSemantica {
                 }
 
                 NodoFundamental* operator()(Variavel<void>*& variavel, Nodo<void>*& valor) const {
-                    throw new Erro("Atribuicao invalida");
+                    return new NodoFundamental(new Atribuicao<void>(variavel, valor));
                 }
             };
     };

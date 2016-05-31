@@ -38,7 +38,7 @@ namespace AnaliseSemantica {
 
         protected:
             struct createVisitor : public static_visitor<Nodo<bool>*>{
-                string mensagemDeErro = "operacao igual espera inteiro ou real mas recebeu ";
+                string mensagemDeErro = "operacao Igual espera inteiro ou real mas recebeu ";
 
                 Nodo<bool>* operator()(Nodo<int>*& left, Nodo<int>*& right) const {
                     return new Igual<int>(left, right);
@@ -98,7 +98,7 @@ namespace AnaliseSemantica {
 
         protected:
             struct createVisitor : public static_visitor<Nodo<bool>*>{
-                string mensagemDeErro = "operacao diferente espera inteiro ou real mas recebeu ";
+                string mensagemDeErro = "operacao Diferente espera inteiro ou real mas recebeu ";
 
                 Nodo<bool>* operator()(Nodo<int>*& left, Nodo<int>*& right) const {
                     return new Diferente<int>(left, right);
@@ -158,7 +158,7 @@ namespace AnaliseSemantica {
 
         protected:
             struct createVisitor : public static_visitor<Nodo<bool>*>{
-                string mensagemDeErro = "operacao maior espera inteiro ou real mas recebeu ";
+                string mensagemDeErro = "operacao Maior espera inteiro ou real mas recebeu ";
 
                 Nodo<bool>* operator()(Nodo<int>*& left, Nodo<int>*& right) const {
                     return new Maior<int>(left, right);
@@ -218,7 +218,7 @@ namespace AnaliseSemantica {
 
         protected:
             struct createVisitor : public static_visitor<Nodo<bool>*>{
-                string mensagemDeErro = "operacao menor espera inteiro ou real mas recebeu ";
+                string mensagemDeErro = "operacao Menor espera inteiro ou real mas recebeu ";
 
                 Nodo<bool>* operator()(Nodo<int>*& left, Nodo<int>*& right) const {
                     return new Menor<int>(left, right);
@@ -462,7 +462,7 @@ namespace AnaliseSemantica {
             NegacaoBooleana(Nodo<bool>* nodo) : OperacaoUnaria<bool>(nodo) { }
 
             void print(){
-                cout << "((negacao " << this->nodo->getTipo()->getIdentificadorFeminino() <<") ";
+                cout << "((negacao booleana) ";
                 this->nodo->print();
                 cout << ")";
 

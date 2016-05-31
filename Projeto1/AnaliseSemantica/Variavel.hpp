@@ -7,8 +7,57 @@ using namespace std;
 namespace AnaliseSemantica {
 
   template <typename T = void>
+  class Variavel;
+
+  template <typename... Types>
+  class VariavelPolimorfo : public Polimorfo<Types...>{
+      public:
+          template<typename T>
+          VariavelPolimorfo(Variavel<T>* variavel){
+              *this = variavel;
+          };
+
+          string getIdentificador(){
+              return apply_visitor(getIdentificadorVisitor (), *this);
+          }
+
+          void checkInicializacao(){
+              apply_visitor(checkInicializacaoVisitor (), *this);
+          }
+
+          template<typename T>
+          VariavelPolimorfo<Types...>& operator=(const T& t){
+              Polimorfo<Types...>::operator=(t);
+              return *this;
+          }
+
+      protected:
+          struct getIdentificadorVisitor : public static_visitor<string>{
+              template <typename V>
+              string operator()(Variavel<V>*& variavel) const {
+                  return variavel->getIdentificador();
+              }
+          };
+
+          struct checkInicializacaoVisitor : public static_visitor<void>{
+              template <typename V>
+              void operator()(Variavel<V>*& variavel) const {
+                  variavel->checkInicializacao();
+              }
+          };
+  };
+
+  typedef VariavelPolimorfo<
+      Variavel<int>*, Variavel<double>*,
+      Variavel<bool>*,
+      Variavel<char>*, Variavel<string>*,
+      Variavel<void>*
+  > VariavelFundamental;
+
+  template <typename T>
   class Variavel : public Nodo<T> {
       private:
+          bool inicializacao;
           string identificador;
           T* valor;
       public:
@@ -22,8 +71,18 @@ namespace AnaliseSemantica {
               return *valor;
           }
 
-          void setReferencia(T* valor){
-              this->valor = valor;
+          void setReferencia(){
+              inicializacao = true;
+          }
+
+          string getIdentificador(){
+              return identificador;
+          }
+
+          void checkInicializacao(){
+              if(!inicializacao){
+                  throw new Erro("variavel " + identificador + " nao inicializada.");
+              }
           }
   };
 
@@ -31,6 +90,7 @@ namespace AnaliseSemantica {
   class Variavel<void> : public Nodo<void> {
       private:
           string identificador;
+
       public:
           Variavel(string identificador) : identificador(identificador){ }
 
@@ -40,14 +100,13 @@ namespace AnaliseSemantica {
 
           void executar(Contexto* contexto){ }
 
-          // void setReferencia(T* valor){ }
-  };
+          void setReferencia(){ }
 
-  typedef Polimorfo<
-      Variavel<int>*, Variavel<double>*,
-      Variavel<bool>*,
-      Variavel<char>*, Variavel<string>*,
-      Variavel<void>*
-  > VariavelFundamental;
+          string getIdentificador(){
+              return identificador;
+          }
+
+          void checkInicializacao(){ }
+  };
 
 }

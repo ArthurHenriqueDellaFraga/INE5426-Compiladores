@@ -35,8 +35,8 @@ namespace AnaliseSemantica {
           struct AddVisitor : public static_visitor<void>{
               string identificador;
 
-              template <typename U>
-              void operator()(Definicao<U>*& definicao) const {
+              template <typename V>
+              void operator()(Definicao<V>*& definicao) const {
                   definicao->add(identificador);
               }
           };
