@@ -42,16 +42,33 @@ namespace AnaliseSemantica {
             Primitivo(bool valor) : valor(valor) { };
 
             void print(){
-                cout << "valor " << "booleano" << " ";
-                if(valor){
-                    cout << "TRUE";
-                }else{
-                    cout << "FALSE";
-                }
+                cout << boolalpha << valor;
             }
 
             bool executar(Contexto* contexto){
                 return valor;
+            }
+    };
+
+    template<>
+    class Primitivo<double> : public Nodo<double>{
+        public:
+            string valor;
+            Primitivo(string valor) {
+                for(int i = 0; i < valor.size(); i++){
+                    if(valor.at(i) == '.'){
+                        this->valor = valor.substr(0, i+3);
+                        break;
+                    }
+                }
+            };
+
+            void print(){
+                cout << valor;
+            }
+
+            double executar(Contexto* contexto){
+                return atof(valor.c_str());
             }
     };
 

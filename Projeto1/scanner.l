@@ -58,11 +58,11 @@ letra [a-zA-Z]
                                   return INTEIRO;
                               }
 {digito}*"."{digito}+         {
-                                  yylval._double = atof(yytext);
+                                  yylval._string = new string(yytext);
                                   return RACIONAL;
                               }
 {digito}+"."{digito}*         {
-                                  yylval._double = atof(yytext);
+                                  yylval._string = new string(yytext);
                                   return RACIONAL;
                               }
 "TRUE"                        {

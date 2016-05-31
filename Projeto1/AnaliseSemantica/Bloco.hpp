@@ -17,6 +17,7 @@ namespace AnaliseSemantica {
           void print(){
               for(int i=0; i < listaDeInstrucoes.size(); i++){
                   listaDeInstrucoes[i].print();
+                  cout << endl;
               }
           }
           void executar(Contexto* contexto){
@@ -27,7 +28,7 @@ namespace AnaliseSemantica {
 
           void addInstrucao(NodoFundamental instrucao){
               listaDeInstrucoes.push_back(instrucao);
-              
+
               instrucao.print();
               cout << endl;
 

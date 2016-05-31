@@ -82,7 +82,7 @@ odoFundamental
 %token ABRE_CHAVES FECHA_CHAVES
 
 %token <_int> INTEIRO
-%token <_double> RACIONAL
+%token <_string> RACIONAL
 %token <_bool> BOOLEANO
 %token <_char> CARACTER
 %token <_string> SENTENCA
@@ -252,7 +252,7 @@ inteiro
     }
 
 racional
-    : RACIONAL { $$ = new Racional($1); }
+    : RACIONAL { $$ = new Racional(*$1); }
 
     | SUBTRACAO racional {
             $$ = new Subtracao_unaria<double>($2);
