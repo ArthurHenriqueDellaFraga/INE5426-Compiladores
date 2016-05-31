@@ -195,29 +195,15 @@ instrucao
     }
 
     | instrucao SOMA instrucao {
-            NodoFundamental nF;
-
-            try{
-                nF = Soma<>::instanciar(*$1, *$3);
-            }
-            catch(Erro* erro){
-                erro->print();
-                exit(1);
-            }
-            $$ = &nF;
+            $$ = Soma<>::instanciar(*$1, *$3);
     }
 
     | instrucao SUBTRACAO instrucao {
-            NodoFundamental nF;
+            $$ = Subtracao<>::instanciar(*$1, *$3);
+    }
 
-            try{
-                nF = Subtracao<>::instanciar(*$1, *$3);
-            }
-            catch(Erro* erro){
-                erro->print();
-                exit(1);
-            }
-            $$ = &nF;
+    | SUBTRACAO instrucao {
+            $$ = SubtracaoUnaria<>::instanciar(*$2);
     }
 
     | instrucao MULTIPLICACAO instrucao {
@@ -243,20 +229,12 @@ instrucao
 inteiro
     : INTEIRO { $$ = new Inteiro($1); }
 
-    | SUBTRACAO inteiro {
-            $$ = new Subtracao_unaria<int>($2);
-    }
-
     | ABRE_PARENTESES inteiro FECHA_PARENTESES {
             $$ = new Parenteses<int>($2);
     }
 
 racional
     : RACIONAL { $$ = new Racional(*$1); }
-
-    | SUBTRACAO racional {
-            $$ = new Subtracao_unaria<double>($2);
-    }
 
     | ABRE_PARENTESES racional FECHA_PARENTESES {
             $$ = new Parenteses<double>($2);

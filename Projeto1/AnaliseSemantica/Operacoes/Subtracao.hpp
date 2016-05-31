@@ -6,92 +6,116 @@ using namespace std;
 
 namespace AnaliseSemantica {
 
-    template <typename T = void, typename L = void, typename R = void>
+    template <typename T = int, typename L = void, typename R = void>
     class Subtracao : public OperacaoBinaria<T, L, R>{
 
         public:
             Subtracao(Nodo<L>* left, Nodo<R>* right) : OperacaoBinaria<T, L, R>(left, "subtracao", right){ }
-
-        public:
 
             T executar(Contexto* contexto){
                 return *(new T);
                 // return left->executar(contexto) + right->executar(contexto);
             }
 
-            static NodoFundamental instanciar(NodoFundamental left, NodoFundamental right){
+            static NodoFundamental* instanciar(NodoFundamental left, NodoFundamental right){
                 return apply_visitor(createVisitor (), left, right);
             }
 
         protected:
-        struct createVisitor : public static_visitor<NodoFundamental>{
-            string errorMessage = "operacao subtracao espera inteiro ou real mas recebeu ";
+            struct createVisitor : public static_visitor<NodoFundamental*>{
+                string mensagemDeErro = "operacao Subtracao espera inteiro ou real mas recebeu ";
 
-            NodoFundamental operator()(Nodo<int>*& left, Nodo<int>*& right) const {
-                NodoFundamental nodo;
-                nodo = new Subtracao<int, int, int>(left, right);
-                return nodo;
-            }
+                NodoFundamental* operator()(Nodo<int>*& left, Nodo<int>*& right) const {
+                    return new NodoFundamental(new Subtracao<int, int, int>(left, right));
+                }
 
-            NodoFundamental operator()(Nodo<double>*& left, Nodo<double>*& right) const {
-                NodoFundamental nodo;
-                nodo = new Subtracao<double, double, double>(left, right);
-                return nodo;
-            }
+                NodoFundamental* operator()(Nodo<double>*& left, Nodo<double>*& right) const {
+                    return new NodoFundamental(new Subtracao<double, double, double>(left, right));
+                }
 
-            NodoFundamental operator()(Nodo<double>*& left, Nodo<int>*& right) const {
-                NodoFundamental nodo;
-                nodo = new Subtracao<double, double, int>(left, right);
-                return nodo;
-            }
+                NodoFundamental* operator()(Nodo<double>*& left, Nodo<int>*& right) const {
+                    Nodo<double>* conversao = new Conversao<double, int>(right);
+                    return new NodoFundamental(new Subtracao<double, double, double>(left, conversao));
+                }
 
-            NodoFundamental operator()(Nodo<int>*& left, Nodo<double>*& right) const {
-                NodoFundamental nodo;
-                nodo = new Subtracao<double, int, double>(left, right);
-                return nodo;
-            }
+                NodoFundamental* operator()(Nodo<int>*& left, Nodo<double>*& right) const {
+                    Nodo<double>* conversao = new Conversao<double, int>(left);
+                    return new NodoFundamental(new Subtracao<double, double, double>(conversao, right));
+                }
 
-            template <typename V, typename W>
-            NodoFundamental operator()(Nodo<V>*& left, Nodo<W>*& right) const {
-                throw new Erro(errorMessage + left->getTipo()->getIdentificadorMasculino() + " e " + right->getTipo()->getIdentificadorMasculino() + ".");
-            }
 
-            template<typename V>
-            NodoFundamental operator()(Nodo<int>*& left, Nodo<V>*& right) const {
-                throw new Erro(errorMessage + right->getTipo()->getIdentificadorMasculino() + ".");
-            }
 
-            template<typename V>
-            NodoFundamental operator()(Nodo<V>*& left, Nodo<int>*& right) const {
-                throw new Erro(errorMessage + left->getTipo()->getIdentificadorMasculino() + ".");
-            }
+                template <typename V, typename W>
+                NodoFundamental* operator()(Nodo<V>*& left, Nodo<W>*& right) const {
+                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + " e " + right->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new NodoFundamental(new Subtracao<int, V, W>(left, right));
+                }
 
-            template<typename V>
-            NodoFundamental operator()(Nodo<double>*& left, Nodo<V>*& right) const {
-                throw new Erro(errorMessage + right->getTipo()->getIdentificadorMasculino() + ".");
-            }
+                template <typename V>
+                NodoFundamental* operator()(Nodo<int>*& left, Nodo<V>*& right) const {
+                    Erro* erro = new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new NodoFundamental(new Subtracao<int, int, V>(left, right));
+                }
 
-            template<typename V>
-            NodoFundamental operator()(Nodo<V>*& left, Nodo<double>*& right) const {
-                throw new Erro(errorMessage + left->getTipo()->getIdentificadorMasculino() + ".");
-            }
-        };
+                template <typename V>
+                NodoFundamental* operator()(Nodo<V>*& left, Nodo<int>*& right) const {
+                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new NodoFundamental(new Subtracao<int, V, int>(left, right));
+                }
+
+                template <typename V>
+                NodoFundamental* operator()(Nodo<double>*& left, Nodo<V>*& right) const {
+                    Erro* erro = new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new NodoFundamental(new Subtracao<double, double, V>(left, right));
+                }
+
+                template <typename V>
+                NodoFundamental* operator()(Nodo<V>*& left, Nodo<double>*& right) const {
+                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new NodoFundamental(new Subtracao<double, V, double>(left, right));
+                }
+            };
     };
 
-    template<typename T>
-    class Subtracao_unaria : public OperacaoUnaria<T> {
+    template <typename T = int, typename N = void>
+    class SubtracaoUnaria : public OperacaoUnaria<T, N> {
         public:
-            Subtracao_unaria(Nodo<T>* nodo) : OperacaoUnaria<T>(nodo) { }
+            SubtracaoUnaria(Nodo<N>* nodo) : OperacaoUnaria<T, N>(nodo) { }
 
             void print(){
-                cout << "((menos unario " << this->nodo->getTipo()->getIdentificadorMasculino() <<") ";
+                cout << "((menos unario " << this->getTipo()->getIdentificadorMasculino() <<") ";
                 this->nodo->print();
                 cout << ")";
-
             }
 
-            T executar(Contexto* contexto){
-                return this->nodo->executar(contexto);
+            static NodoFundamental* instanciar(NodoFundamental nodo){
+                return apply_visitor(createVisitor (), nodo);
             }
+
+        protected:
+            struct createVisitor : public static_visitor<NodoFundamental*>{
+                string mensagemDeErro = "operacao SubtracaoUnaria espera inteiro ou real mas recebeu ";
+
+                NodoFundamental* operator()(Nodo<int>*& nodo) const {
+                    return new NodoFundamental(new SubtracaoUnaria<int, int>(nodo));
+                }
+
+                NodoFundamental* operator()(Nodo<double>*& nodo) const {
+                    return new NodoFundamental(new SubtracaoUnaria<double, double>(nodo));
+                }
+
+                template <typename V>
+                NodoFundamental* operator()(Nodo<V>*& nodo) const {
+                    Erro* erro = new Erro(mensagemDeErro + nodo->getTipo()->getIdentificadorMasculino() + ".");
+                    erro->print();
+                    return new NodoFundamental(new SubtracaoUnaria<int, V>(nodo));
+                }
+            };
+
     };
 }
