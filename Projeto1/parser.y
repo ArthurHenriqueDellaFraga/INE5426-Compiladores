@@ -266,7 +266,7 @@ booleano
 
     | NEGACAO_BOOLEANA instrucao {
         try{
-            $$ = Negacao_booleana<>::instanciar(*$2);
+            $$ = NegacaoBooleana::instanciar(*$2);
         }
         catch(Erro* erro){
             erro->print();
@@ -275,7 +275,14 @@ booleano
     }
 
     | instrucao IGUAL instrucao {
-        $$ = Igual<>::instanciar(*$1, *$3);
+        try{
+            $$ = Igual<>::instanciar(*$1, *$3);
+        }
+        catch(Erro* erro){
+            erro->print();
+            exit(1);
+        }
+
     }
 
     | instrucao DIFERENTE instrucao {
@@ -310,7 +317,7 @@ booleano
 
     | instrucao OR instrucao {
         try{
-            $$ = Or<>::instanciar(*$1, *$3);
+            $$ = Or::instanciar(*$1, *$3);
         }
         catch(Erro* erro){
             erro->print();
