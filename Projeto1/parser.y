@@ -11,6 +11,8 @@
     #include "AnaliseSemantica/Operacoes/Divisao.hpp"
     #include "AnaliseSemantica/Operacoes/Parenteses.hpp"
 
+    #include "AnaliseSemantica/Arranjo.hpp"
+
     #include <stdio.h>
     #include <stdlib.h>
 
@@ -57,8 +59,8 @@
 
 %token NOVA_LINHA
 
-%token DEFINICAO
 %token ATRIBUICAO
+%token DEFINICAO
 
 %token SOMA
 %token SUBTRACAO
@@ -78,9 +80,10 @@
 
 %token VIRGULA
 %token PONTO
-odoFundamental
+
 %token ABRE_PARENTESES FECHA_PARENTESES
 %token ABRE_CHAVES FECHA_CHAVES
+%token ABRE_COLCHETE FECHA_COLCHETE
 
 %token <_int> INTEIRO
 %token <_string> RACIONAL
@@ -145,11 +148,6 @@ bloco
     }
 
     | bloco NOVA_LINHA { }
-
-    | definicao VIRGULA definicao {
-            $1->print();
-            $3->print();
-    }
 
 instrucao
     : inteiro {
@@ -315,10 +313,35 @@ definicao
             $$->add(*$3);
     }
 
+    | IDENTIFICADOR ABRE_COLCHETE instrucao FECHA_COLCHETE DEFINICAO IDENTIFICADOR {
+            TipoFundamental tF;
+            tF = Tipo<>::instanciar(*$1);
+
+            try{
+                $$ = DefinicaoArranjo<>::instanciarArranjo(tF, *$3, *$6);
+            }
+            catch(Erro* erro){
+                erro->print();
+                exit(1);
+            }
+    }
+
 atribuicao
     : variavel ATRIBUICAO instrucao {
             try{
               $$ = Atribuicao<int>::instanciar(*$1, *$3);
+            }
+            catch(Erro* erro){
+                erro->print();
+                exit(1);
+            }
+    }
+
+    | IDENTIFICADOR ABRE_COLCHETE instrucao FECHA_COLCHETE ATRIBUICAO instrucao {
+            try{
+                ArranjoFundamental arranjo = contexto->getArranjo(*$1);
+
+                $$ = AtribuicaoArranjo<int>::instanciarArranjo(arranjo, *$3, *$6);
             }
             catch(Erro* erro){
                 erro->print();

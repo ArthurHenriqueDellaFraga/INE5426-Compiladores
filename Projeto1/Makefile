@@ -26,3 +26,8 @@ test: all
 
 execute: all
 	./${OUTPUT}
+
+yacc_debug: parser.y
+	${BISON} --defines=parser.h --output=parser.cpp --debug parser.y
+
+debug: flex yacc_debug clang

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Conversao.hpp"
+#include <boost/variant/multivisitors.hpp>
 
 using namespace boost;
 using namespace std;
@@ -22,6 +23,8 @@ namespace AnaliseSemantica {
         public:
             Variavel<T>* variavel;
             Nodo<U>* valor;
+
+            Atribuicao() {}
 
             Atribuicao(Variavel<T>* variavel, Nodo<U>* valor) : variavel(variavel), valor(valor){
                 //static_assert(std::is_convertible<T, U>::value, "Atribuicao incompatível");
@@ -66,6 +69,59 @@ namespace AnaliseSemantica {
                 NodoFundamental* operator()(Variavel<void>*& variavel, Nodo<void>*& valor) const {
                     return new NodoFundamental(new Atribuicao<void>(variavel, valor));
                 }
+            };
+    };
+    template <typename T>
+    class AtribuicaoArranjo : public Atribuicao<T>{
+        public:
+            Arranjo<T>* arranjo;
+            Nodo<int>* indice;
+            Nodo<T>* valor;
+            AtribuicaoArranjo(Arranjo<T>* arranjo, Nodo<int>* indice, Nodo<T>* valor) : arranjo(arranjo), indice(indice), valor(valor){
+            }
+            void print(){
+                cout << "Atribuicao de valor para ";
+                arranjo->print();
+                cout<< " " << arranjo->getIdentificador() << " ";
+                cout << "{+indice: ";
+                indice->print();
+                cout <<"}: ";
+                valor-> print();
+            }
+            
+            void executar(Contexto* contexto){}
+
+            static NodoFundamental* instanciarArranjo(ArranjoFundamental arranjo, NodoFundamental indice, NodoFundamental valor){
+                return apply_visitor(createTipoVisitor (), arranjo, indice, valor);
+            }
+
+        protected:
+            struct createTipoVisitor : public static_visitor<NodoFundamental*>{
+                string errorMessage = "indice de arranjo espera inteiro mas rececebeu ";
+
+                template <typename V, typename W>
+                NodoFundamental* operator()(Arranjo<V>*& arranjo, Nodo<int>*& indice, Nodo<W>*& valor) const {
+                      ArranjoFundamental aF;
+                      aF = arranjo;
+                      NodoFundamental nF;
+                      nF = valor;
+                      NodoFundamental iF;
+                      iF = indice;
+
+                      NodoFundamental conversao = *(Conversao<>::instanciar(aF.getTipo(), nF));
+                      return AtribuicaoArranjo<V>::instanciarArranjo(aF, iF, conversao);
+                }
+
+                template <typename V>
+                NodoFundamental* operator()(Arranjo<V>*& arranjo, Nodo<int>*& indice, Nodo<V>*& valor) const {
+                    return new NodoFundamental(new AtribuicaoArranjo<V>(arranjo, indice, valor));
+                }
+
+                template <typename V,typename I, typename W>
+                NodoFundamental* operator()(Arranjo<V>*& arranjo, Nodo<I>*& indice, Nodo<W>*& valor) const {
+                    throw new Erro(errorMessage + indice->getTipo()->getIdentificadorMasculino() + "."); 
+                }
+
             };
     };
 }

@@ -43,11 +43,15 @@ letra [a-zA-Z]
 
 "~"                           {return NEGACAO_BOOLEANA;}
 
+":"                           {return DEFINICAO;}
 ":="                          {return ATRIBUICAO;}
 ":"                           {return DEFINICAO;}
 
 ","                           {return VIRGULA;}
 "."                           {return PONTO;}
+
+"["                           {return ABRE_COLCHETE;}
+"]"                           {return FECHA_COLCHETE;}
 
 "("                           {return ABRE_PARENTESES;}
 ")"                           {return FECHA_PARENTESES;}

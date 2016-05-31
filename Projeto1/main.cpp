@@ -13,6 +13,8 @@ extern int yyparse();
 int main(int argc, char **argv){
 
     contexto = new Contexto();
+    // extern int yydebug;
+    // yydebug = 1;
 
     try{
         yyparse();    //parses whole data
