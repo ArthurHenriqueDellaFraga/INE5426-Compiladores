@@ -86,12 +86,11 @@
 %token ABRE_COLCHETE FECHA_COLCHETE
 
 %token <_int> INTEIRO
-%token <_double> RACIONAL
+%token <_string> RACIONAL
 %token <_bool> BOOLEANO
 %token <_char> CARACTER
 %token <_string> SENTENCA
 
-%token <_string> TIPO
 %token <_string> IDENTIFICADOR
 
 // type defines the type of our nonterminal symbols.
@@ -115,17 +114,14 @@
  * The latest it is listed, the highest the precedence
  */
 
-%left AND
-%left OR
+%left AND OR
 
 %right NEGACAO_BOOLEANA
 
 %left IGUAL DIFERENTE MAIOR MENOR MAIOR_IGUAL MENOR_IGUAL
 
-%left SOMA
-%left SUBTRACAO
-%left MULTIPLICACAO
-%left DIVISAO
+%left SOMA SUBTRACAO
+%left MULTIPLICACAO DIVISAO
 %nonassoc errord
 
 /* Gramatica Sintática */
@@ -154,11 +150,7 @@ bloco
     | bloco NOVA_LINHA { }
 
 instrucao
-    : ABRE_PARENTESES instrucao FECHA_PARENTESES {
-            $$ = $2;
-    }
-
-    | inteiro {
+    : inteiro {
             $$ = Nodo<>::converter($1);
     }
 
@@ -187,7 +179,17 @@ instrucao
     }
 
     | variavel {
+            try{
+                $1->checkInicializacao();
+            }
+            catch(Erro* erro){
+                erro->print();
+            }
             $$ = Nodo<>::converter(*$1);
+    }
+
+    | ABRE_PARENTESES instrucao FECHA_PARENTESES {
+            $$ = Parenteses<>::instanciar(*$2);
     }
 
     | instrucao SOMA instrucao {
@@ -217,29 +219,23 @@ instrucao
     }
 
     | instrucao MULTIPLICACAO instrucao {
-            NodoFundamental nF;
-
             try{
-                nF = Multiplicacao<>::instanciar(*$1, *$3);
+                $$ = Multiplicacao<>::instanciar(*$1, *$3);
             }
             catch(Erro* erro){
                 erro->print();
                 exit(1);
             }
-            $$ = &nF;
     }
 
     | instrucao DIVISAO instrucao {
-            NodoFundamental nF;
-
             try{
-                nF = Divisao<>::instanciar(*$1, *$3);
+                $$ = Divisao<>::instanciar(*$1, *$3);
             }
             catch(Erro* erro){
                 erro->print();
                 exit(1);
             }
-            $$ = &nF;
     }
 
 inteiro
@@ -254,7 +250,7 @@ inteiro
     }
 
 racional
-    : RACIONAL { $$ = new Racional($1); }
+    : RACIONAL { $$ = new Racional(*$1); }
 
     | SUBTRACAO racional {
             $$ = new Subtracao_unaria<double>($2);
@@ -265,75 +261,68 @@ racional
     }
 
 booleano
-    : BOOLEANO {
-        $$ = new Booleano($1); }
+    : BOOLEANO { $$ = new Booleano($1); }
+
+    | ABRE_PARENTESES booleano FECHA_PARENTESES {
+            $$ = new Parenteses<bool>($2);
+    }
 
     | NEGACAO_BOOLEANA instrucao {
-        try{
-            $$ = Negacao_booleana<>::instanciar(*$2);
-        }
-        catch(Erro* erro){
-            erro->print();
-            exit(1);
-        }
+            $$ = NegacaoBooleana<>::instanciar(*$2);
     }
 
     | instrucao IGUAL instrucao {
-        $$ = Igual<>::instanciar(*$1, *$3);
+            $$ = Igual<>::instanciar(*$1, *$3);
     }
 
     | instrucao DIFERENTE instrucao {
-        $$ = Diferente<>::instanciar(*$1, *$3);
+            $$ = Diferente<>::instanciar(*$1, *$3);
     }
 
     | instrucao MAIOR instrucao {
-        $$ = Maior<>::instanciar(*$1, *$3);
+            $$ = Maior<>::instanciar(*$1, *$3);
     }
 
     | instrucao MENOR instrucao {
-        $$ = Menor<>::instanciar(*$1, *$3);
+            $$ = Menor<>::instanciar(*$1, *$3);
     }
 
     | instrucao MAIOR_IGUAL instrucao {
-        $$ = MaiorIgual<>::instanciar(*$1, *$3);
+            $$ = MaiorIgual<>::instanciar(*$1, *$3);
     }
 
     | instrucao MENOR_IGUAL instrucao {
-        $$ = MenorIgual<>::instanciar(*$1, *$3);
+            $$ = MenorIgual<>::instanciar(*$1, *$3);
     }
 
     | instrucao AND instrucao {
-        try{
-            $$ = And::instanciar(*$1, *$3);
-        }
-        catch(Erro* erro){
-            erro->print();
-            exit(1);
-        }
+            $$ = And<>::instanciar(*$1, *$3);
     }
 
     | instrucao OR instrucao {
-        try{
             $$ = Or<>::instanciar(*$1, *$3);
-        }
-        catch(Erro* erro){
-            erro->print();
-            exit(1);
-        }
     }
 
 caracter
     : CARACTER { $$ = new Caracter($1); }
 
+    | ABRE_PARENTESES caracter FECHA_PARENTESES {
+            $$ = new Parenteses<char>($2);
+    }
+
 sentenca
     : SENTENCA { $$ = new Sentenca(*$1); }
 
+    | ABRE_PARENTESES sentenca FECHA_PARENTESES {
+            $$ = new Parenteses<string>($2);
+    }
+
 definicao
     : IDENTIFICADOR DEFINICAO IDENTIFICADOR {
-            TipoFundamental tF;
-            tF = Tipo<>::instanciar(*$1);
-
             try{
+                TipoFundamental tF;
+                tF = Tipo<>::instanciar(*$1);
+
                 $$ = Definicao<>::instanciar(tF, *$3);
             }
             catch(Erro* erro){
@@ -362,7 +351,7 @@ definicao
 atribuicao
     : variavel ATRIBUICAO instrucao {
             try{
-                $$ = Atribuicao<int>::instanciar(*$1, *$3);
+              $$ = Atribuicao<int>::instanciar(*$1, *$3);
             }
             catch(Erro* erro){
                 erro->print();
@@ -384,15 +373,8 @@ atribuicao
 
 variavel
     : IDENTIFICADOR {
-            try{
-                VariavelFundamental vF;
-                vF = contexto->getVariavel(*$1);
-                $$ = &vF;
-            }
-            catch(Erro* erro){
-                erro->print();
-                exit(1);
-            }
+            $$ = contexto->getVariavel(*$1);
     }
+;
 
 %%

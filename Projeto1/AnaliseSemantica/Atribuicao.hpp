@@ -27,7 +27,7 @@ namespace AnaliseSemantica {
             Atribuicao() {}
 
             Atribuicao(Variavel<T>* variavel, Nodo<U>* valor) : variavel(variavel), valor(valor){
-                static_assert(std::is_convertible<T, U>::value, "Atribuicao incompatível");
+                //static_assert(std::is_convertible<T, U>::value, "Atribuicao incompatível");
             }
 
             void print(){
@@ -37,6 +37,7 @@ namespace AnaliseSemantica {
                 valor-> print();
             }
             void executar(Contexto* contexto){
+                variavel->setReferencia();
                 //variavel->setReferencia(new T(valor->executar(contexto)));
             }
 
@@ -48,13 +49,11 @@ namespace AnaliseSemantica {
             struct createVisitor : public static_visitor<NodoFundamental*>{
                 template <typename V, typename W>
                 NodoFundamental* operator()(Variavel<V>*& variavel, Nodo<W>*& valor) const {
-                      VariavelFundamental vF;
-                      vF = variavel;
-                      NodoFundamental nF;
-                      nF = valor;
+                      VariavelFundamental* vF = new VariavelFundamental(variavel);
+                      NodoFundamental* nF = new NodoFundamental(valor);
 
-                      NodoFundamental conversao = *(Conversao<>::instanciar(vF.getTipo(), nF));
-                      return Atribuicao<int>::instanciar(vF, conversao);
+                      NodoFundamental* conversao = Conversao<>::instanciar(vF->getTipo(), *nF);
+                      return Atribuicao<int>::instanciar(*vF, *conversao);
                 }
 
                 template <typename V>
@@ -62,22 +61,24 @@ namespace AnaliseSemantica {
                     return new NodoFundamental(new Atribuicao<V>(variavel, valor));
                 }
 
+                template <typename V>
+                NodoFundamental* operator()(Variavel<void>*& variavel, Nodo<V>*& valor) const {
+                    return new NodoFundamental(new Atribuicao<void, V>(variavel, valor));
+                }
+
                 NodoFundamental* operator()(Variavel<void>*& variavel, Nodo<void>*& valor) const {
-                    throw new Erro("erro");
+                    return new NodoFundamental(new Atribuicao<void>(variavel, valor));
                 }
             };
     };
-
     template <typename T>
     class AtribuicaoArranjo : public Atribuicao<T>{
         public:
             Arranjo<T>* arranjo;
             Nodo<int>* indice;
             Nodo<T>* valor;
-
             AtribuicaoArranjo(Arranjo<T>* arranjo, Nodo<int>* indice, Nodo<T>* valor) : arranjo(arranjo), indice(indice), valor(valor){
             }
-
             void print(){
                 cout << "Atribuicao de valor para ";
                 arranjo->print();

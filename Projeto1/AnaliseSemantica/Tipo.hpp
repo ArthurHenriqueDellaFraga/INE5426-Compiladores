@@ -38,18 +38,26 @@ namespace AnaliseSemantica {
               map<string, TipoFundamental(*)()> _tipo;
                 _tipo["int"] = &createTipo<int>;
                 _tipo["double"] = &createTipo<double>;
+                    _tipo["real"] = &createTipo<double>;
                 _tipo["bool"] = &createTipo<bool>;
                 _tipo["char"] = &createTipo<char>;
                 _tipo["string"] = &createTipo<string>;
+
+                // map<string, TipoFundamental(*)()>::iterator it;
+                // it = _tipo.find(identificador);
+                //
+                // if(it != _tipo.end()){
+                //     throw new Erro("Tipo " + identificador + " não declarado");
+                // }
 
                 return _tipo[identificador]();
           }
 
       protected:
-          template <typename U>
+          template <typename V>
           static TipoFundamental createTipo(){
               TipoFundamental tipo;
-              tipo = new Tipo<U>();
+              tipo = new Tipo<V>();
               return tipo;
           }
   };

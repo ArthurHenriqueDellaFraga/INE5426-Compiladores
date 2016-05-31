@@ -14,7 +14,11 @@ namespace AnaliseSemantica {
           Nodo<U>* valor;
 
           Conversao(Tipo<T>* tipo, Nodo<U>* valor) : tipo(tipo), valor(valor){
-              static_assert(std::is_convertible<T, U>::value, "static_assert: Conversão inválida");
+              //static_assert(std::is_convertible<T, U>::value, "static_assert: Conversão inválida");
+          }
+
+          Conversao(Nodo<U>* valor) : valor(valor){
+              tipo = new Tipo<T>();
           }
 
           void print(){
@@ -33,7 +37,7 @@ namespace AnaliseSemantica {
         struct ConversaoVisitor : public static_visitor<NodoFundamental*>{
             template <typename V, typename W>
             NodoFundamental* operator()(Tipo<V>*& tipo, Nodo<W>* valor) const {
-                throw new Erro("Tipos Incompativeis");
+                throw new Erro("Conversao invalida");
             }
 
             template <typename V>
@@ -42,7 +46,7 @@ namespace AnaliseSemantica {
             }
 
             NodoFundamental* operator()(Tipo<void>*& tipo, Nodo<void>*& valor) const {
-                throw new Erro("Tipos Incompativeis");
+                throw new Erro("Conversao invalida");
             }
 
             NodoFundamental* operator()(Tipo<int>*& tipo, Nodo<double>*& valor) const {

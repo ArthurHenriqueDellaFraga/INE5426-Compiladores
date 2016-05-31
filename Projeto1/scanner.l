@@ -17,6 +17,11 @@ letra [a-zA-Z]
 
 %%
 
+"exit"                        {
+                                  cout << "-- fim da compilacao --" << endl;
+                                  exit(0);
+                              }
+
 [ \t]                         ; //ignora espaços
 \n                            {return NOVA_LINHA;}
 ";"                           {return NOVA_LINHA;}
@@ -40,6 +45,7 @@ letra [a-zA-Z]
 
 ":"                           {return DEFINICAO;}
 ":="                          {return ATRIBUICAO;}
+":"                           {return DEFINICAO;}
 
 ","                           {return VIRGULA;}
 "."                           {return PONTO;}
@@ -56,8 +62,12 @@ letra [a-zA-Z]
                                   yylval._int = atoi(yytext);
                                   return INTEIRO;
                               }
-{digito}+"."{digito}+         {
-                                  yylval._double = atof(yytext);
+{digito}*"."{digito}+         {
+                                  yylval._string = new string(yytext);
+                                  return RACIONAL;
+                              }
+{digito}+"."{digito}*         {
+                                  yylval._string = new string(yytext);
                                   return RACIONAL;
                               }
 "TRUE"                        {
@@ -81,7 +91,6 @@ letra [a-zA-Z]
                                   yylval._string = new string(yytext);
                                   return IDENTIFICADOR;
                               }
-
 
 .                             {yyerror("léxico: simbolo desconhecido: %c\n", *yytext);}
 

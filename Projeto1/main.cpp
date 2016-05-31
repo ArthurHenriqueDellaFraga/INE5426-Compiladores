@@ -16,11 +16,17 @@ int main(int argc, char **argv){
     // extern int yydebug;
     // yydebug = 1;
 
-    yyparse();                  //parses whole data
+    try{
+        yyparse();    //parses whole data
+    }
+    catch(Erro* erro){
+        erro->print();
+        exit(1);
+    }
+                 
     cout << endl << endl;
-
     raizDoPrograma->print();
-    // raizDoPrograma->executar(contexto);
+    //raizDoPrograma->executar(contexto);
 
     return 0;
 }
