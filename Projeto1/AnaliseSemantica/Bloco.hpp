@@ -29,12 +29,11 @@ namespace AnaliseSemantica {
 
           virtual void addInstrucao(NodoFundamental instrucao){
               listaDeInstrucoes.push_back(instrucao);
-
-              instrucao.print();
-              cout << endl;
-
+              
               try{
                   instrucao.executar(contexto);
+                  instrucao.print();
+                  cout << endl;
               }
               catch(Erro* erro){
                   erro->print();

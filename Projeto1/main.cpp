@@ -13,6 +13,8 @@ extern int yyparse();
 int main(int argc, char **argv){
 
     contexto = new Contexto();
+    // extern int yydebug;
+    // yydebug = 1;
 
     try{
         yyparse();    //parses whole data
@@ -23,7 +25,7 @@ int main(int argc, char **argv){
     }
 
     cout << endl << endl;
-    raizDoPrograma->print();
+    //raizDoPrograma->print();
     //raizDoPrograma->executar(contexto);
 
     return 0;

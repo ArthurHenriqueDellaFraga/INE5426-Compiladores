@@ -27,7 +27,6 @@ namespace AnaliseSemantica {
           template<typename T>
           DefinicaoPolimorfo<Types...>& operator=(const T& t){
               Polimorfo<Types...>::operator=(t);
-              //this->inicializado = true;
               return *this;
           }
 
@@ -56,6 +55,8 @@ namespace AnaliseSemantica {
           vector<string> listaDeIdentificadores;
 
       public:
+          Definicao() {}
+
           Definicao(Tipo<T>* tipo, string identificador) : tipo(tipo){
               add(identificador);
           }
@@ -95,6 +96,51 @@ namespace AnaliseSemantica {
             template <typename V>
             DefinicaoFundamental* operator()(Tipo<V>*& tipo) const {
                 return new DefinicaoFundamental(new Definicao<V>(tipo, identificador));
+            }
+        };
+  };
+
+  template <typename T = void>
+  class DefinicaoArranjo : public Definicao<void>{
+      protected:
+          Tipo<T>* tipo;
+          Nodo<int>* tamanho;
+          string identificador;
+          int tamanhoArranjo;
+
+      public:
+          DefinicaoArranjo(Tipo<T>* tipo, Nodo<int>* tamanho, string identificador) : tipo(tipo), tamanho(tamanho), identificador(identificador){ }
+
+          void print(){
+              cout << "Declaracao de arranjo "<< tipo->getIdentificadorMasculino() << " de tamanho " << tamanhoArranjo;
+              cout << ": " << identificador;
+          }
+
+          void executar(Contexto* contexto){
+              tamanhoArranjo = tamanho->executar(contexto);
+              ArranjoFundamental arranjo = new Arranjo<T>(identificador, tamanhoArranjo);
+              contexto->putArranjo(identificador, arranjo);
+          }
+
+          static DefinicaoFundamental* instanciarArranjo(TipoFundamental tipo, NodoFundamental tamanho, string identificador){
+              createArranjoVisitor visitor;
+              visitor.identificador = identificador;
+              return apply_visitor(visitor, tipo, tamanho);
+          }
+
+      protected:
+        struct createArranjoVisitor : public static_visitor<DefinicaoFundamental*>{
+            string errorMessage = "indice de arranjo espera inteiro mas rececebeu ";
+            string identificador;
+
+            template <typename U>
+            DefinicaoFundamental* operator()(Tipo<U>*& tipo, Nodo<int>*& tamanho) const {
+                return new DefinicaoFundamental(new DefinicaoArranjo<U>(tipo, tamanho, identificador));
+            }
+
+            template <typename U, typename V>
+            DefinicaoFundamental* operator()(Tipo<U>*& tipo, Nodo<V>*& tamanho) const {
+                throw new Erro(errorMessage + tamanho->getTipo()->getIdentificadorMasculino() + ".");
             }
         };
   };
