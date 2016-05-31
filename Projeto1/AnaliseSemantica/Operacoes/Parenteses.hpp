@@ -12,13 +12,9 @@ namespace AnaliseSemantica {
 		        Parenteses(Nodo<T>* nodo) : OperacaoUnaria<T>(nodo) { }
 
 		        void print(){
-		        	cout << "((abre parenteses) ";
-		        	this->nodo->print();
-		        	cout<< " (fecha parenteses))";
-		        }
-
-		        T executar(Contexto* contexto){
-		            return this->nodo->executar(contexto);
+			        	cout << "((abre parenteses) ";
+			        	this->nodo->print();
+			        	cout<< " (fecha parenteses))";
 		        }
 
 						static NodoFundamental* instanciar(NodoFundamental nodo){
@@ -27,24 +23,10 @@ namespace AnaliseSemantica {
 
 				protected:
 						struct createVisitor : public static_visitor<NodoFundamental*>{
-								template <typename U>
-								NodoFundamental* operator()(Nodo<U>*& nodo) const {
-										return new NodoFundamental(new Parenteses<U>(nodo));
+								template <typename V>
+								NodoFundamental* operator()(Nodo<V>*& nodo) const {
+										return new NodoFundamental(new Parenteses<V>(nodo));
 								}
 						};
     };
-
-		template<>
-		class Parenteses<void> : public OperacaoUnaria<void> {
-				public:
-						Parenteses(Nodo<void>* nodo) : OperacaoUnaria<void>(nodo) { }
-
-						void print(){
-							cout << "((abre parenteses) ";
-							this->nodo->print();
-							cout<< " (fecha parenteses))";
-						}
-
-						void executar(Contexto* contexto){ }
-		};
 }
