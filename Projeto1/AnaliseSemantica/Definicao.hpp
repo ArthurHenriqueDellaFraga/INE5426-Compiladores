@@ -102,12 +102,12 @@ namespace AnaliseSemantica {
   class DefinicaoArranjo : public Definicao<void>{
       protected:
           Tipo<T>* tipo;
-          NodoFundamental tamanho;
+          Nodo<int>* tamanho;
           string identificador;
           int tamanhoArranjo;
 
       public:
-          DefinicaoArranjo(Tipo<T>* tipo, NodoFundamental tamanho, string identificador) : tipo(tipo), tamanho(tamanho), identificador(identificador){ }
+          DefinicaoArranjo(Tipo<T>* tipo, Nodo<int>* tamanho, string identificador) : tipo(tipo), tamanho(tamanho), identificador(identificador){ }
 
           void print(){
               cout << "Declaracao de arranjo "<< tipo->getIdentificadorMasculino() << " de tamanho " << tamanhoArranjo;
@@ -115,43 +115,30 @@ namespace AnaliseSemantica {
           }
 
           void executar(Contexto* contexto){
-              createTamanhoVisitor tamanhoVisitor;
-              tamanhoVisitor.contexto = contexto;
-              tamanhoArranjo = apply_visitor(tamanhoVisitor, tamanho);
-              cout << "tmanaho kakaskas: " << tamanhoArranjo;
+              tamanhoArranjo = tamanho->executar(contexto);
               ArranjoFundamental arranjo = new Arranjo<T>(identificador, tamanhoArranjo);
               contexto->putArranjo(identificador, arranjo);
           }
 
           static DefinicaoFundamental* instanciarArranjo(TipoFundamental tipo, NodoFundamental tamanho, string identificador){
               createArranjoVisitor visitor;
-              visitor.tamanho = tamanho;
               visitor.identificador = identificador;
-              return apply_visitor(visitor, tipo);
+              return apply_visitor(visitor, tipo, tamanho);
           }
 
       protected:
         struct createArranjoVisitor : public static_visitor<DefinicaoFundamental*>{
-            NodoFundamental tamanho;
+            string errorMessage = "indice de arranjo espera inteiro mas rececebeu ";
             string identificador;
 
             template <typename U>
-            DefinicaoFundamental* operator()(Tipo<U>*& tipo) const {
+            DefinicaoFundamental* operator()(Tipo<U>*& tipo, Nodo<int>*& tamanho) const {
                 return new DefinicaoFundamental(new DefinicaoArranjo<U>(tipo, tamanho, identificador));
             }
-        };
 
-        struct createTamanhoVisitor : public static_visitor<int>{
-            string errorMessage = "indice de arranjo espera inteiro mas rececebeu ";
-            Contexto* contexto;
-
-            template <typename U>
-            int operator()(Nodo<U>*& tamanho) const {
+            template <typename U, typename V>
+            DefinicaoFundamental* operator()(Tipo<U>*& tipo, Nodo<V>*& tamanho) const {
                 throw new Erro(errorMessage + tamanho->getTipo()->getIdentificadorMasculino() + ".");
-            }
-
-            int operator()(Nodo<int>*& tamanho) const {
-                return tamanho->executar(contexto);
             }
         };
   };

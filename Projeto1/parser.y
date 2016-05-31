@@ -329,12 +329,12 @@ sentenca
     : SENTENCA { $$ = new Sentenca(*$1); }
 
 definicao
-    : TIPO IDENTIFICADOR {
+    : IDENTIFICADOR DEFINICAO IDENTIFICADOR {
             TipoFundamental tF;
             tF = Tipo<>::instanciar(*$1);
 
             try{
-                $$ = Definicao<>::instanciar(tF, *$2);
+                $$ = Definicao<>::instanciar(tF, *$3);
             }
             catch(Erro* erro){
                 erro->print();
@@ -349,31 +349,38 @@ definicao
     | IDENTIFICADOR ABRE_COLCHETE instrucao FECHA_COLCHETE DEFINICAO IDENTIFICADOR {
             TipoFundamental tF;
             tF = Tipo<>::instanciar(*$1);
-            $$ = DefinicaoArranjo<>::instanciarArranjo(tF, *$3, *$6);
-    }       
+
+            try{
+                $$ = DefinicaoArranjo<>::instanciarArranjo(tF, *$3, *$6);
+            }
+            catch(Erro* erro){
+                erro->print();
+                exit(1);
+            }
+    }
 
 atribuicao
     : variavel ATRIBUICAO instrucao {
             try{
                 $$ = Atribuicao<int>::instanciar(*$1, *$3);
             }
-            catch(string* erro){
-                cout << "Tipos incompativeis" << endl;
+            catch(Erro* erro){
+                erro->print();
                 exit(1);
             }
     }
 
-    // | IDENTIFICADOR ABRE_COLCHETE instrucao FECHA_COLCHETE ATRIBUICAO instrucao {
-    //         try{
-    //             ArranjoFundamental arranjo = contexto->getArranjo(*$1);
+    | IDENTIFICADOR ABRE_COLCHETE instrucao FECHA_COLCHETE ATRIBUICAO instrucao {
+            try{
+                ArranjoFundamental arranjo = contexto->getArranjo(*$1);
 
-    //             $$ = AtribuicaoArranjo<int>::instanciarArranjo(arranjo, *$3, *$6);
-    //         }
-    //         catch(string* erro){
-    //             cout << "Tipos incompativeis" << endl;
-    //             exit(1);
-    //         }
-    // }
+                $$ = AtribuicaoArranjo<int>::instanciarArranjo(arranjo, *$3, *$6);
+            }
+            catch(Erro* erro){
+                erro->print();
+                exit(1);
+            }
+    }
 
 variavel
     : IDENTIFICADOR {

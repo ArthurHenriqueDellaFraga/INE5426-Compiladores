@@ -38,8 +38,8 @@ letra [a-zA-Z]
 
 "~"                           {return NEGACAO_BOOLEANA;}
 
-":="                          {return ATRIBUICAO;}
 ":"                           {return DEFINICAO;}
+":="                          {return ATRIBUICAO;}
 
 ","                           {return VIRGULA;}
 "."                           {return PONTO;}
@@ -76,11 +76,6 @@ letra [a-zA-Z]
                                   yylval._string = new string(yytext);
                                   yylval._string = new string(yylval._string->substr(1, yylval._string->size() -2));
                                   return SENTENCA;
-                              }
-{letra}+":"                   {
-                                  yylval._string = new string(yytext);
-                                  yylval._string->pop_back();
-                                  return TIPO;
                               }
 {letra}+                      {
                                   yylval._string = new string(yytext);

@@ -22,6 +22,10 @@ namespace AnaliseSemantica {
           T executar(Contexto* contexto){
               return *(new T);
           }
+
+          string getIdentificador(){
+            return identificador;
+          }
   };
 
   template <>
@@ -38,6 +42,10 @@ namespace AnaliseSemantica {
           }
 
           void executar(Contexto* contexto){ }
+
+          string getIdentificador(){
+            return identificador;
+          }
   };
 
   typedef Polimorfo<
@@ -46,5 +54,11 @@ namespace AnaliseSemantica {
       Arranjo<char>*, Arranjo<string>*,
       Arranjo<void>*
   > ArranjoFundamental;
+
+  struct ArranjoDto {
+      public:
+          string identificador;
+          NodoFundamental tamanho;
+  };
 
 }

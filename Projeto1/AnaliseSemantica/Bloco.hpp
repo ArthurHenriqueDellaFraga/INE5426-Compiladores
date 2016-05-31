@@ -27,10 +27,10 @@ namespace AnaliseSemantica {
 
           void addInstrucao(NodoFundamental instrucao){
               listaDeInstrucoes.push_back(instrucao);
-              instrucao.print();
               cout << endl;
               try{
                   instrucao.executar(contexto);
+                  instrucao.print();
               }
               catch(Erro* erro){
                   erro->print();
