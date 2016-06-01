@@ -149,9 +149,7 @@ bloco
 
     | instrucao NOVA_LINHA {
             $$ = new Bloco(contexto.back());
-            cout << contexto.size() << " ";
             contexto.push_back($$->getContexto());
-            cout << contexto.size() << endl;
             $$->addInstrucao(*$1);
     }
 
@@ -376,7 +374,7 @@ variavel
     : IDENTIFICADOR {
             $$ = contexto.back()->getVariavel(*$1);
     }
-    
+
     | IDENTIFICADOR ABRE_COLCHETE instrucao FECHA_COLCHETE {
       try{
           ArranjoFundamental* arranjo = contexto.back()->getArranjo(*$1);
