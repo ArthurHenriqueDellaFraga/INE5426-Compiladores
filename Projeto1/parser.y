@@ -1,5 +1,4 @@
 %code requires{
-    #include "AnaliseSemantica/ExpressoesCondicionais/If.hpp"
     #include "AnaliseSemantica/Primitivo.hpp"
     #include "AnaliseSemantica/Definicao.hpp"
     #include "AnaliseSemantica/Atribuicao.hpp"
@@ -12,6 +11,9 @@
     #include "AnaliseSemantica/Operacoes/Parenteses.hpp"
 
     #include "AnaliseSemantica/Arranjo.hpp"
+
+    #include "AnaliseSemantica/ExpressoesCondicionais/If.hpp"
+    #include "AnaliseSemantica/ExpressoesCondicionais/While.hpp"
 
     #include <stdio.h>
     #include <stdlib.h>
@@ -90,6 +92,10 @@
 %token ELSE
 %token END_IF
 
+%token WHILE
+%token DO
+%token END_WHILE
+
 %token <_int> INTEIRO
 %token <_string> RACIONAL
 %token <_bool> BOOLEANO
@@ -118,6 +124,7 @@
 
 %type <bloco> _then
 %type <bloco> _else
+%type <bloco> _do
 
 
 /* Operator precedence for mathematical operators
@@ -386,6 +393,10 @@ expressao_condicional
             $$ = If<>::instanciar(contexto.back(), *$2, $3, $4);
     }
 
+    | WHILE instrucao _do END_WHILE {
+            $$ = While<>::instanciar(*$2, $3);
+    }
+
 _then
     : THEN bloco {
             $$ = $2;
@@ -397,5 +408,12 @@ _else
             $$ = $2;
             contexto.erase(contexto.end()-1);
     }
+
+_do
+    : DO bloco {
+            $$ = $2;
+            contexto.erase(contexto.end()-1);
+    }
+
 
 %%

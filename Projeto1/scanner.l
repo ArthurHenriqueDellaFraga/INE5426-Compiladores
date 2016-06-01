@@ -63,6 +63,11 @@ letra [a-zA-Z]
 "else"                        {return ELSE;}
 "end if"                      {return END_IF;}
 
+"while"                       {return WHILE;}
+"do"                          {return DO;}
+"end while"                   {return END_WHILE;}
+
+
 {digito}+                     {
                                   yylval._int = atoi(yytext);
                                   return INTEIRO;

@@ -14,7 +14,6 @@ namespace AnaliseSemantica {
           map<bool, Bloco*> listaDeInstrucoes;
           Contexto* contexto;
 
-
           If(Contexto* contexto, Nodo<T>* condicao, Bloco* _then, Bloco* _else) : condicao(condicao), contexto(contexto){
               listaDeInstrucoes.insert(pair<bool, Bloco*>(true, _then));
               if(_else != NULL)
