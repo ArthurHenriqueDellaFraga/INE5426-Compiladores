@@ -118,11 +118,11 @@ namespace AnaliseSemantica {
 
           void executar(Contexto* contexto){
               tamanhoArranjo = tamanho->executar(contexto);
-              ArranjoFundamental arranjo = new Arranjo<T>(identificador, tamanhoArranjo);
+              ArranjoFundamental* arranjo = new ArranjoFundamental(new Arranjo<T>(identificador, tamanhoArranjo));
               contexto->putArranjo(identificador, arranjo);
           }
 
-          static DefinicaoFundamental* instanciarArranjo(TipoFundamental tipo, NodoFundamental tamanho, string identificador){
+          static DefinicaoFundamental* instanciar(TipoFundamental tipo, NodoFundamental tamanho, string identificador){
               createArranjoVisitor visitor;
               visitor.identificador = identificador;
               return apply_visitor(visitor, tipo, tamanho);

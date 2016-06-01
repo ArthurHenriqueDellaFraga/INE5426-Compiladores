@@ -56,12 +56,14 @@ namespace AnaliseSemantica {
 
   template <typename T>
   class Variavel : public Nodo<T> {
-      private:
+      protected:
           bool inicializacao;
           string identificador;
           T* valor;
       public:
           Variavel(string identificador) : identificador(identificador), valor(new T()){ }
+
+          Variavel() { }
 
           void print(){
               cout << "variavel " << this->getTipo()->getIdentificadorFeminino() << " "<< identificador;
@@ -88,11 +90,13 @@ namespace AnaliseSemantica {
 
   template <>
   class Variavel<void> : public Nodo<void> {
-      private:
+      protected:
           string identificador;
 
       public:
           Variavel(string identificador) : identificador(identificador){ }
+
+          Variavel() { }
 
           void print(){
               cout << "variavel " << this->getTipo()->getIdentificadorFeminino() << " "<< identificador;

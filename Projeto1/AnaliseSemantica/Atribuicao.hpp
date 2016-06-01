@@ -24,10 +24,7 @@ namespace AnaliseSemantica {
             Variavel<T>* variavel;
             Nodo<U>* valor;
 
-            Atribuicao() {}
-
             Atribuicao(Variavel<T>* variavel, Nodo<U>* valor) : variavel(variavel), valor(valor){
-                //static_assert(std::is_convertible<T, U>::value, "Atribuicao incompatível");
             }
 
             void print(){
@@ -38,7 +35,6 @@ namespace AnaliseSemantica {
             }
             void executar(Contexto* contexto){
                 variavel->setReferencia();
-                //variavel->setReferencia(new T(valor->executar(contexto)));
             }
 
             static NodoFundamental* instanciar(VariavelFundamental variavel, NodoFundamental valor){
@@ -53,7 +49,7 @@ namespace AnaliseSemantica {
                       NodoFundamental* nF = new NodoFundamental(valor);
 
                       NodoFundamental* conversao = Conversao<>::instanciar(vF->getTipo(), *nF);
-                      return Atribuicao<int>::instanciar(*vF, *conversao);
+                      return Atribuicao<>::instanciar(*vF, *conversao);
                 }
 
                 template <typename V>
@@ -67,61 +63,8 @@ namespace AnaliseSemantica {
                 }
 
                 NodoFundamental* operator()(Variavel<void>*& variavel, Nodo<void>*& valor) const {
-                    return new NodoFundamental(new Atribuicao<void>(variavel, valor));
+                    return new NodoFundamental(new Atribuicao<>(variavel, valor));
                 }
-            };
-    };
-    template <typename T>
-    class AtribuicaoArranjo : public Atribuicao<T>{
-        public:
-            Arranjo<T>* arranjo;
-            Nodo<int>* indice;
-            Nodo<T>* valor;
-            AtribuicaoArranjo(Arranjo<T>* arranjo, Nodo<int>* indice, Nodo<T>* valor) : arranjo(arranjo), indice(indice), valor(valor){
-            }
-            void print(){
-                cout << "Atribuicao de valor para ";
-                arranjo->print();
-                cout<< " " << arranjo->getIdentificador() << " ";
-                cout << "{+indice: ";
-                indice->print();
-                cout <<"}: ";
-                valor-> print();
-            }
-            
-            void executar(Contexto* contexto){}
-
-            static NodoFundamental* instanciarArranjo(ArranjoFundamental arranjo, NodoFundamental indice, NodoFundamental valor){
-                return apply_visitor(createTipoVisitor (), arranjo, indice, valor);
-            }
-
-        protected:
-            struct createTipoVisitor : public static_visitor<NodoFundamental*>{
-                string errorMessage = "indice de arranjo espera inteiro mas rececebeu ";
-
-                template <typename V, typename W>
-                NodoFundamental* operator()(Arranjo<V>*& arranjo, Nodo<int>*& indice, Nodo<W>*& valor) const {
-                      ArranjoFundamental aF;
-                      aF = arranjo;
-                      NodoFundamental nF;
-                      nF = valor;
-                      NodoFundamental iF;
-                      iF = indice;
-
-                      NodoFundamental conversao = *(Conversao<>::instanciar(aF.getTipo(), nF));
-                      return AtribuicaoArranjo<V>::instanciarArranjo(aF, iF, conversao);
-                }
-
-                template <typename V>
-                NodoFundamental* operator()(Arranjo<V>*& arranjo, Nodo<int>*& indice, Nodo<V>*& valor) const {
-                    return new NodoFundamental(new AtribuicaoArranjo<V>(arranjo, indice, valor));
-                }
-
-                template <typename V,typename I, typename W>
-                NodoFundamental* operator()(Arranjo<V>*& arranjo, Nodo<I>*& indice, Nodo<W>*& valor) const {
-                    throw new Erro(errorMessage + indice->getTipo()->getIdentificadorMasculino() + "."); 
-                }
-
             };
     };
 }

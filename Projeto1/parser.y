@@ -318,7 +318,7 @@ definicao
             tF = Tipo<>::instanciar(*$1);
 
             try{
-                $$ = DefinicaoArranjo<>::instanciarArranjo(tF, *$3, *$6);
+                $$ = DefinicaoArranjo<>::instanciar(tF, *$3, *$6);
             }
             catch(Erro* erro){
                 erro->print();
@@ -329,7 +329,7 @@ definicao
 atribuicao
     : variavel ATRIBUICAO instrucao {
             try{
-              $$ = Atribuicao<int>::instanciar(*$1, *$3);
+              $$ = Atribuicao<>::instanciar(*$1, *$3);
             }
             catch(Erro* erro){
                 erro->print();
@@ -339,9 +339,9 @@ atribuicao
 
     | IDENTIFICADOR ABRE_COLCHETE instrucao FECHA_COLCHETE ATRIBUICAO instrucao {
             try{
-                ArranjoFundamental arranjo = contexto->getArranjo(*$1);
+                ArranjoFundamental* arranjo = contexto->getArranjo(*$1);
 
-                $$ = AtribuicaoArranjo<int>::instanciarArranjo(arranjo, *$3, *$6);
+                $$ = Atribuicao<>::instanciar(*(arranjo->getIndiceArranjo(*$3)), *$6);
             }
             catch(Erro* erro){
                 erro->print();
@@ -352,6 +352,18 @@ atribuicao
 variavel
     : IDENTIFICADOR {
             $$ = contexto->getVariavel(*$1);
+    }
+
+    | IDENTIFICADOR ABRE_COLCHETE instrucao FECHA_COLCHETE {
+      try{
+          ArranjoFundamental* arranjo = contexto->getArranjo(*$1);
+
+          $$ = arranjo->getIndiceArranjo(*$3);
+      }
+      catch(Erro* erro){
+          erro->print();
+          exit(1);
+      }
     }
 ;
 

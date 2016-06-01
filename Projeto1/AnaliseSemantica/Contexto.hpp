@@ -10,7 +10,7 @@ namespace AnaliseSemantica {
     class Contexto {
         protected:
             map<string, VariavelFundamental*> _variavel;
-            map<string, ArranjoFundamental> _arranjo;
+            map<string, ArranjoFundamental*> _arranjo;
         public:
             Contexto(){ }
 
@@ -39,8 +39,8 @@ namespace AnaliseSemantica {
                 return _variavel[identificador];
             }
 
-            void putArranjo(string identificador, ArranjoFundamental arranjo){
-                map<string, ArranjoFundamental>::iterator it;
+            void putArranjo(string identificador, ArranjoFundamental* arranjo){
+                map<string, ArranjoFundamental*>::iterator it;
                 it = _arranjo.find(identificador);
 
                 if(it != _arranjo.end()){
@@ -50,13 +50,15 @@ namespace AnaliseSemantica {
                 _arranjo[identificador] = arranjo;
             }
 
-            ArranjoFundamental getArranjo(string identificador){
-                map<string, ArranjoFundamental>::iterator it;
+            ArranjoFundamental* getArranjo(string identificador){
+                map<string, ArranjoFundamental*>::iterator it;
                 it = _arranjo.find(identificador);
 
-                if(it != _arranjo.end()){
-                    // char* mensagem = "";
-                    // throw new Erro(mensagem);
+                if(it == _arranjo.end()){
+                  Erro* erro = new Erro("arranjo " + identificador + " sem declaracao");
+                  erro->print();
+
+                  return new ArranjoFundamental(new Arranjo<void>(identificador, 0));
                 }
 
                 return _arranjo[identificador];
