@@ -1,9 +1,17 @@
 %code requires{
+    #include "AnaliseSemantica/ExpressoesCondicionais/If.hpp"
     #include "AnaliseSemantica/Primitivo.hpp"
-    #include "AnaliseSemantica/Operacao.hpp"
     #include "AnaliseSemantica/Definicao.hpp"
     #include "AnaliseSemantica/Atribuicao.hpp"
-    #include "AnaliseSemantica/Conversao.hpp"
+
+    #include "AnaliseSemantica/Operacoes/OperacaoBooleana.hpp"
+    #include "AnaliseSemantica/Operacoes/Soma.hpp"
+    #include "AnaliseSemantica/Operacoes/Subtracao.hpp"
+    #include "AnaliseSemantica/Operacoes/Multiplicacao.hpp"
+    #include "AnaliseSemantica/Operacoes/Divisao.hpp"
+    #include "AnaliseSemantica/Operacoes/Parenteses.hpp"
+
+    #include "AnaliseSemantica/Arranjo.hpp"
 
     #include <stdio.h>
     #include <stdlib.h>
@@ -15,7 +23,7 @@
     using namespace std;
 
     extern Bloco* raizDoPrograma; /* the root node of our program */
-    extern Contexto* contexto;
+    extern vector<Contexto*> contexto;
     extern bool debug;
 
     extern int yylex();
@@ -52,6 +60,7 @@
 %token NOVA_LINHA
 
 %token ATRIBUICAO
+%token DEFINICAO
 
 %token SOMA
 %token SUBTRACAO
@@ -71,17 +80,22 @@
 
 %token VIRGULA
 %token PONTO
-odoFundamental
+
 %token ABRE_PARENTESES FECHA_PARENTESES
 %token ABRE_CHAVES FECHA_CHAVES
+%token ABRE_COLCHETE FECHA_COLCHETE
+
+%token IF
+%token THEN
+%token ELSE
+%token END_IF
 
 %token <_int> INTEIRO
-%token <_double> RACIONAL
+%token <_string> RACIONAL
 %token <_bool> BOOLEANO
 %token <_char> CARACTER
 %token <_string> SENTENCA
 
-%token <_string> TIPO
 %token <_string> IDENTIFICADOR
 
 // type defines the type of our nonterminal symbols.
@@ -96,19 +110,28 @@ odoFundamental
 %type <caracter> caracter
 %type <sentenca> sentenca
 
+%type <variavel> variavel
 %type <definicao> definicao
 %type <nodo> atribuicao
 
-%type <variavel> variavel
+%type <vazio> expressao_condicional
+
+%type <bloco> _then
+%type <bloco> _else
+
 
 /* Operator precedence for mathematical operators
  * The latest it is listed, the highest the precedence
  */
 
-%left SOMA
-%left SUBTRACAO
-%left MULTIPLICACAO
-%left DIVISAO
+%left AND OR
+
+%right NEGACAO_BOOLEANA
+
+%left IGUAL DIFERENTE MAIOR MENOR MAIOR_IGUAL MENOR_IGUAL
+
+%left SOMA SUBTRACAO
+%left MULTIPLICACAO DIVISAO
 %nonassoc errord
 
 /* Gramatica Sintática */
@@ -125,7 +148,10 @@ bloco
     : NOVA_LINHA { }
 
     | instrucao NOVA_LINHA {
-            $$ = new Bloco(contexto);
+            $$ = new Bloco(contexto.back());
+            cout << contexto.size() << " ";
+            contexto.push_back($$->getContexto());
+            cout << contexto.size() << endl;
             $$->addInstrucao(*$1);
     }
 
@@ -136,167 +162,240 @@ bloco
 
     | bloco NOVA_LINHA { }
 
-instrucao
-    : ABRE_PARENTESES instrucao FECHA_PARENTESES {
-            $$ = $2;
+    | expressao_condicional {
+            $$ = new Bloco(contexto.back());
+            contexto.push_back($$->getContexto());
+            $$->addInstrucao(*(new NodoFundamental($1)));
     }
 
-    | inteiro {
-            NodoFundamental nF;
-            nF = $1;
-            $$ = &nF;
+    | bloco expressao_condicional {
+            $1->addInstrucao(*(new NodoFundamental($2)));
+    }
+
+instrucao
+    : inteiro {
+            $$ = Nodo<>::converter($1);
     }
 
     | racional {
-            NodoFundamental nF;
-            nF = $1;
-            $$ = &nF;
+            $$ = Nodo<>::converter($1);
     }
 
     | booleano {
-            NodoFundamental nF;
-            nF = $1;
-            $$ = &nF;
+            $$ = Nodo<>::converter($1);
     }
 
     | caracter {
-            NodoFundamental nF;
-            nF = $1;
-            $$ = &nF;
+            $$ = Nodo<>::converter($1);
     }
 
     | sentenca {
-            NodoFundamental nF;
-            nF = $1;
-            $$ = &nF;
+            $$ = Nodo<>::converter($1);
     }
 
     | definicao {
-            NodoFundamental nF;
-            nF = apply_visitor(NodoConversorVisitor(), *$1);
-            $$ = &nF;
+            $$ = Nodo<>::converter(*$1);
     }
 
     | atribuicao {
-            NodoFundamental nF;
-            nF = apply_visitor(NodoConversorVisitor(), *$1);
-            $$ = &nF;
+            $$ = Nodo<>::converter(*$1);
     }
 
     | variavel {
-            NodoFundamental nF;
-            nF = apply_visitor(NodoConversorVisitor(), *$1);
-            $$ = &nF;
+            try{
+                $1->checkInicializacao();
+            }
+            catch(Erro* erro){
+                erro->print();
+            }
+            $$ = Nodo<>::converter(*$1);
+    }
+
+    | ABRE_PARENTESES instrucao FECHA_PARENTESES {
+            $$ = Parenteses<>::instanciar(*$2);
+    }
+
+    | instrucao SOMA instrucao {
+            $$ = Soma<>::instanciar(*$1, *$3);
+    }
+
+    | instrucao SUBTRACAO instrucao {
+            $$ = Subtracao<>::instanciar(*$1, *$3);
+    }
+
+    | SUBTRACAO instrucao {
+            $$ = SubtracaoUnaria<>::instanciar(*$2);
+    }
+
+    | instrucao MULTIPLICACAO instrucao {
+            try{
+                $$ = Multiplicacao<>::instanciar(*$1, *$3);
+            }
+            catch(Erro* erro){
+                erro->print();
+                exit(1);
+            }
+    }
+
+    | instrucao DIVISAO instrucao {
+            try{
+                $$ = Divisao<>::instanciar(*$1, *$3);
+            }
+            catch(Erro* erro){
+                erro->print();
+                exit(1);
+            }
     }
 
 inteiro
     : INTEIRO { $$ = new Inteiro($1); }
 
-    | inteiro SOMA inteiro {
-            $$ = new Soma_int_int($1, $3);
-            if(debug) cout << "inteiro: SOMA" << endl;
-    }
-
-    | inteiro MULTIPLICACAO inteiro {
-            $$ = new Multiplicacao_int_int($1, $3);
-            if(debug) cout << "inteiro: MULTIPLICACAO" << endl;
+    | ABRE_PARENTESES inteiro FECHA_PARENTESES {
+            $$ = new Parenteses<int>($2);
     }
 
 racional
-    : RACIONAL { $$ = new Racional($1); }
+    : RACIONAL { $$ = new Racional(*$1); }
 
-    | racional SOMA inteiro {
-            $$ = new Soma_double_int($1, $3);
-            if(debug) cout << "racional: SOMA" << endl;
-    }
-
-    | inteiro SOMA racional {
-            $$ = new Soma_double_int($3, $1);
-            if(debug) cout << "racional: SOMA" << endl;
-    }
-
-    | racional SOMA racional {
-            $$ = new Soma_double_double($1, $3);
-            if(debug) cout << "racional: SOMA" << endl;
+    | ABRE_PARENTESES racional FECHA_PARENTESES {
+            $$ = new Parenteses<double>($2);
     }
 
 booleano
     : BOOLEANO { $$ = new Booleano($1); }
 
+    | ABRE_PARENTESES booleano FECHA_PARENTESES {
+            $$ = new Parenteses<bool>($2);
+    }
+
+    | NEGACAO_BOOLEANA instrucao {
+            $$ = NegacaoBooleana<>::instanciar(*$2);
+    }
+
+    | instrucao IGUAL instrucao {
+            $$ = Igual<>::instanciar(*$1, *$3);
+    }
+
+    | instrucao DIFERENTE instrucao {
+            $$ = Diferente<>::instanciar(*$1, *$3);
+    }
+
+    | instrucao MAIOR instrucao {
+            $$ = Maior<>::instanciar(*$1, *$3);
+    }
+
+    | instrucao MENOR instrucao {
+            $$ = Menor<>::instanciar(*$1, *$3);
+    }
+
+    | instrucao MAIOR_IGUAL instrucao {
+            $$ = MaiorIgual<>::instanciar(*$1, *$3);
+    }
+
+    | instrucao MENOR_IGUAL instrucao {
+            $$ = MenorIgual<>::instanciar(*$1, *$3);
+    }
+
+    | instrucao AND instrucao {
+            $$ = And<>::instanciar(*$1, *$3);
+    }
+
+    | instrucao OR instrucao {
+            $$ = Or<>::instanciar(*$1, *$3);
+    }
+
 caracter
     : CARACTER { $$ = new Caracter($1); }
+
+    | ABRE_PARENTESES caracter FECHA_PARENTESES {
+            $$ = new Parenteses<char>($2);
+    }
 
 sentenca
     : SENTENCA { $$ = new Sentenca(*$1); }
 
+    | ABRE_PARENTESES sentenca FECHA_PARENTESES {
+            $$ = new Parenteses<string>($2);
+    }
+
 definicao
-    : TIPO IDENTIFICADOR {
+    : IDENTIFICADOR DEFINICAO IDENTIFICADOR {
+            try{
+                TipoFundamental tF;
+                tF = Tipo<>::instanciar(*$1);
+
+                $$ = Definicao<>::instanciar(tF, *$3);
+            }
+            catch(Erro* erro){
+                erro->print();
+                exit(1);
+            }
+    }
+
+    | definicao VIRGULA IDENTIFICADOR {
+            $$->add(*$3);
+    }
+
+    | IDENTIFICADOR ABRE_COLCHETE instrucao FECHA_COLCHETE DEFINICAO IDENTIFICADOR {
             TipoFundamental tF;
             tF = Tipo<>::instanciar(*$1);
 
-            // NodoFundamental cF;
-            //     NodoFundamental nF;
-            //       PrimitivoFundamental pF;
-            //       pF = new Inteiro(5);
-            //     nF = apply_visitor(NodoConversorVisitor(), pF);
-            // cF = Conversao<int, int>::instanciar(tF, nF);
-            // cF.print();
-
-            DefinicaoFundamental dF;
-            dF = Definicao<>::instanciar(tF, *$2);
-            $$ = &dF;
+            try{
+                $$ = DefinicaoArranjo<>::instanciarArranjo(tF, *$3, *$6);
+            }
+            catch(Erro* erro){
+                erro->print();
+                exit(1);
+            }
     }
-;
 
 atribuicao
     : variavel ATRIBUICAO instrucao {
-            NodoFundamental aF;
             try{
-                aF = Atribuicao<>::instanciar(*$1, *$3);
+              $$ = Atribuicao<int>::instanciar(*$1, *$3);
             }
-            catch(string* erro){
-                cout << "Tipos incompativeis" << endl;
+            catch(Erro* erro){
+                erro->print();
                 exit(1);
             }
-            $$ = &aF;
+    }
+
+    | IDENTIFICADOR ABRE_COLCHETE instrucao FECHA_COLCHETE ATRIBUICAO instrucao {
+            try{
+                ArranjoFundamental arranjo = contexto.back()->getArranjo(*$1);
+
+                $$ = AtribuicaoArranjo<int>::instanciarArranjo(arranjo, *$3, *$6);
+            }
+            catch(Erro* erro){
+                erro->print();
+                exit(1);
+            }
     }
 
 variavel
     : IDENTIFICADOR {
-            if(contexto->_variavel.find(*$1) != contexto->_variavel.end()){
-                $$ = &(contexto->_variavel[*$1]);
-            }
-            else{
-                cout << "Variavel não definida: " << *$1 << endl;
-                VariavelFundamental vF;
-                vF = new Variavel<int>("null");
-                $$ = &vF;
-            }
-    }
-;
-/*
-definicao_multipla
-    : definicao VIRGULA STRING {
-            $$ = new Identificador(*$3);
-            tabelaDeVariaveis[*$3] = VARIAVEL_INDEFINIDA;
-            cout << "DEFINICAO" << endl;
-    }
-;
-
-atribuicao
-    : STRING ATRIBUICAO inteiro {
-            if(tabelaDeVariaveis[*$1]){
-              tabelaDeVariaveis[*$1] = $3->computeTree();
-              cout << "ATRIBUICAO" << endl;
-            } else{
-              cout << "Variável '" << *$1 << "' não definida." << endl;
-            }
+            $$ = contexto.back()->getVariavel(*$1);
     }
 
-    | definicao ATRIBUICAO inteiro {
-
+expressao_condicional
+    : IF instrucao _then END_IF{
+            $$ = If<>::instanciar(contexto.back(), *$2, $3, NULL);
     }
-;
 
-*/
+    | IF instrucao _then _else END_IF {
+            $$ = If<>::instanciar(contexto.back(), *$2, $3, $4);
+    }
+
+_then
+    : THEN bloco {
+            $$ = $2;
+            contexto.erase(contexto.end()-1);
+    }
+
+_else
+    : ELSE bloco {
+            $$ = $2;
+            contexto.erase(contexto.end()-1);
+    }
+
 %%

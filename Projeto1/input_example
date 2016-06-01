@@ -1,3 +1,13 @@
-int: a
-a
-a := 3
+int: i;
+bool: true;
+if 10.0 > -2.0
+then
+int: a;
+i:= 5;
+else
+int: a;
+int: i;
+i:= 3;
+end if
+true:= TRUE;
+if true then i:= 0; end if

@@ -1,6 +1,6 @@
 %{
     #include "parser.h"
-    #include "AnaliseSemantica/AnaliseSemantica.hpp"
+    #include "AnaliseSemantica/Nodo.hpp"
 
     #include <string>
 
@@ -17,8 +17,13 @@ letra [a-zA-Z]
 
 %%
 
+"exit"                        {
+                                  cout << "-- fim da compilacao --" << endl;
+                                  exit(0);
+                              }
+
 [ \t]                         ; //ignora espaços
-\n                            {return NOVA_LINHA;}
+\n                            ;
 ";"                           {return NOVA_LINHA;}
 
 "+"                           {return SOMA;}
@@ -38,22 +43,36 @@ letra [a-zA-Z]
 
 "~"                           {return NEGACAO_BOOLEANA;}
 
+":"                           {return DEFINICAO;}
 ":="                          {return ATRIBUICAO;}
+":"                           {return DEFINICAO;}
 
 ","                           {return VIRGULA;}
 "."                           {return PONTO;}
+
+"["                           {return ABRE_COLCHETE;}
+"]"                           {return FECHA_COLCHETE;}
 
 "("                           {return ABRE_PARENTESES;}
 ")"                           {return FECHA_PARENTESES;}
 "{"                           {return ABRE_CHAVES;}
 "}"                           {return FECHA_CHAVES;}
 
+"if"                          {return IF;}
+"then"                        {return THEN;}
+"else"                        {return ELSE;}
+"end if"                      {return END_IF;}
+
 {digito}+                     {
                                   yylval._int = atoi(yytext);
                                   return INTEIRO;
                               }
-{digito}+"."{digito}+         {
-                                  yylval._double = atof(yytext);
+{digito}*"."{digito}+         {
+                                  yylval._string = new string(yytext);
+                                  return RACIONAL;
+                              }
+{digito}+"."{digito}*         {
+                                  yylval._string = new string(yytext);
                                   return RACIONAL;
                               }
 "TRUE"                        {
@@ -73,24 +92,18 @@ letra [a-zA-Z]
                                   yylval._string = new string(yylval._string->substr(1, yylval._string->size() -2));
                                   return SENTENCA;
                               }
-{letra}+":"                   {
-                                  yylval._string = new string(yytext);
-                                  yylval._string->pop_back();
-                                  return TIPO;
-                              }
 {letra}+                      {
                                   yylval._string = new string(yytext);
                                   return IDENTIFICADOR;
                               }
 
-
-.                             {yyerror("Caracter desconhecido: %c\n", *yytext);}
+.                             {yyerror("léxico: simbolo desconhecido: %c\n", *yytext);}
 
 %%
 
 void yyerror(const char *s, ...){
     va_list ap;
     va_start(ap, s);
-    fprintf(stderr, "[Linha %d] Erro: ", yylineno);
+    fprintf(stderr, "[Linha %d] Erro ", yylineno);
     vfprintf(stderr, s, ap);
 }
