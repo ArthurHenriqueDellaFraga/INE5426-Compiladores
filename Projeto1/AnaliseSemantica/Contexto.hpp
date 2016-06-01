@@ -8,11 +8,16 @@ using namespace std;
 namespace AnaliseSemantica {
 
     class Contexto {
-        protected:
+        public:
             map<string, VariavelFundamental*> _variavel;
             map<string, ArranjoFundamental*> _arranjo;
-        public:
+
             Contexto(){ }
+
+            Contexto(Contexto* contexto){
+                this->_variavel = contexto->_variavel;
+                this->_arranjo = contexto-> _arranjo;
+            }
 
             void put(string identificador, VariavelFundamental* variavel){
                 map<string, VariavelFundamental*>::iterator it;
