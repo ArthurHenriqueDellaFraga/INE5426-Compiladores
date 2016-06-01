@@ -1,5 +1,5 @@
 %code requires{
-    #include "AnaliseSemantica/Bloco.hpp"
+    #include "AnaliseSemantica/ExpressoesCondicionais/If.hpp"
     #include "AnaliseSemantica/Primitivo.hpp"
     #include "AnaliseSemantica/Definicao.hpp"
     #include "AnaliseSemantica/Atribuicao.hpp"
@@ -23,7 +23,7 @@
     using namespace std;
 
     extern Bloco* raizDoPrograma; /* the root node of our program */
-    extern Contexto* contexto;
+    extern vector<Contexto*> contexto;
     extern bool debug;
 
     extern int yylex();
@@ -85,6 +85,11 @@
 %token ABRE_CHAVES FECHA_CHAVES
 %token ABRE_COLCHETE FECHA_COLCHETE
 
+%token IF
+%token THEN
+%token ELSE
+%token END_IF
+
 %token <_int> INTEIRO
 %token <_string> RACIONAL
 %token <_bool> BOOLEANO
@@ -105,10 +110,15 @@
 %type <caracter> caracter
 %type <sentenca> sentenca
 
+%type <variavel> variavel
 %type <definicao> definicao
 %type <nodo> atribuicao
 
-%type <variavel> variavel
+%type <vazio> expressao_condicional
+
+%type <bloco> _then
+%type <bloco> _else
+
 
 /* Operator precedence for mathematical operators
  * The latest it is listed, the highest the precedence
@@ -138,7 +148,10 @@ bloco
     : NOVA_LINHA { }
 
     | instrucao NOVA_LINHA {
-            $$ = new Bloco(contexto);
+            $$ = new Bloco(contexto.back());
+            cout << contexto.size() << " ";
+            contexto.push_back($$->getContexto());
+            cout << contexto.size() << endl;
             $$->addInstrucao(*$1);
     }
 
@@ -148,6 +161,16 @@ bloco
     }
 
     | bloco NOVA_LINHA { }
+
+    | expressao_condicional {
+            $$ = new Bloco(contexto.back());
+            contexto.push_back($$->getContexto());
+            $$->addInstrucao(*(new NodoFundamental($1)));
+    }
+
+    | bloco expressao_condicional {
+            $1->addInstrucao(*(new NodoFundamental($2)));
+    }
 
 instrucao
     : inteiro {
@@ -339,7 +362,7 @@ atribuicao
 
     | IDENTIFICADOR ABRE_COLCHETE instrucao FECHA_COLCHETE ATRIBUICAO instrucao {
             try{
-                ArranjoFundamental arranjo = contexto->getArranjo(*$1);
+                ArranjoFundamental arranjo = contexto.back()->getArranjo(*$1);
 
                 $$ = AtribuicaoArranjo<int>::instanciarArranjo(arranjo, *$3, *$6);
             }
@@ -351,8 +374,28 @@ atribuicao
 
 variavel
     : IDENTIFICADOR {
-            $$ = contexto->getVariavel(*$1);
+            $$ = contexto.back()->getVariavel(*$1);
     }
-;
+
+expressao_condicional
+    : IF instrucao _then END_IF{
+            $$ = If<>::instanciar(contexto.back(), *$2, $3, NULL);
+    }
+
+    | IF instrucao _then _else END_IF {
+            $$ = If<>::instanciar(contexto.back(), *$2, $3, $4);
+    }
+
+_then
+    : THEN bloco {
+            $$ = $2;
+            contexto.erase(contexto.end()-1);
+    }
+
+_else
+    : ELSE bloco {
+            $$ = $2;
+            contexto.erase(contexto.end()-1);
+    }
 
 %%

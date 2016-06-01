@@ -18,12 +18,14 @@ namespace AnaliseSemantica {
         Nodo<void>*
     > NodoFundamental;
 
-    template <typename T = void>
+    template <typename T = int>
     class Nodo {
         public:
             // virtual ~Nodo();
             virtual void print() = 0;
-            virtual T executar(Contexto* contexto) = 0;
+            virtual T executar(Contexto* contexto) {
+                return *(new T());
+            };
             Tipo<T>* getTipo(){
                 return new Tipo<T>();
             }
@@ -45,6 +47,18 @@ namespace AnaliseSemantica {
                     return new NodoFundamental(v);
                 }
             };
+    };
+
+    template <>
+    class Nodo<void> {
+        public:
+            // virtual ~Nodo();
+            virtual void print() = 0;
+            virtual void executar(Contexto* contexto) { }
+
+            Tipo<void>* getTipo(){
+                return new Tipo<void>();
+            }
     };
 
 }

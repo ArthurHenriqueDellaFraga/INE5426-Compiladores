@@ -23,7 +23,7 @@ letra [a-zA-Z]
                               }
 
 [ \t]                         ; //ignora espaços
-\n                            {return NOVA_LINHA;}
+\n                            ;
 ";"                           {return NOVA_LINHA;}
 
 "+"                           {return SOMA;}
@@ -57,6 +57,11 @@ letra [a-zA-Z]
 ")"                           {return FECHA_PARENTESES;}
 "{"                           {return ABRE_CHAVES;}
 "}"                           {return FECHA_CHAVES;}
+
+"if"                          {return IF;}
+"then"                        {return THEN;}
+"else"                        {return ELSE;}
+"end if"                      {return END_IF;}
 
 {digito}+                     {
                                   yylval._int = atoi(yytext);
