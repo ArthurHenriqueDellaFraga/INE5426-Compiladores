@@ -45,11 +45,6 @@ namespace AnaliseSemantica {
               return apply_visitor(ConverterVisitor (), u);
           }
 
-          template <typename U>
-          static NodoFundamental* converter(Nodo<U>* nodo){
-              return new NodoFundamental(nodo);
-          }
-
       protected:
           struct ConverterVisitor : public static_visitor<NodoFundamental*>{
               template <typename V>

@@ -161,23 +161,23 @@ bloco
 
 instrucao
     : inteiro {
-            $$ = Nodo<>::converter($1);
+            $$ = new NodoFundamental($1);
     }
 
     | racional {
-            $$ = Nodo<>::converter($1);
+            $$ = new NodoFundamental($1);
     }
 
     | booleano {
-            $$ = Nodo<>::converter($1);
+            $$ = new NodoFundamental($1);
     }
 
     | caracter {
-            $$ = Nodo<>::converter($1);
+            $$ = new NodoFundamental($1);
     }
 
     | sentenca {
-            $$ = Nodo<>::converter($1);
+            $$ = new NodoFundamental($1);
     }
 
     | definicao {
