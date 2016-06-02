@@ -88,7 +88,7 @@ namespace AnaliseSemantica {
                 cout <<"}: ";
                 valor-> print();
             }
-            
+
             void executar(Contexto* contexto){}
 
             static NodoFundamental* instanciarArranjo(ArranjoFundamental arranjo, NodoFundamental indice, NodoFundamental valor){
@@ -101,15 +101,12 @@ namespace AnaliseSemantica {
 
                 template <typename V, typename W>
                 NodoFundamental* operator()(Arranjo<V>*& arranjo, Nodo<int>*& indice, Nodo<W>*& valor) const {
-                      ArranjoFundamental aF;
-                      aF = arranjo;
-                      NodoFundamental nF;
-                      nF = valor;
-                      NodoFundamental iF;
-                      iF = indice;
+                      ArranjoFundamental* aF = new ArranjoFundamental(arranjo);
+                      NodoFundamental* nF = new NodoFundamental(valor);
+                      NodoFundamental* iF = new NodoFundamental(indice);
 
-                      NodoFundamental conversao = *(Conversao<>::instanciar(aF.getTipo(), nF));
-                      return AtribuicaoArranjo<V>::instanciarArranjo(aF, iF, conversao);
+                      NodoFundamental* conversao = Conversao<>::instanciar(aF->getTipo(), *nF);
+                      return AtribuicaoArranjo<V>::instanciarArranjo(*aF, *iF, *conversao);
                 }
 
                 template <typename V>
@@ -119,7 +116,7 @@ namespace AnaliseSemantica {
 
                 template <typename V,typename I, typename W>
                 NodoFundamental* operator()(Arranjo<V>*& arranjo, Nodo<I>*& indice, Nodo<W>*& valor) const {
-                    throw new Erro(errorMessage + indice->getTipo()->getIdentificadorMasculino() + "."); 
+                    throw new Erro(errorMessage + indice->getTipo()->getIdentificadorMasculino() + ".");
                 }
 
             };

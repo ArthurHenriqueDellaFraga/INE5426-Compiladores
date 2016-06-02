@@ -337,9 +337,8 @@ atribuicao
 
     | IDENTIFICADOR ABRE_COLCHETE instrucao FECHA_COLCHETE ATRIBUICAO instrucao {
             try{
-                ArranjoFundamental arranjo = contexto->getArranjo(*$1);
-
-                $$ = AtribuicaoArranjo<int>::instanciarArranjo(arranjo, *$3, *$6);
+                ArranjoFundamental* arranjo = contexto->getArranjo(*$1);
+                $$ = AtribuicaoArranjo<int>::instanciarArranjo(*arranjo, *$3, *$6);
             }
             catch(Erro* erro){
                 erro->print();
@@ -354,7 +353,7 @@ variavel
 
 funcao
     : DECLARACAO IDENTIFICADOR IDENTIFICADOR DEFINICAO IDENTIFICADOR listaDeArgumentos {
-        $$ = new FuncaoFundamental();
+        $$ = new FuncaoFundamental(new Funcao<>());
     }
 
 listaDeArgumentos

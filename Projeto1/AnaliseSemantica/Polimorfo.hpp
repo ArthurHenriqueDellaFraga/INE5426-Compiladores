@@ -21,7 +21,7 @@ namespace AnaliseSemantica {
                 *this = t;
             };
 
-            Polimorfo() : variant<Types...>(){}
+            // Polimorfo() : variant<Types...>(){}
 
             void print(){
                 apply_visitor(PrintVisitor(), *this);

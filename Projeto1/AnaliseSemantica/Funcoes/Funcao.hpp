@@ -24,6 +24,8 @@ namespace AnaliseSemantica {
 
           }
 
+          Funcao(){}
+
   };
 
 }

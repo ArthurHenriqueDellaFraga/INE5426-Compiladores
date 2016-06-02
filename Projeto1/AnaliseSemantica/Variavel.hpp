@@ -13,9 +13,7 @@ namespace AnaliseSemantica {
   class VariavelPolimorfo : public Polimorfo<Types...>{
       public:
           template<typename T>
-          VariavelPolimorfo(Variavel<T>* variavel){
-              *this = variavel;
-          };
+          VariavelPolimorfo(Variavel<T>* variavel) : Polimorfo<Types...>(variavel){ }
 
           string getIdentificador(){
               return apply_visitor(getIdentificadorVisitor (), *this);

@@ -14,6 +14,7 @@ namespace AnaliseSemantica {
           Contexto* contexto;
       public:
           Bloco(Contexto* contexto) : contexto(contexto) { }
+          Bloco() : contexto(new Contexto()) { }
 
           virtual void print(){
               for(int i=0; i < listaDeInstrucoes.size(); i++){
@@ -29,7 +30,7 @@ namespace AnaliseSemantica {
 
           virtual void addInstrucao(NodoFundamental instrucao){
               listaDeInstrucoes.push_back(instrucao);
-              
+
               try{
                   instrucao.executar(contexto);
                   instrucao.print();

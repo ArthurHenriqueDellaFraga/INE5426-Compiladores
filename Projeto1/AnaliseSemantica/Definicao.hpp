@@ -14,9 +14,7 @@ namespace AnaliseSemantica {
   class DefinicaoPolimorfo : public Polimorfo<Types...>{
       public:
           template<typename T>
-          DefinicaoPolimorfo(Definicao<T>* definicao){
-              *this = definicao;
-          };
+          DefinicaoPolimorfo(Definicao<T>* definicao) : Polimorfo<Types...>(definicao){ };
 
           void add(string identificador){
               AddVisitor visitor;
@@ -118,7 +116,7 @@ namespace AnaliseSemantica {
 
           void executar(Contexto* contexto){
               tamanhoArranjo = tamanho->executar(contexto);
-              ArranjoFundamental arranjo = new Arranjo<T>(identificador, tamanhoArranjo);
+              ArranjoFundamental* arranjo = new ArranjoFundamental(new Arranjo<T>(identificador, tamanhoArranjo));
               contexto->putArranjo(identificador, arranjo);
           }
 
