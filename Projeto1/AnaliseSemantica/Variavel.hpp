@@ -7,7 +7,43 @@ using namespace std;
 namespace AnaliseSemantica {
 
   template <typename T = void>
-  class Variavel;
+  class VariavelAbstrata : public Nodo<T> {
+      protected:
+          bool inicializacao;
+          string identificador;
+      public:
+          VariavelAbstrata(string identificador) : identificador(identificador){ }
+
+          void print(){
+              cout << "variavel " << this->getTipo()->getIdentificadorFeminino() << " "<< identificador;
+          }
+
+          string getIdentificador(){
+              return identificador;
+          }
+
+          virtual void setReferencia(){
+              inicializacao = true;
+          }
+
+          virtual void checkInicializacao(){
+              if(!inicializacao){
+                  throw new Erro("variavel " + identificador + " nao inicializada.");
+              }
+          }
+  };
+
+  template <typename T = void>
+  class Variavel : public VariavelAbstrata<T> {
+      protected:
+          T valor;
+      public:
+          Variavel(string identificador) : VariavelAbstrata<T>(identificador){ }
+
+          T executar(Contexto* contexto){
+              return this->valor;
+          }
+  };
 
   template <typename... Types>
   class VariavelPolimorfo : public Polimorfo<Types...>{
@@ -52,56 +88,15 @@ namespace AnaliseSemantica {
       Variavel<void>*
   > VariavelFundamental;
 
-  template <typename T>
-  class Variavel : public Nodo<T> {
-      private:
-          bool inicializacao;
-          string identificador;
-          T* valor;
-      public:
-          Variavel(string identificador) : identificador(identificador), valor(new T()){ }
-
-          void print(){
-              cout << "variavel " << this->getTipo()->getIdentificadorFeminino() << " "<< identificador;
-          }
-
-          T executar(Contexto* contexto){
-              return *valor;
-          }
-
-          void setReferencia(){
-              inicializacao = true;
-          }
-
-          string getIdentificador(){
-              return identificador;
-          }
-
-          void checkInicializacao(){
-              if(!inicializacao){
-                  throw new Erro("variavel " + identificador + " nao inicializada.");
-              }
-          }
-  };
-
   template <>
-  class Variavel<void> : public Nodo<void> {
-      private:
-          string identificador;
-
+  class Variavel<void> : public VariavelAbstrata<void> {
       public:
-          Variavel(string identificador) : identificador(identificador){ }
-
-          void print(){
-              cout << "variavel " << this->getTipo()->getIdentificadorFeminino() << " "<< identificador;
-          }
+          Variavel(string identificador) : VariavelAbstrata<void>(identificador){ }
 
           void executar(Contexto* contexto){ }
 
-          void setReferencia(){ }
-
-          string getIdentificador(){
-              return identificador;
+          void setReferencia(){
+              throw new Erro("variavel " + this->identificador + " nao declarada.");
           }
 
           void checkInicializacao(){ }

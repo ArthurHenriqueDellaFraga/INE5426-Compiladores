@@ -40,9 +40,9 @@ namespace AnaliseSemantica {
       public:
           virtual void executar(Contexto* contexto) { }
 
-          template <typename U>
-          static NodoFundamental* converter(U u){
-              return apply_visitor(ConverterVisitor (), u);
+          template <typename N>
+          static NodoFundamental* converter(N n){
+              return apply_visitor(ConverterVisitor (), n);
           }
 
       protected:
