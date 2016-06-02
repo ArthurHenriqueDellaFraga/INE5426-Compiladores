@@ -39,7 +39,7 @@ namespace AnaliseSemantica {
   > TipoFundamental;
 
   template <typename T = void>
-  class Tipo : TipoAbstrato<T>{
+  class Tipo : public TipoAbstrato<T>{
       public:
           Tipo() : TipoAbstrato<T>("desconhecido", "desconhecida"){ }
 
@@ -72,33 +72,33 @@ namespace AnaliseSemantica {
   };
 
   template<>
-  class Tipo<int> {
+  class Tipo<int> : public TipoAbstrato<int>{
       public:
-          Tipo() : TipoAbstrato<T>("inteiro", "inteira"){ }
+          Tipo() : TipoAbstrato<int>("inteiro", "inteira"){ }
   };
 
   template<>
-  class Tipo<double> {
+  class Tipo<double> : public TipoAbstrato<double>{
     public:
-        Tipo() : TipoAbstrato<T>("real", "real"){ }
+        Tipo() : TipoAbstrato<double>("real", "real"){ }
   };
 
   template<>
-  class Tipo<bool> {
+  class Tipo<bool> : public TipoAbstrato<bool>{
       public:
-          Tipo() : TipoAbstrato<T>("boleano", "boleana"){ }
+          Tipo() : TipoAbstrato<bool>("boleano", "boleana"){ }
   };
 
   template<>
-  class Tipo<char> {
+  class Tipo<char> : public TipoAbstrato<char>{
       public:
-          Tipo() : TipoAbstrato<T>("char", "char"){ }
+          Tipo() : TipoAbstrato<char>("char", "char"){ }
   };
 
   template<>
-  class Tipo<string> {
+  class Tipo<string> : public TipoAbstrato<string>{
       public:
-          Tipo() : TipoAbstrato<T>("string", "string"){ }
+          Tipo() : TipoAbstrato<string>("string", "string"){ }
   };
 
 }

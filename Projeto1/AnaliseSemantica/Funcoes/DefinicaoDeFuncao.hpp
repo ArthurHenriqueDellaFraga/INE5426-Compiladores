@@ -7,15 +7,15 @@ using namespace std;
 
 namespace AnaliseSemantica {
 
-  template <template <typename U> class T>
-  class Definicao : public Nodo<T<U>>{
-      public:
-          Definicao(){ }
-
-          void print(){
-
-          }
-
-  }
+  // template <template <typename U> class T>
+  // class Definicao : public Nodo<T<U>>{
+  //     public:
+  //         Definicao(){ }
+  //
+  //         void print(){
+  //
+  //         }
+  //
+  // }
 
 }

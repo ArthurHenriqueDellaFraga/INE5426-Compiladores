@@ -8,54 +8,55 @@ using namespace std;
 
 namespace AnaliseSemantica {
 
-    template <typename T>
-    class Nodo;
+  template <typename T = void>
+  class NodoAbstrato {
+      public:
+          // virtual ~NodoAbstrato();
+          virtual void print() = 0;
+          virtual T executar(Contexto* contexto) = 0;
 
-    typedef Polimorfo<
-        Nodo<int>*, Nodo<double>*,
-        Nodo<bool>*,
-        Nodo<char>*, Nodo<string>*,
-        Nodo<void>*
-    > NodoFundamental;
+          Tipo<T>* getTipo(){
+              return new Tipo<T>();
+          }
+  };
 
-    template <typename T = void>
-    class Nodo {
-        public:
-            // virtual ~Nodo();
-            virtual void print() = 0;
-            virtual T executar(Contexto* contexto) {
-                return *(new T());
-            }
-            Tipo<T>* getTipo(){
-                return new Tipo<T>();
-            }
-    };
+  template <typename T = void>
+  class Nodo : public NodoAbstrato<T>{
+      public:
+          virtual T executar(Contexto* contexto) {
+              return *(new T());
+          }
+  };
 
-    class Nodo<void> {
-        public:
-            virtual void print() = 0;
-            virtual void executar(Contexto* contexto) { }
-            Tipo<void>* getTipo(){
-                return new Tipo<void>();
-            }
+  typedef Polimorfo<
+      Nodo<int>*, Nodo<double>*,
+      Nodo<bool>*,
+      Nodo<char>*, Nodo<string>*,
+      Nodo<void>*
+  > NodoFundamental;
 
-            template <typename U>
-            static NodoFundamental* converter(U u){
-                return apply_visitor(ConverterVisitor (), u);
-            }
+  template<>
+  class Nodo<void> : public NodoAbstrato<void>{
+      public:
+          virtual void executar(Contexto* contexto) { }
 
-            template <typename U>
-            static NodoFundamental* converter(Nodo<U>* nodo){
-                return new NodoFundamental(nodo);
-            }
+          template <typename U>
+          static NodoFundamental* converter(U u){
+              return apply_visitor(ConverterVisitor (), u);
+          }
 
-        protected:
-            struct ConverterVisitor : public static_visitor<NodoFundamental*>{
-                template <typename V>
-                NodoFundamental* operator()(V& v) const {
-                    return new NodoFundamental(v);
-                }
-            };
-    };
+          template <typename U>
+          static NodoFundamental* converter(Nodo<U>* nodo){
+              return new NodoFundamental(nodo);
+          }
+
+      protected:
+          struct ConverterVisitor : public static_visitor<NodoFundamental*>{
+              template <typename V>
+              NodoFundamental* operator()(V& v) const {
+                  return new NodoFundamental(v);
+              }
+          };
+  };
 
 }
