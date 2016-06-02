@@ -9,6 +9,25 @@ using namespace std;
 
 namespace AnaliseSemantica {
 
+  template <typename T = void>
+  class TipoAbstrato {
+      protected:
+          string identificadorMasculino;
+          string identificadorFeminino;
+
+          TipoAbstrato(string identificadorMasculino, string identificadorFeminino)
+          : identificadorMasculino(identificadorMasculino), identificadorFeminino(identificadorFeminino){ }
+
+      public:
+          string getIdentificadorMasculino(){
+              return identificadorMasculino;
+          }
+
+          string getIdentificadorFeminino(){
+              return identificadorFeminino;
+          };
+  };
+
   template <typename T>
   class Tipo;
 
@@ -20,19 +39,9 @@ namespace AnaliseSemantica {
   > TipoFundamental;
 
   template <typename T = void>
-  class Tipo{
-      private:
-          string identificadorMasculino = "desconhecido";
-          string identificadorFeminino = "desconhecida";
-
+  class Tipo : TipoAbstrato<T>{
       public:
-          string getIdentificadorMasculino(){
-              return identificadorMasculino;
-          }
-
-          string getIdentificadorFeminino(){
-              return identificadorFeminino;
-          };
+          Tipo() : TipoAbstrato<T>("desconhecido", "desconhecida"){ }
 
           static TipoFundamental instanciar(string identificador){
               map<string, TipoFundamental(*)()> _tipo;
@@ -64,81 +73,32 @@ namespace AnaliseSemantica {
 
   template<>
   class Tipo<int> {
-      private:
-          string identificadorMasculino = "inteiro";
-          string identificadorFeminino = "inteira";
-
-
       public:
-          string getIdentificadorMasculino(){
-              return identificadorMasculino;
-          }
-
-          string getIdentificadorFeminino(){
-              return identificadorFeminino;
-          };
+          Tipo() : TipoAbstrato<T>("inteiro", "inteira"){ }
   };
 
   template<>
   class Tipo<double> {
-      private:
-          string identificador = "real";
-
-      public:
-          string getIdentificadorMasculino(){
-              return identificador;
-          }
-
-          string getIdentificadorFeminino(){
-              return identificador;
-          };
+    public:
+        Tipo() : TipoAbstrato<T>("real", "real"){ }
   };
 
   template<>
   class Tipo<bool> {
-      private:
-          string identificadorMasculino = "booleano";
-          string identificadorFeminino = "booleana";
-
-
       public:
-          string getIdentificadorMasculino(){
-              return identificadorMasculino;
-          }
-
-          string getIdentificadorFeminino(){
-              return identificadorFeminino;
-          };
+          Tipo() : TipoAbstrato<T>("boleano", "boleana"){ }
   };
 
   template<>
   class Tipo<char> {
-      private:
-          string identificador = "char";
-
       public:
-          string getIdentificadorMasculino(){
-              return identificador;
-          }
-
-          string getIdentificadorFeminino(){
-              return identificador;
-          };
+          Tipo() : TipoAbstrato<T>("char", "char"){ }
   };
 
   template<>
   class Tipo<string> {
-      private:
-          string identificador = "string";
-
       public:
-          string getIdentificadorMasculino(){
-              return identificador;
-          }
-
-          string getIdentificadorFeminino(){
-              return identificador;
-          };
+          Tipo() : TipoAbstrato<T>("string", "string"){ }
   };
 
 }
