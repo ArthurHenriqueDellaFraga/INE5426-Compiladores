@@ -6,89 +6,66 @@ using namespace std;
 
 namespace AnaliseSemantica {
 
-    template <typename T>
-    class Primitivo : public Nodo<T> {
-        public:
-            T valor;
-            Primitivo(T valor) : valor(valor) { }
-            Primitivo() { }
+  // ABSTRAÇÃO
 
-            void print(){
-                cout << "valor " << this->getTipo()->getIdentificadorMasculino() << " " << valor;
-            };
+  template <typename T>
+  class PrimitivoAbstrato : public Nodo<T> {
+      protected:
+          T valor;
 
-            T executar(Contexto* contexto){
-                return valor;
-            }
-    };
+          PrimitivoAbstrato(){ }
+          PrimitivoAbstrato(T valor) : valor(valor){ }
 
-    template<>
-    class Primitivo<void> : public Nodo<void>{
-        public:
-            Primitivo() { };
+          void print(){
+              cout << "valor ";
+              this->getTipo()->print();
+              cout << " " << valor;
+          };
 
-            void print(){
-                cout << '@';
-            }
+          T executar(Contexto* contexto){
+              return valor;
+          }
+  };
 
-            void executar(Contexto* contexto){ }
-    };
+  // INSTANCIAÇÃO
 
+  template<typename T>
+  class Primitivo : public PrimitivoAbstrato<T>{
+      public:
+          Primitivo() : PrimitivoAbstrato<T>(){ };
+          Primitivo(T valor) : PrimitivoAbstrato<T>(valor){ };
+  };
 
-    template<>
-    class Primitivo<bool> : public Nodo<bool>{
-        public:
-            bool valor;
-            Primitivo(bool valor) : valor(valor) { };
+  template<>
+  class Primitivo<bool> : public PrimitivoAbstrato<bool>{
+      public:
+          Primitivo(bool valor) : PrimitivoAbstrato<bool>(valor){ };
 
-            void print(){
-                cout << "valor booleano ";
-                if(valor){
-                    cout << "TRUE";
-                }else{
-                    cout << "FALSE";
-                }
-            }
+          void print(){
+              cout << "valor ";
+              this->getTipo()->print();
+              if(valor){
+                  cout << " TRUE";
+              }else{
+                  cout << " FALSE";
+              }
+          };
+  };
 
-            bool executar(Contexto* contexto){
-                return valor;
-            }
-    };
+  typedef Primitivo<int> Inteiro;
+  typedef Primitivo<double> Racional;
+  typedef Primitivo<bool> Booleano;
+  typedef Primitivo<char> Caracter;
+  typedef Primitivo<string> Sentenca;
 
-    template<>
-    class Primitivo<double> : public Nodo<double>{
-        public:
-            string valor;
-            Primitivo(string valor) {
-                for(int i = 0; i < valor.size(); i++){
-                    if(valor.at(i) == '.'){
-                        this->valor = valor.substr(0, i+3);
-                        break;
-                    }
-                }
-            };
+  // POLIMORFISMO
 
-            void print(){
-                cout << "valor real " << valor;
-            }
+  class PrimitivoPolimorfo : public NodoPolimorfo<Primitivo>{
+      public:
+          template <typename U>
+          NodoPolimorfo(Primitivo<U>* primitivo) : NodoPolimorfo<Primitivo>(primitivo){ }
+  };
 
-            double executar(Contexto* contexto){
-                return atof(valor.c_str());
-            }
-    };
-
-    typedef Primitivo<int> Inteiro;
-    typedef Primitivo<double> Racional;
-    typedef Primitivo<bool> Booleano;
-    typedef Primitivo<char> Caracter;
-    typedef Primitivo<string> Sentenca;
-    typedef Primitivo<void> Vazio;
-
-    typedef Polimorfo<
-        Inteiro*, Racional*,
-        Booleano*,
-        Caracter*, Sentenca*,
-        Vazio*
-    > PrimitivoFundamental;
+  typedef PrimitivoPolimorfo PrimitivoFundamental;
 
 }

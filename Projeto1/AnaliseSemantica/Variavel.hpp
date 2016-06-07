@@ -6,16 +6,19 @@ using namespace std;
 
 namespace AnaliseSemantica {
 
-  template <typename T = void>
+  // ABSTRAÇÃO
+
+  template <typename T>
   class VariavelAbstrata : public Nodo<T> {
       protected:
-          bool inicializacao;
           string identificador;
       public:
           VariavelAbstrata(string identificador) : identificador(identificador){ }
 
           void print(){
-              cout << "variavel " << this->getTipo()->getIdentificadorFeminino() << " "<< identificador;
+              cout << "variavel ";
+              this->getTipo()->print();
+              cout << " "<< identificador;
           }
 
           string getIdentificador(){
@@ -23,17 +26,13 @@ namespace AnaliseSemantica {
           }
 
           virtual void setReferencia(){
-              inicializacao = true;
-          }
 
-          virtual void checkInicializacao(){
-              if(!inicializacao){
-                  throw new Erro("variavel " + identificador + " nao inicializada.");
-              }
           }
   };
 
-  template <typename T = void>
+  // INSTANCIAÇÃO
+
+  template <typename T>
   class Variavel : public VariavelAbstrata<T> {
       protected:
           T valor;
@@ -45,61 +44,32 @@ namespace AnaliseSemantica {
           }
   };
 
-  template <typename... Types>
-  class VariavelPolimorfo : public Polimorfo<Types...>{
+  // POLIMORFISMO
+
+  class VariavelPolimorfo : public NodoPolimorfo<Variavel>{
       public:
-          template<typename T>
-          VariavelPolimorfo(Variavel<T>* variavel) : Polimorfo<Types...>(variavel){ }
+          template<typename U>
+          VariavelPolimorfo(Variavel<U>* variavel) : NodoPolimorfo<Variavel>(variavel){ }
 
           string getIdentificador(){
-              return apply_visitor(getIdentificadorVisitor (), *this);
+              return apply_visitor(getIdentificador_visitor (), *this);
           }
 
-          void checkInicializacao(){
-              apply_visitor(checkInicializacaoVisitor (), *this);
-          }
-
-          template<typename T>
-          VariavelPolimorfo<Types...>& operator=(const T& t){
-              Polimorfo<Types...>::operator=(t);
+          template<typename U>
+          VariavelPolimorfo& operator=(const Variavel<U>*& varaivel){
+              NodoPolimorfo<Variavel>::operator=(variavel);
               return *this;
           }
 
       protected:
-          struct getIdentificadorVisitor : public static_visitor<string>{
+          struct getIdentificador_visitor : public static_visitor<string>{
               template <typename V>
               string operator()(Variavel<V>*& variavel) const {
                   return variavel->getIdentificador();
               }
           };
-
-          struct checkInicializacaoVisitor : public static_visitor<void>{
-              template <typename V>
-              void operator()(Variavel<V>*& variavel) const {
-                  variavel->checkInicializacao();
-              }
-          };
   };
 
-  typedef VariavelPolimorfo<
-      Variavel<int>*, Variavel<double>*,
-      Variavel<bool>*,
-      Variavel<char>*, Variavel<string>*,
-      Variavel<void>*
-  > VariavelFundamental;
-
-  template <>
-  class Variavel<void> : public VariavelAbstrata<void> {
-      public:
-          Variavel(string identificador) : VariavelAbstrata<void>(identificador){ }
-
-          void executar(Contexto* contexto){ }
-
-          void setReferencia(){
-              throw new Erro("variavel " + this->identificador + " nao declarada.");
-          }
-
-          void checkInicializacao(){ }
-  };
+  typedef VariavelPolimorfo VariavelFundamental;
 
 }

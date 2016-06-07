@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Contexto.hpp"
+#include "../Contexto.hpp"
 
 using namespace boost;
 using namespace std;
@@ -33,7 +33,7 @@ namespace AnaliseSemantica {
               string identificador;
 
               template <typename V>
-              void operator()(Definicao<V>*& definicao) const {
+              void operator() (Definicao<V>*& definicao) const {
                   definicao->add(identificador);
               }
           };
@@ -46,41 +46,53 @@ namespace AnaliseSemantica {
       Definicao<void>*
   > DefinicaoFundamental;
 
-  template <typename T = void>
-  class Definicao : public Nodo<void>{
+  template <template <typename> class T, typename U>
+  class DefinicaoAbstrata : public Nodo<void>{
       protected:
-          Tipo<T>* tipo;
           vector<string> listaDeIdentificadores;
 
       public:
-          Definicao() {}
-
-          Definicao(Tipo<T>* tipo, string identificador) : tipo(tipo){
-              add(identificador);
+          DefinicaoAbstrata(string identificador){
+              *this << identificador;
           }
 
           void print(){
-              cout << "Declaracao de variavel " << tipo->getIdentificadorFeminino() << ": " << listaDeIdentificadores[0];
+              cout << "Definicao de ";
+              (new Tipo<T>())->print();
+              cout << " ";
+              (new Tipo<U>())->print();
+              cout << ": " << listaDeIdentificadores[0];
 
               for(int i = 1; i < listaDeIdentificadores.size(); i++){
                   cout << ", " << listaDeIdentificadores[i];
               }
           }
-          void executar(Contexto* contexto){
-              for(int i = 0; i < listaDeIdentificadores.size(); i++){
-                  try{
-                      contexto->put(listaDeIdentificadores[i], new VariavelFundamental(new Variavel<T>(listaDeIdentificadores[i])));
-                  }
-                  catch(Erro* erro){
-                      erro->print();
-                  }
-              }
-          }
 
-          void add(string identificador){
-              listaDeIdentificadores.push_back(identificador);
+          void operator<< (string identificador){
+              vetor.push_back(identificador);
           }
+  };
 
+  template <template <typename> class T, typename U>
+  class Definicao : public DefinicaoAbstrata<T, U>{
+      protected:
+          Definicao(string identificador) : DefinicaoAbstrata<T, U>(identificador){ }
+
+  };
+
+  template <typename U>
+  class Definicao<Variavel, U> : public DefinicaoAbstrata<Variavel, U>{
+      public:
+          Definicao(string identificador) : DefinicaoAbstrata<Variavel, U>(identificador){ }
+
+          void executar(){
+              VariavelFundamental* variavel = new VariavelFundamental(new Variavel<U>(identificador));
+              contexto->put(identificador, variavel);
+          }
+  };
+
+  class DefinicaoPolimorfo : public NodoPolimorfo<Definicao>{
+      public:
           static DefinicaoFundamental* instanciar(TipoFundamental tipo, string identificador){
               createVisitor visitor;
               visitor.identificador = identificador;

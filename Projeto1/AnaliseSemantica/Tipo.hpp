@@ -1,6 +1,6 @@
 #pragma once
 
-#include "boost/variant.hpp"
+#include "Geral/Polimorfo.hpp"
 
 #include <map>
 
@@ -9,45 +9,78 @@ using namespace std;
 
 namespace AnaliseSemantica {
 
-  template <typename T = void>
-  class TipoAbstrato {
-      protected:
-          string identificadorMasculino;
-          string identificadorFeminino;
+  // ABSTRAÇÃO
 
-          TipoAbstrato(string identificadorMasculino, string identificadorFeminino)
-          : identificadorMasculino(identificadorMasculino), identificadorFeminino(identificadorFeminino){ }
+  template <typename T = void>
+  class TipoAbstrato{
+      protected:
+          string identificador;
+
+          TipoAbstrato(string identificador) : identificador(identificador){ }
 
       public:
+          void print(){
+              cout << identificador;
+          }
+
           string getIdentificadorMasculino(){
-              return identificadorMasculino;
+              return identificador;
           }
 
           string getIdentificadorFeminino(){
-              return identificadorFeminino;
+              return identificador;
           };
   };
 
-  template <typename T>
-  class Tipo;
-
-  typedef variant<
-      Tipo<int>*, Tipo<double>*,
-      Tipo<bool>*,
-      Tipo<char>*, Tipo<string>*,
-      Tipo<void>*
-  > TipoFundamental;
+  //INSTANCIAÇÃO
 
   template <typename T = void>
   class Tipo : public TipoAbstrato<T>{
       public:
-          Tipo() : TipoAbstrato<T>("desconhecido", "desconhecida"){ }
+          Tipo() : TipoAbstrato<T>("desconhecido"){ }
+  };
 
-          static TipoFundamental instanciar(string identificador){
-              map<string, TipoFundamental(*)()> _tipo;
+  template<>
+  class Tipo<int> : public TipoAbstrato<int>{
+      public:
+          Tipo() : TipoAbstrato<int>("int"){ }
+  };
+
+  template<>
+  class Tipo<double> : public TipoAbstrato<double>{
+    public:
+        Tipo() : TipoAbstrato<double>("double"){ }
+  };
+
+  template<>
+  class Tipo<bool> : public TipoAbstrato<bool>{
+      public:
+          Tipo() : TipoAbstrato<bool>("bool"){ }
+  };
+
+  template<>
+  class Tipo<char> : public TipoAbstrato<char>{
+      public:
+          Tipo() : TipoAbstrato<char>("char"){ }
+  };
+
+  template<>
+  class Tipo<string> : public TipoAbstrato<string>{
+      public:
+          Tipo() : TipoAbstrato<string>("string"){ }
+  };
+
+  // POLIMORFISMO
+
+  class TipoPolimorfo : public Polimorfo<Tipo>{
+      public:
+          template <typename U>
+          TipoPolimorfo(Tipo<U>* tipo) : Polimorfo<Tipo>(tipo){ }
+
+          static TipoPolimorfo* instanciar(string identificador){
+              map<string, TipoPolimorfo*(*)()> _tipo;
                 _tipo["int"] = &createTipo<int>;
                 _tipo["double"] = &createTipo<double>;
-                    _tipo["real"] = &createTipo<double>;
                 _tipo["bool"] = &createTipo<bool>;
                 _tipo["char"] = &createTipo<char>;
                 _tipo["string"] = &createTipo<string>;
@@ -64,41 +97,11 @@ namespace AnaliseSemantica {
 
       protected:
           template <typename V>
-          static TipoFundamental createTipo(){
-              TipoFundamental tipo;
-              tipo = new Tipo<V>();
-              return tipo;
+          static TipoPolimorfo* createTipo(){
+              return new TipoPolimorfo(new Tipo<V>());
           }
   };
 
-  template<>
-  class Tipo<int> : public TipoAbstrato<int>{
-      public:
-          Tipo() : TipoAbstrato<int>("inteiro", "inteira"){ }
-  };
-
-  template<>
-  class Tipo<double> : public TipoAbstrato<double>{
-    public:
-        Tipo() : TipoAbstrato<double>("real", "real"){ }
-  };
-
-  template<>
-  class Tipo<bool> : public TipoAbstrato<bool>{
-      public:
-          Tipo() : TipoAbstrato<bool>("boleano", "boleana"){ }
-  };
-
-  template<>
-  class Tipo<char> : public TipoAbstrato<char>{
-      public:
-          Tipo() : TipoAbstrato<char>("char", "char"){ }
-  };
-
-  template<>
-  class Tipo<string> : public TipoAbstrato<string>{
-      public:
-          Tipo() : TipoAbstrato<string>("string", "string"){ }
-  };
+  typedef TipoPolimorfo TipoFundamental;
 
 }
