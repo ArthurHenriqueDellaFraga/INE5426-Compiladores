@@ -56,7 +56,7 @@ namespace AnaliseSemantica {
           }
 
           template<typename U>
-          VariavelPolimorfo& operator=(const Variavel<U>*& varaivel){
+          VariavelPolimorfo& operator=(const Variavel<U>*& variavel){
               NodoPolimorfo<Variavel>::operator=(variavel);
               return *this;
           }

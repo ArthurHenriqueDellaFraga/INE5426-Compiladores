@@ -47,7 +47,7 @@ namespace AnaliseSemantica {
       public:
           template <typename U>
           NodoPolimorfo(T<U>* nodo) : Polimorfo<T>(nodo){
-              static_assert(is_base_of<Nodo, T>::value, "NodoPolimorfo :: construtor")
+              //static_assert(is_base_of<Nodo, T>::value, "NodoPolimorfo :: construtor")
           }
 
           void print(){
@@ -72,7 +72,7 @@ namespace AnaliseSemantica {
 
           template <typename U>
           static NodoPolimorfo<T>* converter(NodoPolimorfo<U>* nP){
-              static_assert(is_base_of<T, U>::value, "NodoPolimorfo :: converter")
+              //static_assert(is_base_of<T, U>::value, "NodoPolimorfo :: converter")
               return apply_visitor(converter_visitor (), nP);
           }
 
@@ -103,9 +103,8 @@ namespace AnaliseSemantica {
           struct getTipo_visitor : public static_visitor<TipoFundamental> {
               template <typename V>
               TipoFundamental operator()(V v) const {
-                  TipoFundamental tipo;
-                  tipo = v->getTipo();
-                  return tipo;
+                  TipoFundamental* tipo= new TipoFundamental(v->getTipo());
+                  return *tipo;
               }
           };
   };

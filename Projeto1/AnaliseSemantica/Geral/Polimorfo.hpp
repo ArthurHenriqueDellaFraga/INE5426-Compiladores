@@ -20,13 +20,10 @@ namespace AnaliseSemantica {
                 *this = t;
             };
 
-            // Polimorfo() : variant<Types...>(){}
-
             template<typename U>
             Polimorfo<T>& operator=(const T<U>*& t){
                 Super::operator=(t);
                 return *this;
             }
       };
-
 }

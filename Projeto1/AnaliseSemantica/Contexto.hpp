@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Variavel.hpp"
-#include "Arranjo.hpp"
 
 using namespace std;
 
@@ -10,7 +9,6 @@ namespace AnaliseSemantica {
     class Contexto {
         protected:
             map<string, VariavelFundamental*> _variavel;
-            map<string, ArranjoFundamental*> _arranjo;
         public:
             Contexto(){ }
 
@@ -37,31 +35,6 @@ namespace AnaliseSemantica {
                 }
 
                 return _variavel[identificador];
-            }
-
-            void putArranjo(string identificador, ArranjoFundamental* arranjo){
-                map<string, ArranjoFundamental*>::iterator it;
-                it = _arranjo.find(identificador);
-
-                if(it != _arranjo.end()){
-                    throw new Erro("arranjo sofrendo redefinicao");
-                }
-
-                _arranjo[identificador] = arranjo;
-            }
-
-            ArranjoFundamental* getArranjo(string identificador){
-                map<string, ArranjoFundamental*>::iterator it;
-                it = _arranjo.find(identificador);
-
-                if(it == _arranjo.end()){
-                    Erro* erro = new Erro("variavel " + identificador + " sem declaracao");
-                    erro->print();
-
-                    return new ArranjoFundamental(new Arranjo<void>(identificador, 0));
-                }
-
-                return _arranjo[identificador];
             }
 
     };

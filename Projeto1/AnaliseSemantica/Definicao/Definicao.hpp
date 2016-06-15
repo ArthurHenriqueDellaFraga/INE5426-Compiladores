@@ -46,6 +46,8 @@ namespace AnaliseSemantica {
       Definicao<void>*
   > DefinicaoFundamental;
 
+  // ABSTRAÇÃO
+
   template <template <typename> class T, typename U>
   class DefinicaoAbstrata : public Nodo<void>{
       protected:
@@ -80,35 +82,7 @@ namespace AnaliseSemantica {
 
   };
 
-  template <typename U>
-  class Definicao<Variavel, U> : public DefinicaoAbstrata<Variavel, U>{
-      public:
-          Definicao(string identificador) : DefinicaoAbstrata<Variavel, U>(identificador){ }
 
-          void executar(){
-              VariavelFundamental* variavel = new VariavelFundamental(new Variavel<U>(identificador));
-              contexto->put(identificador, variavel);
-          }
-  };
-
-  class DefinicaoPolimorfo : public NodoPolimorfo<Definicao>{
-      public:
-          static DefinicaoFundamental* instanciar(TipoFundamental tipo, string identificador){
-              createVisitor visitor;
-              visitor.identificador = identificador;
-              return apply_visitor(visitor, tipo);
-          }
-
-      protected:
-        struct createVisitor : public static_visitor<DefinicaoFundamental*>{
-            string identificador;
-
-            template <typename V>
-            DefinicaoFundamental* operator()(Tipo<V>*& tipo) const {
-                return new DefinicaoFundamental(new Definicao<V>(tipo, identificador));
-            }
-        };
-  };
 
   template <typename T = void>
   class DefinicaoArranjo : public Definicao<void>{

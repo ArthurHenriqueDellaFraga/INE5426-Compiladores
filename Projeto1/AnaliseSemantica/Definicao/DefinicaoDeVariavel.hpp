@@ -18,7 +18,7 @@ namespace AnaliseSemantica {
           }
   };
 
-  class DefinicaoDeVariavelPolimorfo : public NodoPolimorfo<Definicao>{
+  class DefinicaoDeVariavelPolimorfo : public Polimorfo<Definicao, Variavel>{
       public:
           static DefinicaoFundamental* instanciar(TipoFundamental tipo, string identificador){
               createVisitor visitor;

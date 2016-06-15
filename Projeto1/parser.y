@@ -1,8 +1,7 @@
 %code requires{
-    #include "AnaliseSemantica/Funcoes/Funcao.hpp"
     #include "AnaliseSemantica/Primitivo.hpp"
-    #include "AnaliseSemantica/Funcoes/DefinicaoDeFuncao.hpp"
     #include "AnaliseSemantica/Atribuicao.hpp"
+    #include "AnaliseSemantica/Definicao.hpp"
 
     #include "AnaliseSemantica/Operacoes/OperacaoBooleana.hpp"
     #include "AnaliseSemantica/Operacoes/Soma.hpp"
@@ -11,12 +10,8 @@
     #include "AnaliseSemantica/Operacoes/Divisao.hpp"
     #include "AnaliseSemantica/Operacoes/Parenteses.hpp"
 
-    #include "AnaliseSemantica/Arranjo.hpp"
-
     #include <stdio.h>
     #include <stdlib.h>
-
-    #include "boost/variant.hpp"
 
     using namespace boost;
     using namespace AnaliseSemantica;

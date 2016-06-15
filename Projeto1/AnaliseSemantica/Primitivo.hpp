@@ -63,7 +63,7 @@ namespace AnaliseSemantica {
   class PrimitivoPolimorfo : public NodoPolimorfo<Primitivo>{
       public:
           template <typename U>
-          NodoPolimorfo(Primitivo<U>* primitivo) : NodoPolimorfo<Primitivo>(primitivo){ }
+          PrimitivoPolimorfo(Primitivo<U>* primitivo) : NodoPolimorfo<Primitivo>(primitivo){ }
   };
 
   typedef PrimitivoPolimorfo PrimitivoFundamental;

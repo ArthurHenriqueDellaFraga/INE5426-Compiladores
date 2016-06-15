@@ -7,6 +7,8 @@ using namespace std;
 
 namespace AnaliseSemantica {
 
+  // INSTANCIACAO
+
   template <typename T = void, typename U = T>
   class Conversao : public Nodo<T>{
       public:
@@ -14,7 +16,7 @@ namespace AnaliseSemantica {
           Nodo<U>* valor;
 
           Conversao(Tipo<T>* tipo, Nodo<U>* valor) : tipo(tipo), valor(valor){
-              //static_assert(std::is_convertible<T, U>::value, "static_assert: Conversão inválida");
+              //static_assert(std::is_convertible<T, U>::value, "Conversao :: construtor");
           }
 
           Conversao(Nodo<U>* valor) : valor(valor){
@@ -22,9 +24,12 @@ namespace AnaliseSemantica {
           }
 
           void print(){
+              cout << "(";
+              tipo->print();
+              cout << ") ";
               valor->print();
-              cout << " para " <<  tipo->getIdentificadorMasculino();
           }
+
           T executar(Contexto* contexto){
               return *(new T(valor->executar(contexto)));
           }

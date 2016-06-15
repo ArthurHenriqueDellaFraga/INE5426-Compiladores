@@ -17,6 +17,7 @@
 **Extends Boost::variant**
 * [Exemplo](cpp.sh/7cc4)
 * [Exemplo2](cpp.sh/7pa3)
+* [Exemplo3](cpp.sh/73lks)
 
 #### Indentifying variant objects
 **Boost::static_visitor<T>**
