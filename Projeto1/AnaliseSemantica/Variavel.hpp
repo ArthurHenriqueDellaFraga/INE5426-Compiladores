@@ -44,6 +44,16 @@ namespace AnaliseSemantica {
           }
   };
 
+  template <>
+  class Variavel<void> : public VariavelAbstrata<void> {
+      public:
+          Variavel(string identificador) : VariavelAbstrata<void>(identificador){ }
+
+          void executar(Contexto* contexto){
+              //ERROR ?
+          }
+  };
+
   // POLIMORFISMO
 
   class VariavelPolimorfo : public NodoPolimorfo<Variavel>{

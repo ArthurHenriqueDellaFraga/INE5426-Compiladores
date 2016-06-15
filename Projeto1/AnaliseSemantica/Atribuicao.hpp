@@ -53,7 +53,8 @@ namespace AnaliseSemantica {
 
               template <typename V>
               NodoFundamental* operator()(Variavel<void>*& variavel, Nodo<V>*& valor) const {
-                  return new NodoFundamental(new Atribuicao<void, V>(variavel, valor));
+                  throw new Erro("Atribuição inválida")
+                  // return new NodoFundamental(new Atribuicao<void, V>(variavel, valor));
               }
 
               NodoFundamental* operator()(Variavel<void>*& variavel, Nodo<void>*& valor) const {

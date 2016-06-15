@@ -16,7 +16,7 @@ namespace AnaliseSemantica {
             typedef variant<T<int>*, T<double>*, T<bool>*, T<char>*, T<string>*, T<void>*> Super;
 
             template<typename U>
-            Polimorfo(const T<U>*& t){
+            Polimorfo(T<U>*& t){
                 *this = t;
             };
 
