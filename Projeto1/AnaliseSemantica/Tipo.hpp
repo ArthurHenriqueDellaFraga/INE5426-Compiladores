@@ -74,6 +74,8 @@ namespace AnaliseSemantica {
 
   class TipoPolimorfo : public variant<Tipo<int>*, Tipo<double>*, Tipo<bool>*, Tipo<char>*, Tipo<string>*, Tipo<void>*>{
       public:
+          TipoPolimorfo(){ }
+
           template <typename U>
           TipoPolimorfo(Tipo<U>* tipo) : variant<Tipo<int>*, Tipo<double>*, Tipo<bool>*, Tipo<char>*, Tipo<string>*, Tipo<void>*>(){
               *this = tipo;

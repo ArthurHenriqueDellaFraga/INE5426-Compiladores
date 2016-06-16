@@ -1,4 +1,6 @@
 %code requires{
+    #include "AnaliseSemantica/Bloco.hpp"
+
     #include "AnaliseSemantica/Primitivo.hpp"
     #include "AnaliseSemantica/Atribuicao.hpp"
     #include "AnaliseSemantica/Definicao.hpp"
@@ -42,9 +44,6 @@
     DefinicaoFundamental* definicao;
     AtribuicaoFundamental* atribuicao;
 
-    FuncaoFundamental* funcao;
-    vector<VariavelFundamental>* listaDeArgumentos;
-
     Nodo<int>* inteiro;
     Nodo<double>* racional;
     Nodo<bool>* booleano;
@@ -85,7 +84,7 @@
 %token ABRE_COLCHETE FECHA_COLCHETE
 
 %token <_int> INTEIRO
-%token <_string> RACIONAL
+%token <_double> RACIONAL
 %token <_bool> BOOLEANO
 %token <_char> CARACTER
 %token <_string> SENTENCA
@@ -106,10 +105,7 @@
 
 %type <variavel> variavel
 %type <definicao> definicao
-%type <nodo> atribuicao
-
-%type <funcao> funcao
-%type <listaDeArgumentos> listaDeArgumentos
+%type <atribuicao> atribuicao
 
 /* Operator precedence for mathematical operators
  * The latest it is listed, the highest the precedence
@@ -150,10 +146,6 @@ bloco
 
     | bloco NOVA_LINHA { }
 
-    | bloco funcao NOVA_LINHA {
-        $1->addInstrucao(*(new NodoFundamental(*$2)));
-    }
-
 instrucao
     : inteiro {
             $$ = new NodoFundamental($1);
@@ -176,21 +168,15 @@ instrucao
     }
 
     | definicao {
-            $$ = Nodo<>::converter(*$1);
+            $$ = NodoPolimorfo<>::converter(*$1);
     }
 
     | atribuicao {
-            $$ = Nodo<>::converter(*$1);
+            $$ = NodoPolimorfo<>::converter(*$1);
     }
 
     | variavel {
-            try{
-                $1->checkInicializacao();
-            }
-            catch(Erro* erro){
-                erro->print();
-            }
-            $$ = Nodo<>::converter(*$1);
+            $$ = NodoPolimorfo<>::converter(*$1);
     }
 
     | ABRE_PARENTESES instrucao FECHA_PARENTESES {
@@ -225,7 +211,7 @@ inteiro
     }
 
 racional
-    : RACIONAL { $$ = new Racional(*$1); }
+    : RACIONAL { $$ = new Racional($1); }
 
     | ABRE_PARENTESES racional FECHA_PARENTESES {
             $$ = new Parenteses<double>($2);
@@ -291,10 +277,9 @@ sentenca
 definicao
     : IDENTIFICADOR DEFINICAO IDENTIFICADOR {
             try{
-                TipoFundamental tF;
-                tF = Tipo<>::instanciar(*$1);
+                TipoFundamental* tF = TipoFundamental::instanciar(*$1);
 
-                $$ = Definicao<>::instanciar(tF, *$3);
+                $$ = DefinicaoFundamental::instanciar(*tF, *$3);
             }
             catch(Erro* erro){
                 erro->print();
@@ -306,34 +291,11 @@ definicao
             $$->add(*$3);
     }
 
-    | IDENTIFICADOR ABRE_COLCHETE instrucao FECHA_COLCHETE DEFINICAO IDENTIFICADOR {
-            TipoFundamental tF;
-            tF = Tipo<>::instanciar(*$1);
-
-            try{
-                $$ = DefinicaoArranjo<>::instanciarArranjo(tF, *$3, *$6);
-            }
-            catch(Erro* erro){
-                erro->print();
-                exit(1);
-            }
-    }
 
 atribuicao
     : variavel ATRIBUICAO instrucao {
             try{
-              $$ = Atribuicao<int>::instanciar(*$1, *$3);
-            }
-            catch(Erro* erro){
-                erro->print();
-                exit(1);
-            }
-    }
-
-    | IDENTIFICADOR ABRE_COLCHETE instrucao FECHA_COLCHETE ATRIBUICAO instrucao {
-            try{
-                ArranjoFundamental* arranjo = contexto->getArranjo(*$1);
-                $$ = AtribuicaoArranjo<int>::instanciarArranjo(*arranjo, *$3, *$6);
+              $$ = AtribuicaoFundamental::instanciar(*$1, *$3);
             }
             catch(Erro* erro){
                 erro->print();
@@ -344,16 +306,6 @@ atribuicao
 variavel
     : IDENTIFICADOR {
             $$ = contexto->getVariavel(*$1);
-    }
-
-funcao
-    : DECLARACAO IDENTIFICADOR IDENTIFICADOR DEFINICAO IDENTIFICADOR listaDeArgumentos {
-        $$ = new FuncaoFundamental(new Funcao<>());
-    }
-
-listaDeArgumentos
-    : ABRE_PARENTESES definicao {
-        $$ = new vector<VariavelFundamental>;
     }
 
 %%

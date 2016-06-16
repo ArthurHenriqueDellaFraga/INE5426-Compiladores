@@ -2,6 +2,7 @@
 
 #include "Nodo.hpp"
 
+using namespace boost;
 using namespace std;
 
 namespace AnaliseSemantica {
@@ -62,7 +63,7 @@ namespace AnaliseSemantica {
           VariavelPolimorfo(Variavel<U>* variavel) : NodoPolimorfo<Variavel>(variavel){ }
 
           string getIdentificador(){
-              return apply_visitor(getIdentificador_visitor (), *this);
+              return apply_visitor(getIdentificadorVisitor (), *this);
           }
 
           template<typename U>
@@ -72,7 +73,7 @@ namespace AnaliseSemantica {
           }
 
       protected:
-          struct getIdentificador_visitor : public static_visitor<string>{
+          struct getIdentificadorVisitor : public static_visitor<string>{
               template <typename V>
               string operator()(Variavel<V>*& variavel) const {
                   return variavel->getIdentificador();

@@ -70,10 +70,10 @@ namespace AnaliseSemantica {
               return *this;
           }
 
-          template <template <typename> class U>
-          static NodoPolimorfo<T>* converter(NodoPolimorfo<U>* nP){
+          template <typename U>
+          static NodoPolimorfo<T>* converter(U u){
               //static_assert(is_base_of<T, U>::value, "NodoPolimorfo :: converter")
-              return apply_visitor(converter_visitor (), nP);
+              return apply_visitor(converter_visitor (), u);
           }
 
       protected:

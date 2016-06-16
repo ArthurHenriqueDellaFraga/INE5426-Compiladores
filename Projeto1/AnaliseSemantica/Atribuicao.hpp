@@ -28,39 +28,51 @@ namespace AnaliseSemantica {
           }
 
           void executar(Contexto* contexto){
-              variavel->setReferencia(*(new T(valor->executar(contexto))));
+              //variavel->setReferencia(*(new T(valor->executar(contexto))));
           }
+  };
 
-          static NodoFundamental* instanciar(VariavelFundamental variavel, NodoFundamental valor){
+  // POLIMORFISMO
+
+  class AtribuicaoPolimorfo : public Polimorfo<Atribuicao>{
+      public:
+          template <typename U>
+          AtribuicaoPolimorfo(Atribuicao<U>* atribuicao) : Polimorfo<Atribuicao>(atribuicao){ }
+
+          static AtribuicaoPolimorfo* instanciar(VariavelFundamental variavel, NodoFundamental valor){
               return apply_visitor(createVisitor (), variavel, valor);
           }
 
       protected:
-          struct createVisitor : public static_visitor<NodoFundamental*>{
+          struct createVisitor : public static_visitor<AtribuicaoPolimorfo*>{
               template <typename V, typename W>
-              NodoFundamental* operator()(Variavel<V>*& variavel, Nodo<W>*& valor) const {
+              AtribuicaoPolimorfo* operator()(Variavel<V>*& variavel, Nodo<W>*& valor) const {
                     VariavelFundamental* vF = new VariavelFundamental(variavel);
                     NodoFundamental* nF = new NodoFundamental(valor);
 
                     NodoFundamental* conversao = Conversao<>::instanciar(vF->getTipo(), *nF);
-                    return Atribuicao<int>::instanciar(*vF, *conversao);
+                    return AtribuicaoPolimorfo::instanciar(*vF, *conversao);
               }
 
               template <typename V>
-              NodoFundamental* operator()(Variavel<V>*& variavel, Nodo<V>*& valor) const {
-                  return new NodoFundamental(new Atribuicao<V>(variavel, valor));
+              AtribuicaoPolimorfo* operator()(Variavel<V>*& variavel, Nodo<V>*& valor) const {
+                  return new AtribuicaoPolimorfo(new Atribuicao<V>(variavel, valor));
               }
 
+
+              // Verificar necessidade:
               template <typename V>
-              NodoFundamental* operator()(Variavel<void>*& variavel, Nodo<V>*& valor) const {
-                  throw new Erro("Atribuição inválida")
+              AtribuicaoPolimorfo* operator()(Variavel<void>*& variavel, Nodo<V>*& valor) const {
+                  throw new Erro("Atribuição inválida");
                   // return new NodoFundamental(new Atribuicao<void, V>(variavel, valor));
               }
 
-              NodoFundamental* operator()(Variavel<void>*& variavel, Nodo<void>*& valor) const {
-                  return new NodoFundamental(new Atribuicao<void>(variavel, valor));
+              AtribuicaoPolimorfo* operator()(Variavel<void>*& variavel, Nodo<void>*& valor) const {
+                  return new AtribuicaoPolimorfo(new Atribuicao<void>(variavel, valor));
               }
           };
   };
+
+  typedef AtribuicaoPolimorfo AtribuicaoFundamental;
 
 }

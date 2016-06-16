@@ -62,11 +62,7 @@ letra [a-zA-Z]
                                   return INTEIRO;
                               }
 {digito}*"."{digito}+         {
-                                  yylval._string = new string(yytext);
-                                  return RACIONAL;
-                              }
-{digito}+"."{digito}*         {
-                                  yylval._string = new string(yytext);
+                                  yylval._double = atof(yytext);
                                   return RACIONAL;
                               }
 "TRUE"                        {

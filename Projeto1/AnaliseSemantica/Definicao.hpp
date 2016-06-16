@@ -8,11 +8,18 @@ using namespace std;
 namespace AnaliseSemantica {
 
   template <typename T>
-  class Definicao : public Nodo<T>{
+  class Definicao : public Nodo<void>{
       public:
           string identificador;
 
           Definicao(string identificador) : identificador(identificador){ }
+
+          void print(){
+              cout << "Declaracao de variavel ";
+              (new Tipo<T>())->print();
+              cout << ": ";
+              identificador;
+          }
 
           void executar(Contexto* contexto){
               VariavelFundamental* variavel = new VariavelFundamental(new Variavel<T>(identificador));
@@ -22,6 +29,16 @@ namespace AnaliseSemantica {
 
   class DefinicaoPolimorfo : public Polimorfo<Definicao>{
       public:
+          template <typename U>
+          DefinicaoPolimorfo(Definicao<U>* definicao) : NodoPolimorfo<Definicao>(definicao){ }
+
+          void add(string identificador){
+              add_visitor add;
+              add.identificador = identificador;
+              apply_visitor(add, *this);
+
+          }
+
           static DefinicaoPolimorfo* instanciar(TipoFundamental tipo, string identificador){
               createVisitor create;
               create.identificador = identificador;
@@ -37,4 +54,17 @@ namespace AnaliseSemantica {
                 return new DefinicaoPolimorfo(new Definicao<V>(tipo, identificador));
             }
         };
+
+        struct add_visitor : public static_visitor<DefinicaoPolimorfo*>{
+            string identificador;
+
+            template <typename V>
+            DefinicaoPolimorfo* operator()(Definicao<V>*& definicao) const {
+                definicao->add(identificador);
+            }
+        };
   };
+
+  typedef DefinicaoPolimorfo DefinicaoFundamental;
+
+}
