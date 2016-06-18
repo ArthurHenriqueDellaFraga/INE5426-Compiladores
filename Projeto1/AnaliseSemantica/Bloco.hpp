@@ -10,7 +10,7 @@ namespace AnaliseSemantica {
   template <typename T = void>
   class Bloco : public Nodo<T> {
       protected:
-          vector<NodoFundamental> listaDeInstrucoes;
+          vector<NodoFundamental*> listaDeInstrucoes;
           Contexto* contexto;
       public:
           Bloco(Contexto* contexto) : contexto(contexto) { }
@@ -18,22 +18,23 @@ namespace AnaliseSemantica {
 
           virtual void print(){
               for(int i=0; i < listaDeInstrucoes.size(); i++){
-                  listaDeInstrucoes[i].print();
+                  listaDeInstrucoes[i]->print();
                   cout << endl;
               }
           }
+
           void executar(Contexto* contexto){
               for(int i=0; i < listaDeInstrucoes.size(); i++){
-                  listaDeInstrucoes[i].executar(contexto);
+                  listaDeInstrucoes[i]->executar(contexto);
               }
           }
 
-          virtual void addInstrucao(NodoFundamental instrucao){
+          virtual void addInstrucao(NodoFundamental* instrucao){
               listaDeInstrucoes.push_back(instrucao);
 
               try{
-                  instrucao.executar(contexto);
-                  instrucao.print();
+                  instrucao->executar(contexto);
+                  instrucao->print();
                   cout << endl;
               }
               catch(Erro* erro){

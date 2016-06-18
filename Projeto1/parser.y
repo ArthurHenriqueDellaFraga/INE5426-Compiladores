@@ -130,24 +130,25 @@
 program
     : bloco { raizDoPrograma = $1; }
 
-
 bloco
     : NOVA_LINHA { }
 
     | instrucao NOVA_LINHA {
             $$ = new Bloco<>(contexto);
-            $$->addInstrucao(*$1);
+            $$->addInstrucao($1);
     }
 
     | bloco instrucao NOVA_LINHA{
             if($2 != NULL)
-                $1->addInstrucao(*$2);
+                $1->addInstrucao($2);
+            $$ = $1;
     }
 
     | bloco NOVA_LINHA { }
 
 instrucao
     : inteiro {
+            cout << "!!!";
             $$ = new NodoFundamental($1);
     }
 
@@ -204,7 +205,7 @@ instrucao
     }
 
 inteiro
-    : INTEIRO { $$ = new Inteiro($1); }
+    : INTEIRO { $$ = new Nodo<int>(); }
 
     | ABRE_PARENTESES inteiro FECHA_PARENTESES {
             $$ = new Parenteses<int>($2);

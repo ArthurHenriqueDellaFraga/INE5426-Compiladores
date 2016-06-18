@@ -16,7 +16,7 @@ namespace AnaliseSemantica {
   class NodoAbstrato {
       public:
           // virtual ~NodoAbstrato();
-          virtual void print() = 0;
+          virtual void print(){ cout << "Nodo->print()" << endl;};
           virtual T executar(Contexto* contexto) = 0;
 
           Tipo<T>* getTipo(){

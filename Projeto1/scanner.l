@@ -1,6 +1,5 @@
 %{
     #include "parser.h"
-    #include "AnaliseSemantica/Nodo.hpp"
 
     #include <string>
 
@@ -17,13 +16,13 @@ letra [a-zA-Z]
 
 %%
 
-"exit"                        {
+"<sair>"                      {
                                   cout << "-- fim da compilacao --" << endl;
                                   exit(0);
                               }
 
 [ \t]                         ; //ignora espaços
-\n                            {return NOVA_LINHA;}
+\n                            ;
 ";"                           {return NOVA_LINHA;}
 
 "+"                           {return SOMA;}
@@ -51,7 +50,6 @@ letra [a-zA-Z]
 
 "["                           {return ABRE_COLCHETE;}
 "]"                           {return FECHA_COLCHETE;}
-
 "("                           {return ABRE_PARENTESES;}
 ")"                           {return FECHA_PARENTESES;}
 "{"                           {return ABRE_CHAVES;}
@@ -87,7 +85,7 @@ letra [a-zA-Z]
                                   return IDENTIFICADOR;
                               }
 
-.                             {yyerror("léxico: simbolo desconhecido: %c\n", *yytext);}
+.                             {yyerror("léxico: simbolo desconhecido: '%c'\n", *yytext);}
 
 %%
 

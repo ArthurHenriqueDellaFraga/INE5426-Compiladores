@@ -6,21 +6,20 @@ using namespace AnaliseSemantica;
 
 Bloco<>* raizDoPrograma; //set on Bison file
 Contexto* contexto;
-bool debug = true;
 
 extern int yyparse();
 
 int main(int argc, char **argv){
 
     contexto = new Contexto();
-    // extern int yydebug;
-    // yydebug = 1;
 
     try{
-        yyparse();    //parses whole data
+        cout << "Entre com o codigo" << endl;
+        yyparse();
     }
     catch(Erro* erro){
         erro->print();
+        cout << "main" << endl;
         exit(1);
     }
 

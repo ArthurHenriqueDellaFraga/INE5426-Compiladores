@@ -8,7 +8,7 @@ using namespace std;
 
 namespace AnaliseSemantica {
 
-  // INSTANCIACAO
+  // INSTANCIAÇÃO
 
   template <typename T>
   class Atribuicao : public Nodo<void>{

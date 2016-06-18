@@ -7,6 +7,8 @@ using namespace std;
 
 namespace AnaliseSemantica {
 
+  //INSTANCIAÇÃO
+
   template <typename T>
   class Definicao : public Nodo<void>{
       public:
@@ -39,6 +41,8 @@ namespace AnaliseSemantica {
           }
   };
 
+  // POLIMORFISMO
+
   class DefinicaoPolimorfo : public NodoPolimorfo<Definicao>{
       public:
           template <typename U>
@@ -67,11 +71,11 @@ namespace AnaliseSemantica {
             }
         };
 
-        struct add_visitor : public static_visitor<DefinicaoPolimorfo*>{
+        struct add_visitor : public static_visitor<>{
             string identificador;
 
             template <typename V>
-            DefinicaoPolimorfo* operator()(Definicao<V>*& definicao) const {
+            void operator()(Definicao<V>*& definicao) const {
                 definicao->add(identificador);
             }
         };
