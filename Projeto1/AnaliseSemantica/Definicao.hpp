@@ -10,24 +10,36 @@ namespace AnaliseSemantica {
   template <typename T>
   class Definicao : public Nodo<void>{
       public:
-          string identificador;
+          vector<string> listaDeIdentificador;
 
-          Definicao(string identificador) : identificador(identificador){ }
+          Definicao(string identificador) {
+              add(identificador);
+          }
 
           void print(){
               cout << "Declaracao de variavel ";
               (new Tipo<T>())->print();
               cout << ": ";
-              identificador;
+              cout << listaDeIdentificador[0];
+              for(int i = 1; i < listaDeIdentificador.size(); i++){
+                  cout << ", " << listaDeIdentificador[i];
+              }
           }
 
           void executar(Contexto* contexto){
-              VariavelFundamental* variavel = new VariavelFundamental(new Variavel<T>(identificador));
-              contexto->put(identificador, variavel);
+              for(int i = 0; i < listaDeIdentificador.size(); i++){
+                  string identificador = listaDeIdentificador[i];
+                  VariavelFundamental* variavel = new VariavelFundamental(new Variavel<T>(identificador));
+                  contexto->put(identificador, variavel);
+              }
+          }
+
+          void add(string identificador){
+              listaDeIdentificador.push_back(identificador);
           }
   };
 
-  class DefinicaoPolimorfo : public Polimorfo<Definicao>{
+  class DefinicaoPolimorfo : public NodoPolimorfo<Definicao>{
       public:
           template <typename U>
           DefinicaoPolimorfo(Definicao<U>* definicao) : NodoPolimorfo<Definicao>(definicao){ }
@@ -35,23 +47,23 @@ namespace AnaliseSemantica {
           void add(string identificador){
               add_visitor add;
               add.identificador = identificador;
-              apply_visitor(add, *this);
+              boost::apply_visitor(add, *this);
 
           }
 
-          static DefinicaoPolimorfo* instanciar(TipoFundamental tipo, string identificador){
-              createVisitor create;
+          static DefinicaoPolimorfo* instanciar(TipoPolimorfo tipo, string identificador){
+              create_visitor create;
               create.identificador = identificador;
-              return apply_visitor(create, tipo);
+              return boost::apply_visitor(create, tipo);
           }
 
       protected:
-        struct createVisitor : public static_visitor<DefinicaoPolimorfo*>{
+        struct create_visitor : public static_visitor<DefinicaoPolimorfo*>{
             string identificador;
 
             template <typename V>
             DefinicaoPolimorfo* operator()(Tipo<V>*& tipo) const {
-                return new DefinicaoPolimorfo(new Definicao<V>(tipo, identificador));
+                return new DefinicaoPolimorfo(new Definicao<V>(identificador));
             }
         };
 

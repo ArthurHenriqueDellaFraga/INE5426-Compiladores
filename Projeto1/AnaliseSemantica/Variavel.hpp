@@ -63,7 +63,7 @@ namespace AnaliseSemantica {
           VariavelPolimorfo(Variavel<U>* variavel) : NodoPolimorfo<Variavel>(variavel){ }
 
           string getIdentificador(){
-              return apply_visitor(getIdentificadorVisitor (), *this);
+              return boost::apply_visitor(getIdentificador_visitor(), *this);
           }
 
           template<typename U>
@@ -73,7 +73,7 @@ namespace AnaliseSemantica {
           }
 
       protected:
-          struct getIdentificadorVisitor : public static_visitor<string>{
+          struct getIdentificador_visitor : public static_visitor<string>{
               template <typename V>
               string operator()(Variavel<V>*& variavel) const {
                   return variavel->getIdentificador();

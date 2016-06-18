@@ -25,7 +25,7 @@ int main(int argc, char **argv){
     }
 
     cout << endl << endl;
-    //raizDoPrograma->print();
+    raizDoPrograma->print();
     //raizDoPrograma->executar(contexto);
 
     return 0;
