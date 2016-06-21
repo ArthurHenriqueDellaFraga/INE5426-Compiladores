@@ -7,8 +7,8 @@ using namespace std;
 
 namespace AnaliseSemantica {
 
-  template <typename T = void>
-  class Bloco : public Nodo<T> {
+  //template <typename T = void>
+  class Bloco : public Nodo<void> {
       protected:
           vector<NodoFundamental*> listaDeInstrucoes;
           Contexto* contexto;
@@ -29,7 +29,7 @@ namespace AnaliseSemantica {
               }
           }
 
-          virtual void addInstrucao(NodoFundamental* instrucao){
+          void addInstrucao(NodoFundamental* instrucao){
               listaDeInstrucoes.push_back(instrucao);
 
               try{
@@ -41,10 +41,6 @@ namespace AnaliseSemantica {
                   erro->print();
                   exit(1);
               }
-          }
-
-          Contexto* getContexto(){
-              return contexto;
           }
   };
 

@@ -72,14 +72,10 @@ namespace AnaliseSemantica {
 
   // POLIMORFISMO
 
-  class TipoPolimorfo : public variant<Tipo<int>*, Tipo<double>*, Tipo<bool>*, Tipo<char>*, Tipo<string>*, Tipo<void>*>{
+  class TipoPolimorfo : public Polimorfo<Tipo>{
       public:
-          TipoPolimorfo(){ }
-
           template <typename U>
-          TipoPolimorfo(Tipo<U>* tipo) : variant<Tipo<int>*, Tipo<double>*, Tipo<bool>*, Tipo<char>*, Tipo<string>*, Tipo<void>*>(){
-              *this = tipo;
-          }
+          TipoPolimorfo(Tipo<U>* tipo) : Polimorfo<Tipo>(tipo){ }
 
           static TipoPolimorfo* instanciar(string identificador){
               map<string, TipoPolimorfo*(*)()> _tipo;
@@ -99,11 +95,11 @@ namespace AnaliseSemantica {
                 return _tipo[identificador]();
           }
 
-          template<typename U>
-          TipoPolimorfo& operator=(const Tipo<U>*& tipo){
-              variant<Tipo<int>*, Tipo<double>*, Tipo<bool>*, Tipo<char>*, Tipo<string>*, Tipo<void>*>::operator=(tipo);
-              return *this;
-          }
+          // template<typename U>
+          // TipoPolimorfo& operator=(const Tipo<U>*& tipo){
+          //     variant<Tipo<int>*, Tipo<double>*, Tipo<bool>*, Tipo<char>*, Tipo<string>*, Tipo<void>*>::operator=(tipo);
+          //     return *this;
+          // }
 
       protected:
           template <typename V>

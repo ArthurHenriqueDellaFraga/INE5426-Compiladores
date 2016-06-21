@@ -16,7 +16,7 @@ namespace AnaliseSemantica {
   class NodoAbstrato {
       public:
           // virtual ~NodoAbstrato();
-          virtual void print(){ cout << "Nodo->print()" << endl;};
+          virtual void print(){ cout << "Nodo->print()" << endl;}
           virtual T executar(Contexto* contexto) = 0;
 
           Tipo<T>* getTipo(){
@@ -48,6 +48,7 @@ namespace AnaliseSemantica {
           template <typename U>
           NodoPolimorfo(T<U>* nodo) : Polimorfo<T>(nodo){
               //static_assert(is_base_of<Nodo, T>::value, "NodoPolimorfo :: construtor")
+              //*this = nodo;
           }
 
           void print(){
@@ -65,8 +66,8 @@ namespace AnaliseSemantica {
           }
 
           template<typename U>
-          NodoPolimorfo<T>& operator=(const T<U>*& nodo){
-              Polimorfo<T>::operator=(nodo);
+          NodoPolimorfo<T>& operator=(const U& u){
+              Polimorfo<T>::operator=(u);
               return *this;
           }
 

@@ -19,15 +19,11 @@ namespace AnaliseSemantica {
           void print(){
               cout << "variavel ";
               this->getTipo()->print();
-              cout << " "<< identificador;
+              cout << " " << identificador;
           }
 
           string getIdentificador(){
               return identificador;
-          }
-
-          virtual void setReferencia(){
-
           }
   };
 
@@ -40,8 +36,19 @@ namespace AnaliseSemantica {
       public:
           Variavel(string identificador) : VariavelAbstrata<T>(identificador){ }
 
+          void print(){
+              cout << "variavel ";
+              this->getTipo()->print();
+              cout << " " << this->identificador << " -> " << valor;
+          }
+
           T executar(Contexto* contexto){
               return this->valor;
+          }
+
+          Variavel& operator=(const T& valor){
+              this->valor = valor;
+              return *this;
           }
   };
 

@@ -19,9 +19,8 @@
     using namespace AnaliseSemantica;
     using namespace std;
 
-    extern Bloco<>* raizDoPrograma; /* the root node of our program */
+    extern Bloco* raizDoPrograma; /* the root node of our program */
     extern Contexto* contexto;
-    extern bool debug;
 
     extern int yylex();
     extern void yyerror(const char* s, ...);
@@ -37,7 +36,7 @@
     char _char;
     string* _string;
 
-    Bloco<>* bloco;
+    Bloco* bloco;
     NodoFundamental* nodo;
 
     VariavelFundamental* variavel;
@@ -58,7 +57,6 @@
 
 %token ATRIBUICAO
 %token DEFINICAO
-%token DECLARACAO
 
 %token SOMA
 %token SUBTRACAO
@@ -134,7 +132,7 @@ bloco
     : NOVA_LINHA { }
 
     | instrucao NOVA_LINHA {
-            $$ = new Bloco<>(contexto);
+            $$ = new Bloco(contexto);
             $$->addInstrucao($1);
     }
 
@@ -148,7 +146,6 @@ bloco
 
 instrucao
     : inteiro {
-            cout << "!!!";
             $$ = new NodoFundamental($1);
     }
 
@@ -205,7 +202,7 @@ instrucao
     }
 
 inteiro
-    : INTEIRO { $$ = new Nodo<int>(); }
+    : INTEIRO { $$ = new Primitivo<int>($1); }
 
     | ABRE_PARENTESES inteiro FECHA_PARENTESES {
             $$ = new Parenteses<int>($2);
@@ -292,11 +289,10 @@ definicao
             $$->add(*$3);
     }
 
-
 atribuicao
     : variavel ATRIBUICAO instrucao {
             try{
-              $$ = AtribuicaoFundamental::instanciar(*$1, *$3);
+              $$ = AtribuicaoFundamental::instanciar($1, $3);
             }
             catch(Erro* erro){
                 erro->print();

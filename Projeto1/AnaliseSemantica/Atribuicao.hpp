@@ -24,11 +24,11 @@ namespace AnaliseSemantica {
               cout << "Atribuicao de valor para ";
               variavel->print();
               cout << ": ";
-              valor-> print();
+              valor->print();
           }
 
           void executar(Contexto* contexto){
-              //variavel->setReferencia(*(new T(valor->executar(contexto))));
+              *variavel = (valor->executar(contexto));
           }
   };
 
@@ -39,8 +39,8 @@ namespace AnaliseSemantica {
           template <typename U>
           AtribuicaoPolimorfo(Atribuicao<U>* atribuicao) : Polimorfo<Atribuicao>(atribuicao){ }
 
-          static AtribuicaoPolimorfo* instanciar(VariavelFundamental variavel, NodoFundamental valor){
-              return boost::apply_visitor(createVisitor (), variavel, valor);
+          static AtribuicaoPolimorfo* instanciar(VariavelFundamental* variavel, NodoFundamental* valor){
+              return boost::apply_visitor(createVisitor(), *variavel, *valor);
           }
 
       protected:
@@ -51,7 +51,7 @@ namespace AnaliseSemantica {
                     NodoFundamental* nF = new NodoFundamental(valor);
 
                     NodoFundamental* conversao = Conversao<>::instanciar(vF->getTipo(), *nF);
-                    return AtribuicaoPolimorfo::instanciar(*vF, *conversao);
+                    return AtribuicaoPolimorfo::instanciar(vF, conversao);
               }
 
               template <typename V>
@@ -68,7 +68,8 @@ namespace AnaliseSemantica {
               }
 
               AtribuicaoPolimorfo* operator()(Variavel<void>*& variavel, Nodo<void>*& valor) const {
-                  return new AtribuicaoPolimorfo(new Atribuicao<void>(variavel, valor));
+                  throw new Erro("Atribuição inválida");
+                  //return new AtribuicaoPolimorfo(new Atribuicao<void>(variavel, valor));
               }
           };
   };
