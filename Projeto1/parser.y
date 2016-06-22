@@ -39,6 +39,7 @@
     Bloco* bloco;
     NodoFundamental* nodo;
 
+    PrimitivoFundamental* primitivo;
     VariavelFundamental* variavel;
     DefinicaoFundamental* definicao;
     AtribuicaoFundamental* atribuicao;
@@ -94,13 +95,14 @@
 %type <bloco> program
 %type <bloco> bloco
 %type <nodo> instrucao
-
+/*
 %type <inteiro> inteiro
 %type <racional> racional
 %type <booleano> booleano
 %type <caracter> caracter
 %type <sentenca> sentenca
-
+*/
+%type <primitivo> primitivo
 %type <variavel> variavel
 %type <definicao> definicao
 %type <atribuicao> atribuicao
@@ -144,7 +146,7 @@ bloco
 
     | bloco NOVA_LINHA { }
 
-instrucao
+instrucao/*
     : inteiro {
             $$ = new NodoFundamental($1);
     }
@@ -164,16 +166,20 @@ instrucao
     | sentenca {
             $$ = new NodoFundamental($1);
     }
+*/
+    : primitivo {
+            $$ = NodoPolimorfo<>::converter(*$1);
+    }
+
+    | variavel {
+            $$ = NodoPolimorfo<>::converter(*$1);
+    }
 
     | definicao {
             $$ = NodoPolimorfo<>::converter(*$1);
     }
 
     | atribuicao {
-            $$ = NodoPolimorfo<>::converter(*$1);
-    }
-
-    | variavel {
             $$ = NodoPolimorfo<>::converter(*$1);
     }
 
@@ -200,6 +206,19 @@ instrucao
     | instrucao DIVISAO instrucao {
             $$ = Divisao<>::instanciar(*$1, *$3);
     }
+
+primitivo
+    : INTEIRO { $$ = new PrimitivoFundamental(new Primitivo<int>($1)); }
+
+    | RACIONAL { $$ = new PrimitivoFundamental(new Primitivo<double>($1)); }
+
+    | BOOLEANO { $$ = new PrimitivoFundamental(new Primitivo<bool>($1)); }
+
+    | CARACTER { $$ = new PrimitivoFundamental(new Primitivo<char>($1)); }
+
+    | SENTENCA { $$ = new PrimitivoFundamental(new Primitivo<string>(*$1)); }
+
+/*
 
 inteiro
     : INTEIRO { $$ = new Primitivo<int>($1); }
@@ -271,6 +290,8 @@ sentenca
     | ABRE_PARENTESES sentenca FECHA_PARENTESES {
             $$ = new Parenteses<string>($2);
     }
+
+*/
 
 definicao
     : IDENTIFICADOR DEFINICAO IDENTIFICADOR {

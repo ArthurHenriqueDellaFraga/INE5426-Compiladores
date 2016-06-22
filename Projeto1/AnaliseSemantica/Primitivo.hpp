@@ -20,10 +20,21 @@ namespace AnaliseSemantica {
               cout << "valor ";
               this->getTipo()->print();
               cout << " " << valor;
-          };
+          }
 
           T executar(Contexto* contexto){
               return valor;
+          }
+  };
+
+  template <>
+  class PrimitivoAbstrato<void> : public Nodo<void> {
+      protected:
+          PrimitivoAbstrato(){ }
+
+          void print(){
+              cout << "valor ";
+              this->getTipo()->print();
           }
   };
 
@@ -32,8 +43,14 @@ namespace AnaliseSemantica {
   template<typename T>
   class Primitivo : public PrimitivoAbstrato<T>{
       public:
-          Primitivo() : PrimitivoAbstrato<T>(){ };
-          Primitivo(T valor) : PrimitivoAbstrato<T>(valor){ };
+          Primitivo() : PrimitivoAbstrato<T>(){ }
+          Primitivo(T valor) : PrimitivoAbstrato<T>(valor){ }
+  };
+
+  template<>
+  class Primitivo<void> : public PrimitivoAbstrato<void>{
+      public:
+          Primitivo() : PrimitivoAbstrato<void>(){ }
   };
 
   template<>
@@ -49,14 +66,8 @@ namespace AnaliseSemantica {
               }else{
                   cout << " FALSE";
               }
-          };
+          }
   };
-
-  typedef Primitivo<int> Inteiro;
-  typedef Primitivo<double> Racional;
-  typedef Primitivo<bool> Booleano;
-  typedef Primitivo<char> Caracter;
-  typedef Primitivo<string> Sentenca;
 
   // POLIMORFISMO
 
