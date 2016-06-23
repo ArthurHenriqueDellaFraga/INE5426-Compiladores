@@ -146,27 +146,7 @@ bloco
 
     | bloco NOVA_LINHA { }
 
-instrucao/*
-    : inteiro {
-            $$ = new NodoFundamental($1);
-    }
-
-    | racional {
-            $$ = new NodoFundamental($1);
-    }
-
-    | booleano {
-            $$ = new NodoFundamental($1);
-    }
-
-    | caracter {
-            $$ = new NodoFundamental($1);
-    }
-
-    | sentenca {
-            $$ = new NodoFundamental($1);
-    }
-*/
+instrucao
     : primitivo {
             $$ = NodoPolimorfo<>::converter(*$1);
     }
@@ -182,6 +162,8 @@ instrucao/*
     | atribuicao {
             $$ = NodoPolimorfo<>::converter(*$1);
     }
+
+
 
     | ABRE_PARENTESES instrucao FECHA_PARENTESES {
             $$ = Parenteses<>::instanciar(*$2);
@@ -218,80 +200,6 @@ primitivo
 
     | SENTENCA { $$ = new PrimitivoFundamental(new Primitivo<string>(*$1)); }
 
-/*
-
-inteiro
-    : INTEIRO { $$ = new Primitivo<int>($1); }
-
-    | ABRE_PARENTESES inteiro FECHA_PARENTESES {
-            $$ = new Parenteses<int>($2);
-    }
-
-racional
-    : RACIONAL { $$ = new Racional($1); }
-
-    | ABRE_PARENTESES racional FECHA_PARENTESES {
-            $$ = new Parenteses<double>($2);
-    }
-
-booleano
-    : BOOLEANO { $$ = new Booleano($1); }
-
-    | ABRE_PARENTESES booleano FECHA_PARENTESES {
-            $$ = new Parenteses<bool>($2);
-    }
-
-    | NEGACAO_BOOLEANA instrucao {
-            $$ = NegacaoBooleana<>::instanciar(*$2);
-    }
-
-    | instrucao IGUAL instrucao {
-            $$ = Igual<>::instanciar(*$1, *$3);
-    }
-
-    | instrucao DIFERENTE instrucao {
-            $$ = Diferente<>::instanciar(*$1, *$3);
-    }
-
-    | instrucao MAIOR instrucao {
-            $$ = Maior<>::instanciar(*$1, *$3);
-    }
-
-    | instrucao MENOR instrucao {
-            $$ = Menor<>::instanciar(*$1, *$3);
-    }
-
-    | instrucao MAIOR_IGUAL instrucao {
-            $$ = MaiorIgual<>::instanciar(*$1, *$3);
-    }
-
-    | instrucao MENOR_IGUAL instrucao {
-            $$ = MenorIgual<>::instanciar(*$1, *$3);
-    }
-
-    | instrucao AND instrucao {
-            $$ = And<>::instanciar(*$1, *$3);
-    }
-
-    | instrucao OR instrucao {
-            $$ = Or<>::instanciar(*$1, *$3);
-    }
-
-caracter
-    : CARACTER { $$ = new Caracter($1); }
-
-    | ABRE_PARENTESES caracter FECHA_PARENTESES {
-            $$ = new Parenteses<char>($2);
-    }
-
-sentenca
-    : SENTENCA { $$ = new Sentenca(*$1); }
-
-    | ABRE_PARENTESES sentenca FECHA_PARENTESES {
-            $$ = new Parenteses<string>($2);
-    }
-
-*/
 
 definicao
     : IDENTIFICADOR DEFINICAO IDENTIFICADOR {
