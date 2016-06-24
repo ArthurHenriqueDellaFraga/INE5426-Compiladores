@@ -7,9 +7,9 @@ using namespace std;
 namespace AnaliseSemantica {
 
 	template<typename T = int>
-    class Parenteses : public OperacaoUnaria<T> {
+    class Parenteses : public Operacao<T, T> {
 		    public:
-		        Parenteses(Nodo<T>* nodo) : OperacaoUnaria<T>(nodo) { }
+		        Parenteses(Nodo<T>* nodo) : Operacao<T, T>(nodo, "") { }
 
 		        void print(){
 			        	cout << "( ";

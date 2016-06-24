@@ -6,6 +6,57 @@ using namespace std;
 
 namespace AnaliseSemantica {
 
+  // ABSTRAÇÃO
+
+  template <typename T>
+  class OperacaoAbstrata : public Nodo<T>{
+      protected:
+          string simbolo;
+
+          OperacaoAbstrata(string simbolo) : simbolo(simbolo){ }
+  };
+
+  // INSTANCIAÇÃO
+
+  template <typename T, typename ... U>
+  class Operacao : public OperacaoAbstrata<T>{
+      protected:
+          Operacao() : OperacaoAbstrata<T>(""){ }
+  };
+
+  template <typename T, typename U>
+  class Operacao<T, U> : public OperacaoAbstrata<T>{
+      protected:
+          Nodo<U>* nodo;
+
+          Operacao(Nodo<U>* nodo, string simbolo) : nodo(nodo), OperacaoAbstrata<T>(simbolo){ }
+
+      public:
+          void print(){
+              cout << this->simbolo[0];
+              nodo->print();
+              cout << this->simbolo[1];
+          }
+  };
+
+  template <typename T, typename L, typename R>
+  class Operacao<T, L, R> : public OperacaoAbstrata<T>{
+      protected:
+          Nodo<L>* left;
+          Nodo<R>* right;
+
+          Operacao(Nodo<L>* left, string simbolo, Nodo<R>* right) : left(left), right(right), OperacaoAbstrata<T>(simbolo){ }
+
+      public:
+          void print(){
+              cout << this->simbolo[0];
+              nodo->print();
+              cout << this->simbolo[1];
+          }
+  };
+
+  // ------------------
+
     template <typename T, typename L, typename R>
     class OperacaoBinaria : public Nodo<T> {
         protected:
