@@ -9,20 +9,20 @@ namespace AnaliseSemantica {
 	template<typename T = int>
     class Parenteses : public Operacao<T, T> {
 		    public:
-		        Parenteses(Nodo<T>* nodo) : Operacao<T, T>(nodo, "") { }
+		        Parenteses(Nodo<T>* nodo) : Operacao<T, T>(nodo, "parenteses") { }
 
 		        void print(){
-			        	cout << "( ";
+			        	cout << "<abre " << this->simbolo << "> ";
 			        	this->nodo->print();
-			        	cout<< " )";
+			        	cout << " <fecha " << this->simbolo << "> ";
 		        }
 
 						static NodoFundamental* instanciar(NodoFundamental nodo){
-								return apply_visitor(createVisitor (), nodo);
+								return apply_visitor(create_visitor (), nodo);
 						}
 
 				protected:
-						struct createVisitor : public static_visitor<NodoFundamental*>{
+						struct create_visitor : public static_visitor<NodoFundamental*>{
 								template <typename V>
 								NodoFundamental* operator()(Nodo<V>*& nodo) const {
 										return new NodoFundamental(new Parenteses<V>(nodo));
