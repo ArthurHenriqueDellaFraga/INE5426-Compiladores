@@ -43,13 +43,6 @@
     VariavelFundamental* variavel;
     DefinicaoFundamental* definicao;
     AtribuicaoFundamental* atribuicao;
-
-    Nodo<int>* inteiro;
-    Nodo<double>* racional;
-    Nodo<bool>* booleano;
-    Nodo<char>* caracter;
-    Nodo<string>* sentenca;
-    Nodo<void>* vazio;
 }
 
 // token defines our terminal symbols (tokens).
@@ -95,17 +88,12 @@
 %type <bloco> program
 %type <bloco> bloco
 %type <nodo> instrucao
-/*
-%type <inteiro> inteiro
-%type <racional> racional
-%type <booleano> booleano
-%type <caracter> caracter
-%type <sentenca> sentenca
-*/
+
 %type <primitivo> primitivo
 %type <variavel> variavel
 %type <definicao> definicao
 %type <atribuicao> atribuicao
+%type <nodo> conversao
 
 /* Operator precedence for mathematical operators
  * The latest it is listed, the highest the precedence
@@ -161,6 +149,10 @@ instrucao
 
     | atribuicao {
             $$ = NodoPolimorfo<>::converter(*$1);
+    }
+
+    | conversao {
+            $$ = $1;
     }
 
 
@@ -232,6 +224,13 @@ atribuicao
 variavel
     : IDENTIFICADOR {
             $$ = contexto->getVariavel(*$1);
+    }
+
+conversao
+    : ABRE_PARENTESES IDENTIFICADOR FECHA_PARENTESES instrucao {
+            TipoFundamental* tF = TipoFundamental::instanciar(*$2);
+
+            $$ = Conversao<>::instanciar(*tF, *$4);
     }
 
 %%

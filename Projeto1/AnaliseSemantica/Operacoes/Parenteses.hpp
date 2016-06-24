@@ -12,9 +12,9 @@ namespace AnaliseSemantica {
 		        Parenteses(Nodo<T>* nodo) : OperacaoUnaria<T>(nodo) { }
 
 		        void print(){
-			        	cout << "((abre parenteses) ";
+			        	cout << "( ";
 			        	this->nodo->print();
-			        	cout<< " (fecha parenteses))";
+			        	cout<< " )";
 		        }
 
 						static NodoFundamental* instanciar(NodoFundamental nodo){
