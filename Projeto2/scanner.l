@@ -30,8 +30,8 @@ letra [a-zA-Z]
 "*"                           {return MULTIPLICACAO;}
 "/"                           {return DIVISAO;}
 
-"="                           {return IGUAL;}
-"~="                          {return DIFERENTE;}
+"=="                           {return IGUAL;}
+"!="                          {return DIFERENTE;}
 ">"                           {return MAIOR;}
 "<"                           {return MENOR;}
 ">="                          {return MAIOR_IGUAL;}
@@ -42,8 +42,8 @@ letra [a-zA-Z]
 
 "~"                           {return NEGACAO_BOOLEANA;}
 
-":="                          {return ATRIBUICAO;}
-":"                           {return DEFINICAO;}
+"="                          {return ATRIBUICAO;}
+"def"                           {return DEFINICAO;}
 
 ","                           {return VIRGULA;}
 "."                           {return PONTO;}
@@ -80,7 +80,7 @@ letra [a-zA-Z]
                                   yylval._string = new string(yylval._string->substr(1, yylval._string->size() -2));
                                   return SENTENCA;
                               }
-{letra}+                      {
+{letra}({letra}|{digito})+    {
                                   yylval._string = new string(yytext);
                                   return IDENTIFICADOR;
                               }

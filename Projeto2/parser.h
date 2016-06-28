@@ -42,10 +42,11 @@ extern int yydebug;
 /* "%code requires" blocks.  */
 #line 1 "parser.y" /* yacc.c:1909  */
 
-    #include "AnaliseSemantica/ExpressoesCondicionais/If.hpp"
+    #include "AnaliseSemantica/Bloco.hpp"
+
     #include "AnaliseSemantica/Primitivo.hpp"
-    #include "AnaliseSemantica/Definicao.hpp"
     #include "AnaliseSemantica/Atribuicao.hpp"
+    #include "AnaliseSemantica/Definicao.hpp"
 
     #include "AnaliseSemantica/Operacoes/OperacaoBooleana.hpp"
     #include "AnaliseSemantica/Operacoes/Soma.hpp"
@@ -54,25 +55,20 @@ extern int yydebug;
     #include "AnaliseSemantica/Operacoes/Divisao.hpp"
     #include "AnaliseSemantica/Operacoes/Parenteses.hpp"
 
-    #include "AnaliseSemantica/Arranjo.hpp"
-
     #include <stdio.h>
     #include <stdlib.h>
-
-    #include "boost/variant.hpp"
 
     using namespace boost;
     using namespace AnaliseSemantica;
     using namespace std;
 
     extern Bloco* raizDoPrograma; /* the root node of our program */
-    extern vector<Contexto*> contexto;
-    extern bool debug;
+    extern Contexto* contexto;
 
     extern int yylex();
     extern void yyerror(const char* s, ...);
 
-#line 76 "parser.h" /* yacc.c:1909  */
+#line 72 "parser.h" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -103,17 +99,13 @@ extern int yydebug;
     FECHA_CHAVES = 279,
     ABRE_COLCHETE = 280,
     FECHA_COLCHETE = 281,
-    IF = 282,
-    THEN = 283,
-    ELSE = 284,
-    END_IF = 285,
-    INTEIRO = 286,
-    RACIONAL = 287,
-    BOOLEANO = 288,
-    CARACTER = 289,
-    SENTENCA = 290,
-    IDENTIFICADOR = 291,
-    errord = 292
+    INTEIRO = 282,
+    RACIONAL = 283,
+    BOOLEANO = 284,
+    CARACTER = 285,
+    SENTENCA = 286,
+    IDENTIFICADOR = 287,
+    errord = 288
   };
 #endif
 
@@ -122,7 +114,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 36 "parser.y" /* yacc.c:1909  */
+#line 32 "parser.y" /* yacc.c:1909  */
 
     int _int;
     double _double;
@@ -133,18 +125,12 @@ union YYSTYPE
     Bloco* bloco;
     NodoFundamental* nodo;
 
+    PrimitivoFundamental* primitivo;
     VariavelFundamental* variavel;
     DefinicaoFundamental* definicao;
     AtribuicaoFundamental* atribuicao;
 
-    Nodo<int>* inteiro;
-    Nodo<double>* racional;
-    Nodo<bool>* booleano;
-    Nodo<char>* caracter;
-    Nodo<string>* sentenca;
-    Nodo<void>* vazio;
-
-#line 148 "parser.h" /* yacc.c:1909  */
+#line 134 "parser.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

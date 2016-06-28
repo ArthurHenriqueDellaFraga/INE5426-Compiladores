@@ -194,9 +194,9 @@ primitivo
 
 
 definicao
-    : IDENTIFICADOR DEFINICAO IDENTIFICADOR {
+    : DEFINICAO IDENTIFICADOR IDENTIFICADOR {
             try{
-                TipoFundamental* tF = TipoFundamental::instanciar(*$1);
+                TipoFundamental* tF = TipoFundamental::instanciar(*$2);
 
                 $$ = DefinicaoFundamental::instanciar(*tF, *$3);
             }
