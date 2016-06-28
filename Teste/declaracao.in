@@ -1,0 +1,10 @@
+int: a1;
+int: a,b;
+double: c1;
+double: c,d;
+boolean: e1;
+boolean: e,f;
+char: g1;
+char: g,h;
+string s1;
+string s,t;
