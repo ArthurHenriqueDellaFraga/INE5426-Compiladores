@@ -1,10 +1,11 @@
 Declaracao de variavel int: a1
-Declaracao de variavel int: a,b
+Atribuicao de valor para variavel int a1: valor int 12
 Declaracao de variavel double: c1
-Declaracao de variavel double: c,d
+Atribuicao de valor para variavel double c1: valor double 1.43
 Declaracao de variavel boolean: e1
-Declaracao de variavel boolean: e,f
+Atribuicao de valor para variavel boolean e1: valor boolean TRUE
 Declaracao de variavel char: g1
-Declaracao de variavel char: g,h
+Atribuicao de valor para variavel boolean e1: valor boolean FALSE
+Atribuicao de valor para variavel char g1: valor char 'a'
 Declaracao de variavel string: s1
-Declaracao de variavel string: s,t
+Atribuicao de valor para variavel string s1: valor string "string"
