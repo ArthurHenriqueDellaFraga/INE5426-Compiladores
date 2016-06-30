@@ -14,6 +14,7 @@
     #include "AnaliseSemantica/Operacoes/Divisao.hpp"
 
     #include "AnaliseSemantica/Operacoes/Igual.hpp"
+    #include "AnaliseSemantica/Operacoes/Diferente.hpp"
 
     #include "AnaliseSemantica/Operacoes/And.hpp"
     #include "AnaliseSemantica/Operacoes/Or.hpp"
@@ -276,9 +277,15 @@ operacao
             $$ = Divisao<int, int, int>::instanciar($1, $3);
     }
 
+
     | instrucao IGUAL instrucao {
             $$ = Igual<bool>::instanciar($1, $3);
     }
+
+    | instrucao DIFERENTE instrucao {
+            $$ = Diferente<bool>::instanciar($1, $3);
+    }
+
 
     | instrucao AND instrucao {
             $$ = And::instanciar($1, $3);
