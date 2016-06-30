@@ -1431,7 +1431,7 @@ yyreduce:
   case 17:
 #line 180 "parser.y" /* yacc.c:1646  */
     {
-            (yyval.nodo) = Multiplicacao<>::instanciar(*(yyvsp[-2].nodo), *(yyvsp[0].nodo));
+            (yyval.nodo) = Multiplicacao<int, int, int>::instanciar((yyvsp[-2].nodo), (yyvsp[0].nodo));
     }
 #line 1437 "parser.cpp" /* yacc.c:1646  */
     break;

@@ -178,7 +178,7 @@ instrucao
     }
 
     | instrucao MULTIPLICACAO instrucao {
-            $$ = Multiplicacao<>::instanciar(*$1, *$3);
+            $$ = Multiplicacao<int, int, int>::instanciar($1, $3);
     }
 
     | instrucao DIVISAO instrucao {
