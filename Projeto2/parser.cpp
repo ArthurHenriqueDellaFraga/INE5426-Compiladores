@@ -1395,7 +1395,7 @@ yyreduce:
   case 13:
 #line 164 "parser.y" /* yacc.c:1646  */
     {
-            (yyval.nodo) = Soma<>::instanciar(*(yyvsp[-2].nodo), *(yyvsp[0].nodo));
+            (yyval.nodo) = Soma<int, int, int>::instanciar((yyvsp[-2].nodo), (yyvsp[0].nodo));
     }
 #line 1401 "parser.cpp" /* yacc.c:1646  */
     break;

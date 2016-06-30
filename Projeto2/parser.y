@@ -162,7 +162,7 @@ instrucao
     }
 
     | instrucao SOMA instrucao {
-            $$ = Soma<>::instanciar(*$1, *$3);
+            $$ = Soma<int, int, int>::instanciar($1, $3);
     }
 
     | instrucao SUBTRACAO instrucao {

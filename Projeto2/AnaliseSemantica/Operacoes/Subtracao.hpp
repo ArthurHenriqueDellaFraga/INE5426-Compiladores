@@ -57,11 +57,11 @@ namespace AnaliseSemantica {
           }
 
           static NodoFundamental* instanciar(NodoFundamental* left, NodoFundamental* right){
-              return apply_visitor(createVisitor(), *left, *right);
+              return apply_visitor(create_visitor(), *left, *right);
           }
 
       protected:
-          struct createVisitor : public static_visitor<NodoFundamental*>{
+          struct create_visitor : public static_visitor<NodoFundamental*>{
               string mensagemDeErro = "operacao Subtracao espera int ou double mas recebeu outros";
 
               NodoFundamental* operator()(Nodo<int>*& left, Nodo<int>*& right) const {
