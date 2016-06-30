@@ -6,12 +6,14 @@
     #include "AnaliseSemantica/Definicao.hpp"
 
     #include "AnaliseSemantica/Operacoes/OperacaoBooleana.hpp"
-    
+
     #include "AnaliseSemantica/Operacoes/Parenteses.hpp"
     #include "AnaliseSemantica/Operacoes/Soma.hpp"
     #include "AnaliseSemantica/Operacoes/Subtracao.hpp"
     #include "AnaliseSemantica/Operacoes/Multiplicacao.hpp"
     #include "AnaliseSemantica/Operacoes/Divisao.hpp"
+
+    #include "AnaliseSemantica/Operacoes/Igual.hpp"
 
     #include "AnaliseSemantica/Operacoes/And.hpp"
     #include "AnaliseSemantica/Operacoes/Or.hpp"
@@ -247,7 +249,7 @@ conversao
 
 operacao
     : ABRE_PARENTESES instrucao FECHA_PARENTESES {
-            $$ = Parenteses<>::instanciar($2);
+            $$ = Parenteses<int>::instanciar($2);
     }
 
     | instrucao SOMA instrucao {
@@ -272,6 +274,10 @@ operacao
 
     | instrucao DIVISAO instrucao {
             $$ = Divisao<int, int, int>::instanciar($1, $3);
+    }
+
+    | instrucao IGUAL instrucao {
+            $$ = Igual<bool>::instanciar($1, $3);
     }
 
     | instrucao AND instrucao {

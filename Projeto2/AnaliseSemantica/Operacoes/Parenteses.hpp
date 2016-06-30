@@ -6,7 +6,7 @@ using namespace std;
 
 namespace AnaliseSemantica {
 
-	template<typename T = int>
+	template<typename T>
     class Parenteses : public Operacao<T, T> {
 		    public:
 		        Parenteses(Nodo<T>* nodo) : Operacao<T, T>(nodo, "parenteses") { }

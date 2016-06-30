@@ -49,12 +49,14 @@ extern int yydebug;
     #include "AnaliseSemantica/Definicao.hpp"
 
     #include "AnaliseSemantica/Operacoes/OperacaoBooleana.hpp"
-    
+
     #include "AnaliseSemantica/Operacoes/Parenteses.hpp"
     #include "AnaliseSemantica/Operacoes/Soma.hpp"
     #include "AnaliseSemantica/Operacoes/Subtracao.hpp"
     #include "AnaliseSemantica/Operacoes/Multiplicacao.hpp"
     #include "AnaliseSemantica/Operacoes/Divisao.hpp"
+
+    #include "AnaliseSemantica/Operacoes/Igual.hpp"
 
     #include "AnaliseSemantica/Operacoes/And.hpp"
     #include "AnaliseSemantica/Operacoes/Or.hpp"
@@ -73,7 +75,7 @@ extern int yydebug;
     extern int yylex();
     extern void yyerror(const char* s, ...);
 
-#line 77 "parser.h" /* yacc.c:1909  */
+#line 79 "parser.h" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -119,7 +121,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 37 "parser.y" /* yacc.c:1909  */
+#line 39 "parser.y" /* yacc.c:1909  */
 
     int _int;
     double _double;
@@ -135,7 +137,7 @@ union YYSTYPE
     DefinicaoFundamental* definicao;
     AtribuicaoFundamental* atribuicao;
 
-#line 139 "parser.h" /* yacc.c:1909  */
+#line 141 "parser.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

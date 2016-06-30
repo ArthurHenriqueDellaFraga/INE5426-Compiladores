@@ -27,76 +27,7 @@ namespace AnaliseSemantica {
             }
     };
 
-    template <typename L = void, typename R = L>
-    class Igual : public OperacaoBinariaBooleana<L, R>{
-        public:
-            Igual(Nodo<L>* left, Nodo<R>* right) : OperacaoBinariaBooleana<L, R>(left, "igual", right){ }
-
-            static Nodo<bool>* instanciar(NodoFundamental left, NodoFundamental right){
-                return apply_visitor(createVisitor (), left, right);
-            }
-
-        protected:
-            struct createVisitor : public static_visitor<Nodo<bool>*>{
-                string mensagemDeErro = "operacao Igual espera inteiro ou real mas recebeu ";
-
-                Nodo<bool>* operator()(Nodo<int>*& left, Nodo<int>*& right) const {
-                    return new Igual<int>(left, right);
-                }
-
-                Nodo<bool>* operator()(Nodo<double>*& left, Nodo<double>*& right) const {
-                    return new Igual<double>(left, right);
-                }
-
-                Nodo<bool>* operator()(Nodo<int>*& left, Nodo<double>*& right) const {
-                    Nodo<double>* conversao = new Conversao<double, int>(left);
-                    return new Igual<double>(conversao, right);
-                }
-
-                Nodo<bool>* operator()(Nodo<double>*& left, Nodo<int>*& right) const {
-                    Nodo<double>* conversao = new Conversao<double, int>(right);
-                    return new Igual<double>(left, conversao);
-                }
-
-
-
-                template <typename V, typename W>
-                Nodo<bool>* operator()(Nodo<V>*& left, Nodo<W>*& right) const {
-                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + " e " + right->getTipo()->getIdentificadorMasculino() + ".");
-                    erro->print();
-                    return new Igual<V, W>(left, right);
-                }
-
-                template<typename V>
-                Nodo<bool>* operator()(Nodo<int>*& left, Nodo<V>*& right) const {
-                    Erro* erro = new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
-                    erro->print();
-                    return new Igual<int, V>(left, right);
-                }
-
-                template<typename V>
-                Nodo<bool>* operator()(Nodo<V>*& left, Nodo<int>*& right) const {
-                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
-                    erro->print();
-                    return new Igual<V, int>(left, right);
-                }
-
-                template<typename V>
-                Nodo<bool>* operator()(Nodo<double>*& left, Nodo<V>*& right) const {
-                    Erro* erro = new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
-                    erro->print();
-                    return new Igual<double, V>(left, right);
-                }
-
-                template<typename V>
-                Nodo<bool>* operator()(Nodo<V>*& left, Nodo<double>*& right) const {
-                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
-                    erro->print();
-                    return new Igual<V, double>(left, right);
-                }
-            };
-    };
-
+  
     template <typename L = void, typename R = L>
     class Diferente : public OperacaoBinariaBooleana<L, R>{
         public:

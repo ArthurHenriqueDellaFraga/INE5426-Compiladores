@@ -40,11 +40,11 @@ namespace AnaliseSemantica {
           AtribuicaoPolimorfo(Atribuicao<U>* atribuicao) : Polimorfo<Atribuicao>(atribuicao){ }
 
           static AtribuicaoPolimorfo* instanciar(VariavelFundamental* variavel, NodoFundamental* valor){
-              return boost::apply_visitor(createVisitor(), *variavel, *valor);
+              return boost::apply_visitor(create_visitor(), *variavel, *valor);
           }
 
       protected:
-          struct createVisitor : public static_visitor<AtribuicaoPolimorfo*>{
+          struct create_visitor : public static_visitor<AtribuicaoPolimorfo*>{
               template <typename V, typename W>
               AtribuicaoPolimorfo* operator()(Variavel<V>*& variavel, Nodo<W>*& valor) const {
                     VariavelFundamental* vF = new VariavelFundamental(variavel);
