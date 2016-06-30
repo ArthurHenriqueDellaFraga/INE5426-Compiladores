@@ -1439,7 +1439,7 @@ yyreduce:
   case 18:
 #line 184 "parser.y" /* yacc.c:1646  */
     {
-            (yyval.nodo) = Divisao<>::instanciar(*(yyvsp[-2].nodo), *(yyvsp[0].nodo));
+            (yyval.nodo) = Divisao<int, int, int>::instanciar((yyvsp[-2].nodo), (yyvsp[0].nodo));
     }
 #line 1445 "parser.cpp" /* yacc.c:1646  */
     break;

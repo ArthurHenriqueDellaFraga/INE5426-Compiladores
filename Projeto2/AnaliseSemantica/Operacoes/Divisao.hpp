@@ -6,78 +6,46 @@ using namespace std;
 
 namespace AnaliseSemantica {
 
-    template <typename T = void, typename L = void, typename R = void>
-    class Divisao : public OperacaoBinaria<T, L, R>{
-        public:
-            Divisao(Nodo<L>* left, Nodo<R>* right) : OperacaoBinaria<T, L, R>(left, "divisao", right){ }
+  // INSTANCIAÇÃO
 
-            T executar(Contexto* contexto){
-                return *(new T());
-                // return left->executar(contexto) / right->executar(contexto);
-            }
+  template <typename T, typename L, typename R>
+  class Divisao : public Operacao<T, L, R>{
+      public:
+          Divisao(Nodo<L>* left, Nodo<R>* right) : Operacao<T, L, R>(left, "divisao", right){ }
 
-            static NodoFundamental* instanciar(NodoFundamental left, NodoFundamental right){
-                return apply_visitor(createVisitor (), left, right);
-            }
+          T executar(Contexto* contexto){
+              return (this->left->executar(contexto)) / (this->right->executar(contexto));
+          }
 
-        protected:
-            struct createVisitor : public static_visitor<NodoFundamental*>{
-                string mensagemDeErro = "operacao Divisao espera inteiro ou real mas recebeu ";
+          static NodoFundamental* instanciar(NodoFundamental* left, NodoFundamental* right){
+              return apply_visitor(create_visitor(), *left, *right);
+          }
 
-                NodoFundamental* operator()(Nodo<int>*& left, Nodo<int>*& right) const {
-                    return new NodoFundamental(new Divisao<int, int, int>(left, right));
-                }
+      protected:
+          struct create_visitor : public static_visitor<NodoFundamental*>{
+              string mensagemDeErro = "operacao Multiplicacao espera int ou double mas recebeu outros";
 
-                NodoFundamental* operator()(Nodo<double>*& left, Nodo<double>*& right) const {
-                    return new NodoFundamental(new Divisao<double, double, double>(left, right));
-                }
+              NodoFundamental* operator()(Nodo<int>*& left, Nodo<int>*& right) const {
+                  return new NodoFundamental(new Divisao<int, int, int>(left, right));
+              }
 
-                NodoFundamental* operator()(Nodo<double>*& left, Nodo<int>*& right) const {
-                    Nodo<double>* conversao = new Conversao<double, int>(right);
-                    return new NodoFundamental(new Divisao<double, double, double>(left, conversao));
-                }
+              NodoFundamental* operator()(Nodo<double>*& left, Nodo<int>*& right) const {
+                  return new NodoFundamental(new Divisao<double, double, int>(left, right));
+              }
 
-                NodoFundamental* operator()(Nodo<int>*& left, Nodo<double>*& right) const {
-                    Nodo<double>* conversao = new Conversao<double, int>(left);
-                    return new NodoFundamental(new Divisao<double, double, double>(conversao, right));
-                }
+              NodoFundamental* operator()(Nodo<int>*& left, Nodo<double>*& right) const {
+                  return new NodoFundamental(new Divisao<double, int, double>(left, right));
+              }
 
+              NodoFundamental* operator()(Nodo<double>*& left, Nodo<double>*& right) const {
+                  return new NodoFundamental(new Divisao<double, double, double>(left, right));
+              }
 
 
-                template <typename V, typename W>
-                NodoFundamental* operator()(Nodo<V>*& left, Nodo<W>*& right) const {
-                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + " e " + right->getTipo()->getIdentificadorMasculino() + ".");
-                    erro->print();
-                    return new NodoFundamental(new Divisao<int, V, W>(left, right));
-                }
-
-                template<typename V>
-                NodoFundamental* operator()(Nodo<int>*& left, Nodo<V>*& right) const {
-                    Erro* erro = new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
-                    erro->print();
-                    return new NodoFundamental(new Divisao<int, int, V>(left, right));
-                }
-
-                template<typename V>
-                NodoFundamental* operator()(Nodo<V>*& left, Nodo<int>*& right) const {
-                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
-                    erro->print();
-                    return new NodoFundamental(new Divisao<int, V, int>(left, right));
-                }
-
-                template<typename V>
-                NodoFundamental* operator()(Nodo<double>*& left, Nodo<V>*& right) const {
-                    Erro* erro = new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
-                    erro->print();
-                    return new NodoFundamental(new Divisao<double, double, V>(left, right));
-                }
-
-                template<typename V>
-                NodoFundamental* operator()(Nodo<V>*& left, Nodo<double>*& right) const {
-                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
-                    erro->print();
-                    return new NodoFundamental(new Divisao<double, V, double>(left, right));
-                }
-            };
-    };
+              template <typename V, typename W>
+              NodoFundamental* operator()(Nodo<V>*& left, Nodo<W>*& right) const {
+                  throw new Erro(mensagemDeErro);
+              }
+          };
+  };
 }

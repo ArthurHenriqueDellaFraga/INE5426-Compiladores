@@ -182,7 +182,7 @@ instrucao
     }
 
     | instrucao DIVISAO instrucao {
-            $$ = Divisao<>::instanciar(*$1, *$3);
+            $$ = Divisao<int, int, int>::instanciar($1, $3);
     }
 
 primitivo
