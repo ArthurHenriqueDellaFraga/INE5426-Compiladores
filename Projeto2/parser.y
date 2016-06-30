@@ -6,11 +6,13 @@
     #include "AnaliseSemantica/Definicao.hpp"
 
     #include "AnaliseSemantica/Operacoes/OperacaoBooleana.hpp"
+    #include "AnaliseSemantica/Operacoes/Parenteses.hpp"
     #include "AnaliseSemantica/Operacoes/Soma.hpp"
     #include "AnaliseSemantica/Operacoes/Subtracao.hpp"
     #include "AnaliseSemantica/Operacoes/Multiplicacao.hpp"
     #include "AnaliseSemantica/Operacoes/Divisao.hpp"
-    #include "AnaliseSemantica/Operacoes/Parenteses.hpp"
+    #include "AnaliseSemantica/Operacoes/And.hpp"
+
 
     #include <stdio.h>
     #include <stdlib.h>
@@ -94,6 +96,7 @@
 %type <definicao> definicao
 %type <atribuicao> atribuicao
 %type <nodo> conversao
+%type <nodo> operacao
 
 /* Operator precedence for mathematical operators
  * The latest it is listed, the highest the precedence
@@ -155,34 +158,8 @@ instrucao
             $$ = $1;
     }
 
-
-
-    | ABRE_PARENTESES instrucao FECHA_PARENTESES {
-            $$ = Parenteses<>::instanciar($2);
-    }
-
-    | instrucao SOMA instrucao {
-            $$ = Soma<int, int, int>::instanciar($1, $3);
-    }
-
-    | SOMA instrucao {
-            $$ = Soma<int>::instanciar($2);
-    }
-
-    | instrucao SUBTRACAO instrucao {
-            $$ = Subtracao<int, int, int>::instanciar($1, $3);
-    }
-
-    | SUBTRACAO instrucao {
-            $$ = Subtracao<int>::instanciar($2);
-    }
-
-    | instrucao MULTIPLICACAO instrucao {
-            $$ = Multiplicacao<int, int, int>::instanciar($1, $3);
-    }
-
-    | instrucao DIVISAO instrucao {
-            $$ = Divisao<int, int, int>::instanciar($1, $3);
+    | operacao {
+            $$ = $1;
     }
 
 primitivo
@@ -263,6 +240,39 @@ conversao
             TipoFundamental* tF = TipoFundamental::instanciar(*$2);
 
             $$ = Conversao<>::instanciar(*tF, *$4);
+    }
+
+operacao
+    : ABRE_PARENTESES instrucao FECHA_PARENTESES {
+            $$ = Parenteses<>::instanciar($2);
+    }
+
+    | instrucao SOMA instrucao {
+            $$ = Soma<int, int, int>::instanciar($1, $3);
+    }
+
+    | SOMA instrucao {
+            $$ = Soma<int>::instanciar($2);
+    }
+
+    | instrucao SUBTRACAO instrucao {
+            $$ = Subtracao<int, int, int>::instanciar($1, $3);
+    }
+
+    | SUBTRACAO instrucao {
+            $$ = Subtracao<int>::instanciar($2);
+    }
+
+    | instrucao MULTIPLICACAO instrucao {
+            $$ = Multiplicacao<int, int, int>::instanciar($1, $3);
+    }
+
+    | instrucao DIVISAO instrucao {
+            $$ = Divisao<int, int, int>::instanciar($1, $3);
+    }
+
+    | instrucao AND instrucao {
+            $$ = And::instanciar($1, $3);
     }
 
 %%

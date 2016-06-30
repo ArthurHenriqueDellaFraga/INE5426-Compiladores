@@ -30,20 +30,20 @@ letra [a-zA-Z]
 "*"                           {return MULTIPLICACAO;}
 "/"                           {return DIVISAO;}
 
-"=="                           {return IGUAL;}
+"=="                          {return IGUAL;}
 "!="                          {return DIFERENTE;}
 ">"                           {return MAIOR;}
 "<"                           {return MENOR;}
 ">="                          {return MAIOR_IGUAL;}
 "<="                          {return MENOR_IGUAL;}
 
-"AND"                         {return AND;}
-"OR"                          {return OR;}
+"&&"                          {return AND;}
+"||"                          {return OR;}
 
-"~"                           {return NEGACAO_BOOLEANA;}
+"!"                           {return NEGACAO_BOOLEANA;}
 
-"="                          {return ATRIBUICAO;}
-"def"                           {return DEFINICAO;}
+"="                           {return ATRIBUICAO;}
+"def"                         {return DEFINICAO;}
 
 ","                           {return VIRGULA;}
 "."                           {return PONTO;}

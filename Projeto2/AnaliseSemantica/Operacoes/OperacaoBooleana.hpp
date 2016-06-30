@@ -447,47 +447,6 @@ namespace AnaliseSemantica {
             };
     };
 
-    template <typename L = void, typename R = L>
-    class And : public OperacaoBinariaBooleana<L, R>{
-        public:
-            And(Nodo<L>* left, Nodo<R>* right) : OperacaoBinariaBooleana<L, R>(left, "and", right){ }
-
-            static Nodo<bool>* instanciar(NodoFundamental left, NodoFundamental right){
-                return apply_visitor(createVisitor (), left, right);
-            }
-
-        protected:
-            struct createVisitor : public static_visitor<Nodo<bool>*>{
-                string mensagemDeErro = "operacao And espera booleano mas recebeu ";
-
-                Nodo<bool>* operator()(Nodo<bool>*& left, Nodo<bool>*& right) const {
-                    return new And<bool, bool>(left, right);
-                }
-
-
-
-                template <typename V, typename W>
-                Nodo<bool>* operator()(Nodo<V>*& left, Nodo<W>*& right) const {
-                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + " e " + right->getTipo()->getIdentificadorMasculino() + ".");
-                    erro->print();
-                    return new And<V, W>(left, right);
-                }
-
-                template <typename V>
-                Nodo<bool>* operator()(Nodo<bool>*& left, Nodo<V>*& right) const {
-                    Erro* erro = new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
-                    erro->print();
-                    return new And<bool, V>(left, right);
-                }
-
-                template <typename V>
-                Nodo<bool>* operator()(Nodo<V>*& left, Nodo<bool>*& right) const {
-                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
-                    erro->print();
-                    return new And<V, bool>(left, right);
-                }
-            };
-    };
 
     template <typename L = void, typename R = L>
     class Or : public OperacaoBinariaBooleana<L, R>{
