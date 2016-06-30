@@ -48,22 +48,23 @@ extern int yydebug;
     #include "AnaliseSemantica/Atribuicao.hpp"
     #include "AnaliseSemantica/Definicao.hpp"
 
-    #include "AnaliseSemantica/Operacoes/Parenteses.hpp"
-    #include "AnaliseSemantica/Operacoes/Soma.hpp"
-    #include "AnaliseSemantica/Operacoes/Subtracao.hpp"
-    #include "AnaliseSemantica/Operacoes/Multiplicacao.hpp"
-    #include "AnaliseSemantica/Operacoes/Divisao.hpp"
+    #include "AnaliseSemantica/Operacao/Parenteses.hpp"
 
-    #include "AnaliseSemantica/Operacoes/Igual.hpp"
-    #include "AnaliseSemantica/Operacoes/Diferente.hpp"
-    #include "AnaliseSemantica/Operacoes/Maior.hpp"
-    #include "AnaliseSemantica/Operacoes/Menor.hpp"
-    #include "AnaliseSemantica/Operacoes/MaiorIgual.hpp"
-    #include "AnaliseSemantica/Operacoes/MenorIgual.hpp"
+    #include "AnaliseSemantica/Operacao/Matematica/Soma.hpp"
+    #include "AnaliseSemantica/Operacao/Matematica/Subtracao.hpp"
+    #include "AnaliseSemantica/Operacao/Matematica/Multiplicacao.hpp"
+    #include "AnaliseSemantica/Operacao/Matematica/Divisao.hpp"
 
-    #include "AnaliseSemantica/Operacoes/And.hpp"
-    #include "AnaliseSemantica/Operacoes/Or.hpp"
-    #include "AnaliseSemantica/Operacoes/NegacaoBooleana.hpp"
+    #include "AnaliseSemantica/Operacao/Comparacao/Igual.hpp"
+    #include "AnaliseSemantica/Operacao/Comparacao/Diferente.hpp"
+    #include "AnaliseSemantica/Operacao/Comparacao/Maior.hpp"
+    #include "AnaliseSemantica/Operacao/Comparacao/Menor.hpp"
+    #include "AnaliseSemantica/Operacao/Comparacao/MaiorIgual.hpp"
+    #include "AnaliseSemantica/Operacao/Comparacao/MenorIgual.hpp"
+
+    #include "AnaliseSemantica/Operacao/Logica/And.hpp"
+    #include "AnaliseSemantica/Operacao/Logica/Or.hpp"
+    #include "AnaliseSemantica/Operacao/Logica/NegacaoBooleana.hpp"
 
 
     #include <stdio.h>
@@ -79,7 +80,7 @@ extern int yydebug;
     extern int yylex();
     extern void yyerror(const char* s, ...);
 
-#line 83 "parser.h" /* yacc.c:1909  */
+#line 84 "parser.h" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -125,7 +126,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 43 "parser.y" /* yacc.c:1909  */
+#line 44 "parser.y" /* yacc.c:1909  */
 
     int _int;
     double _double;
@@ -141,7 +142,7 @@ union YYSTYPE
     DefinicaoFundamental* definicao;
     AtribuicaoFundamental* atribuicao;
 
-#line 145 "parser.h" /* yacc.c:1909  */
+#line 146 "parser.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

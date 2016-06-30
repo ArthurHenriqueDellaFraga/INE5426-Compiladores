@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Operacao.hpp"
+#include "../Operacao.hpp"
 
 using namespace std;
 

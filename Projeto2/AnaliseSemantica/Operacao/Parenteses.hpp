@@ -6,6 +6,8 @@ using namespace std;
 
 namespace AnaliseSemantica {
 
+	// INSTANCIAÇÃO
+
 	template<typename T>
     class Parenteses : public Operacao<T, T> {
 		    public:

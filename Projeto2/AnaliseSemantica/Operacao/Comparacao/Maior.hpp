@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Operacao.hpp"
+#include "../Operacao.hpp"
 
 using namespace std;
 
@@ -9,12 +9,12 @@ namespace AnaliseSemantica {
   // INSTANCIAÇÃO
 
   template <typename T>
-  class MenorIgual : public Operacao<bool, T, T>{
+  class Maior : public Operacao<bool, T, T>{
       public:
-          MenorIgual(Nodo<T>* left, Nodo<T>* right) : Operacao<bool, T, T>(left, "menor ou igual", right){ }
+          Maior(Nodo<T>* left, Nodo<T>* right) : Operacao<bool, T, T>(left, "maior", right){ }
 
           bool executar(Contexto* contexto){
-              return (this->left->executar(contexto)) <= (this->right->executar(contexto));
+              return (this->left->executar(contexto)) > (this->right->executar(contexto));
           }
 
           static NodoFundamental* instanciar(NodoFundamental* left, NodoFundamental* right){
@@ -29,12 +29,12 @@ namespace AnaliseSemantica {
                   NodoFundamental* r = new NodoFundamental(right);
 
                   NodoFundamental* conversao = Conversao<>::instanciar(l->getTipo(), *r);
-                  return MenorIgual::instanciar(l, conversao);
+                  return Maior::instanciar(l, conversao);
             }
 
             template <typename V>
             NodoFundamental* operator()(Nodo<V>*& left, Nodo<V>*& right) const {
-                return new NodoFundamental(new MenorIgual<V>(left, right));
+                return new NodoFundamental(new Maior<V>(left, right));
             }
 
 

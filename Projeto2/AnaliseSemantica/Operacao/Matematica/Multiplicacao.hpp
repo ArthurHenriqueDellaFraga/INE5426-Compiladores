@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Operacao.hpp"
+#include "../Operacao.hpp"
 
 using namespace std;
 
@@ -9,12 +9,12 @@ namespace AnaliseSemantica {
   // INSTANCIAÇÃO
 
   template <typename T, typename L, typename R>
-  class Divisao : public Operacao<T, L, R>{
+  class Multiplicacao : public Operacao<T, L, R>{
       public:
-          Divisao(Nodo<L>* left, Nodo<R>* right) : Operacao<T, L, R>(left, "divisao", right){ }
+          Multiplicacao(Nodo<L>* left, Nodo<R>* right) : Operacao<T, L, R>(left, "multiplicacao", right){ }
 
           T executar(Contexto* contexto){
-              return (this->left->executar(contexto)) / (this->right->executar(contexto));
+              return (this->left->executar(contexto)) * (this->right->executar(contexto));
           }
 
           static NodoFundamental* instanciar(NodoFundamental* left, NodoFundamental* right){
@@ -26,19 +26,19 @@ namespace AnaliseSemantica {
               string mensagemDeErro = "operacao Multiplicacao espera int ou double mas recebeu outros";
 
               NodoFundamental* operator()(Nodo<int>*& left, Nodo<int>*& right) const {
-                  return new NodoFundamental(new Divisao<int, int, int>(left, right));
+                  return new NodoFundamental(new Multiplicacao<int, int, int>(left, right));
               }
 
               NodoFundamental* operator()(Nodo<double>*& left, Nodo<int>*& right) const {
-                  return new NodoFundamental(new Divisao<double, double, int>(left, right));
+                  return new NodoFundamental(new Multiplicacao<double, double, int>(left, right));
               }
 
               NodoFundamental* operator()(Nodo<int>*& left, Nodo<double>*& right) const {
-                  return new NodoFundamental(new Divisao<double, int, double>(left, right));
+                  return new NodoFundamental(new Multiplicacao<double, int, double>(left, right));
               }
 
               NodoFundamental* operator()(Nodo<double>*& left, Nodo<double>*& right) const {
-                  return new NodoFundamental(new Divisao<double, double, double>(left, right));
+                  return new NodoFundamental(new Multiplicacao<double, double, double>(left, right));
               }
 
 
