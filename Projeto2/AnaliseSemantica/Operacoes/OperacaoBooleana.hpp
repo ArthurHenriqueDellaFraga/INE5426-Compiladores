@@ -447,49 +447,6 @@ namespace AnaliseSemantica {
             };
     };
 
-
-    template <typename L = void, typename R = L>
-    class Or : public OperacaoBinariaBooleana<L, R>{
-        public:
-            Or(Nodo<L>* left, Nodo<R>* right) : OperacaoBinariaBooleana<L, R>(left, "or", right){ }
-
-            static Nodo<bool>* instanciar(NodoFundamental left, NodoFundamental right){
-                return apply_visitor(createVisitor (), left, right);
-            }
-
-        protected:
-            struct createVisitor : public static_visitor<Nodo<bool>*>{
-                string mensagemDeErro = "operacao Or espera booleano mas recebeu ";
-
-                Nodo<bool>* operator()(Nodo<bool>*& left, Nodo<bool>*& right) const {
-                    return new Or<bool, bool>(left, right);
-                }
-
-
-
-                template <typename V, typename W>
-                Nodo<bool>* operator()(Nodo<V>*& left, Nodo<W>*& right) const {
-                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + " e " + right->getTipo()->getIdentificadorMasculino() + ".");
-                    erro->print();
-                    return new Or<V, W>(left, right);
-                }
-
-                template <typename V>
-                Nodo<bool>* operator()(Nodo<bool>*& left, Nodo<V>*& right) const {
-                    Erro* erro = new Erro(mensagemDeErro + right->getTipo()->getIdentificadorMasculino() + ".");
-                    erro->print();
-                    return new Or<bool, V>(left, right);
-                }
-
-                template <typename V>
-                Nodo<bool>* operator()(Nodo<V>*& left, Nodo<bool>*& right) const {
-                    Erro* erro = new Erro(mensagemDeErro + left->getTipo()->getIdentificadorMasculino() + ".");
-                    erro->print();
-                    return new Or<V, bool>(left, right);
-                }
-            };
-    };
-
     template <typename T = void>
     class NegacaoBooleana : public OperacaoUnaria<bool, T> {
         public:

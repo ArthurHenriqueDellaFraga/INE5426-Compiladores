@@ -6,12 +6,15 @@
     #include "AnaliseSemantica/Definicao.hpp"
 
     #include "AnaliseSemantica/Operacoes/OperacaoBooleana.hpp"
+    
     #include "AnaliseSemantica/Operacoes/Parenteses.hpp"
     #include "AnaliseSemantica/Operacoes/Soma.hpp"
     #include "AnaliseSemantica/Operacoes/Subtracao.hpp"
     #include "AnaliseSemantica/Operacoes/Multiplicacao.hpp"
     #include "AnaliseSemantica/Operacoes/Divisao.hpp"
+
     #include "AnaliseSemantica/Operacoes/And.hpp"
+    #include "AnaliseSemantica/Operacoes/Or.hpp"
 
 
     #include <stdio.h>
@@ -273,6 +276,10 @@ operacao
 
     | instrucao AND instrucao {
             $$ = And::instanciar($1, $3);
+    }
+
+    | instrucao OR instrucao {
+            $$ = Or::instanciar($1, $3);
     }
 
 %%
