@@ -15,6 +15,7 @@
 
     #include "AnaliseSemantica/Operacoes/Igual.hpp"
     #include "AnaliseSemantica/Operacoes/Diferente.hpp"
+    #include "AnaliseSemantica/Operacoes/Maior.hpp"
 
     #include "AnaliseSemantica/Operacoes/And.hpp"
     #include "AnaliseSemantica/Operacoes/Or.hpp"
@@ -286,6 +287,9 @@ operacao
             $$ = Diferente<bool>::instanciar($1, $3);
     }
 
+    | instrucao MAIOR instrucao {
+            $$ = Maior<bool>::instanciar($1, $3);
+    }
 
     | instrucao AND instrucao {
             $$ = And::instanciar($1, $3);
