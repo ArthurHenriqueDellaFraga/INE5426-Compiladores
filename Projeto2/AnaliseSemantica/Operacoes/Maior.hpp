@@ -40,7 +40,7 @@ namespace AnaliseSemantica {
 
             // Verificar necessidade:
             NodoFundamental* operator()(Nodo<void>*& left, Nodo<void>*& right) const {
-              throw new Erro("Comparação inválida");
+                throw new Erro("Comparação inválida");
             }
         };
   };

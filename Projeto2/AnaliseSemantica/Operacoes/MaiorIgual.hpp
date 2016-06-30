@@ -9,12 +9,12 @@ namespace AnaliseSemantica {
   // INSTANCIAÇÃO
 
   template <typename T>
-  class Igual : public Operacao<bool, T, T>{
+  class MaiorIgual : public Operacao<bool, T, T>{
       public:
-          Igual(Nodo<T>* left, Nodo<T>* right) : Operacao<bool, T, T>(left, "igual", right){ }
+          MaiorIgual(Nodo<T>* left, Nodo<T>* right) : Operacao<bool, T, T>(left, "maior ou igual", right){ }
 
           bool executar(Contexto* contexto){
-              return (this->left->executar(contexto)) == (this->right->executar(contexto));
+              return (this->left->executar(contexto)) >= (this->right->executar(contexto));
           }
 
           static NodoFundamental* instanciar(NodoFundamental* left, NodoFundamental* right){
@@ -29,18 +29,18 @@ namespace AnaliseSemantica {
                   NodoFundamental* r = new NodoFundamental(right);
 
                   NodoFundamental* conversao = Conversao<>::instanciar(l->getTipo(), *r);
-                  return Igual::instanciar(l, conversao);
+                  return MaiorIgual::instanciar(l, conversao);
             }
 
             template <typename V>
             NodoFundamental* operator()(Nodo<V>*& left, Nodo<V>*& right) const {
-                return new NodoFundamental(new Igual<V>(left, right));
+                return new NodoFundamental(new MaiorIgual<V>(left, right));
             }
 
 
             // Verificar necessidade:
             NodoFundamental* operator()(Nodo<void>*& left, Nodo<void>*& right) const {
-                throw new Erro("Comparação inválida");
+              throw new Erro("Comparação inválida");
             }
         };
   };

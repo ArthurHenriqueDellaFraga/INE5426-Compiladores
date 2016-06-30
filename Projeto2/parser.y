@@ -5,8 +5,6 @@
     #include "AnaliseSemantica/Atribuicao.hpp"
     #include "AnaliseSemantica/Definicao.hpp"
 
-    #include "AnaliseSemantica/Operacoes/OperacaoBooleana.hpp"
-
     #include "AnaliseSemantica/Operacoes/Parenteses.hpp"
     #include "AnaliseSemantica/Operacoes/Soma.hpp"
     #include "AnaliseSemantica/Operacoes/Subtracao.hpp"
@@ -16,9 +14,13 @@
     #include "AnaliseSemantica/Operacoes/Igual.hpp"
     #include "AnaliseSemantica/Operacoes/Diferente.hpp"
     #include "AnaliseSemantica/Operacoes/Maior.hpp"
+    #include "AnaliseSemantica/Operacoes/Menor.hpp"
+    #include "AnaliseSemantica/Operacoes/MaiorIgual.hpp"
+    #include "AnaliseSemantica/Operacoes/MenorIgual.hpp"
 
     #include "AnaliseSemantica/Operacoes/And.hpp"
     #include "AnaliseSemantica/Operacoes/Or.hpp"
+    #include "AnaliseSemantica/Operacoes/NegacaoBooleana.hpp"
 
 
     #include <stdio.h>
@@ -279,6 +281,7 @@ operacao
     }
 
 
+
     | instrucao IGUAL instrucao {
             $$ = Igual<bool>::instanciar($1, $3);
     }
@@ -291,6 +294,20 @@ operacao
             $$ = Maior<bool>::instanciar($1, $3);
     }
 
+    | instrucao MENOR instrucao {
+            $$ = Menor<bool>::instanciar($1, $3);
+    }
+
+    | instrucao MAIOR_IGUAL instrucao {
+            $$ = MaiorIgual<bool>::instanciar($1, $3);
+    }
+
+    | instrucao MENOR_IGUAL instrucao {
+            $$ = MenorIgual<bool>::instanciar($1, $3);
+    }
+
+
+
     | instrucao AND instrucao {
             $$ = And::instanciar($1, $3);
     }
@@ -298,5 +315,10 @@ operacao
     | instrucao OR instrucao {
             $$ = Or::instanciar($1, $3);
     }
+
+    | NEGACAO_BOOLEANA instrucao {
+            $$ = NegacaoBooleana::instanciar($2);
+    }
+
 
 %%

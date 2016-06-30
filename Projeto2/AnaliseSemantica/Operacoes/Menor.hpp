@@ -9,12 +9,12 @@ namespace AnaliseSemantica {
   // INSTANCIAÇÃO
 
   template <typename T>
-  class Igual : public Operacao<bool, T, T>{
+  class Menor : public Operacao<bool, T, T>{
       public:
-          Igual(Nodo<T>* left, Nodo<T>* right) : Operacao<bool, T, T>(left, "igual", right){ }
+          Menor(Nodo<T>* left, Nodo<T>* right) : Operacao<bool, T, T>(left, "menor", right){ }
 
           bool executar(Contexto* contexto){
-              return (this->left->executar(contexto)) == (this->right->executar(contexto));
+              return (this->left->executar(contexto)) < (this->right->executar(contexto));
           }
 
           static NodoFundamental* instanciar(NodoFundamental* left, NodoFundamental* right){
@@ -29,12 +29,12 @@ namespace AnaliseSemantica {
                   NodoFundamental* r = new NodoFundamental(right);
 
                   NodoFundamental* conversao = Conversao<>::instanciar(l->getTipo(), *r);
-                  return Igual::instanciar(l, conversao);
+                  return Menor::instanciar(l, conversao);
             }
 
             template <typename V>
             NodoFundamental* operator()(Nodo<V>*& left, Nodo<V>*& right) const {
-                return new NodoFundamental(new Igual<V>(left, right));
+                return new NodoFundamental(new Menor<V>(left, right));
             }
 
 

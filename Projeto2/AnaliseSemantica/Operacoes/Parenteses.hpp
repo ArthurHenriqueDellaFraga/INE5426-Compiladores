@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Contexto.hpp"
+#include "Operacao.hpp"
 
 using namespace std;
 
