@@ -225,6 +225,34 @@ atribuicao
             }
     }
 
+    | variavel SOMA ATRIBUICAO instrucao {
+            NodoFundamental* nodo = NodoPolimorfo<>::converter(*$1);
+            nodo = Soma<int, int, int>::instanciar(nodo, $4);
+
+            $$ = AtribuicaoFundamental::instanciar($1, nodo);
+    }
+
+    | variavel SUBTRACAO ATRIBUICAO instrucao {
+            NodoFundamental* nodo = NodoPolimorfo<>::converter(*$1);
+            nodo = Subtracao<int, int, int>::instanciar(nodo, $4);
+
+            $$ = AtribuicaoFundamental::instanciar($1, nodo);
+    }
+
+    | variavel MULTIPLICACAO ATRIBUICAO instrucao {
+            NodoFundamental* nodo = NodoPolimorfo<>::converter(*$1);
+            nodo = Multiplicacao<int, int, int>::instanciar(nodo, $4);
+
+            $$ = AtribuicaoFundamental::instanciar($1, nodo);
+    }
+
+    | variavel DIVISAO ATRIBUICAO instrucao {
+            NodoFundamental* nodo = NodoPolimorfo<>::converter(*$1);
+            nodo = Divisao<int, int, int>::instanciar(nodo, $4);
+
+            $$ = AtribuicaoFundamental::instanciar($1, nodo);
+    }
+
 variavel
     : IDENTIFICADOR {
             $$ = contexto->getVariavel(*$1);

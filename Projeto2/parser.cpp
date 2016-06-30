@@ -440,16 +440,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  25
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   100
+#define YYLAST   108
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  34
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  9
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  28
+#define YYNRULES  32
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  46
+#define YYNSTATES  58
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
@@ -496,11 +496,12 @@ static const yytype_uint8 yytranslate[] =
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_uint8 yyrline[] =
+static const yytype_uint16 yyrline[] =
 {
        0,   119,   119,   122,   124,   129,   135,   138,   142,   146,
      150,   154,   160,   164,   168,   172,   176,   180,   184,   189,
-     191,   193,   195,   197,   201,   213,   218,   229,   234
+     191,   193,   195,   197,   201,   213,   218,   228,   235,   242,
+     249,   257,   262
 };
 #endif
 
@@ -547,11 +548,12 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-       9,   -30,   -29,    51,    51,    68,   -30,   -30,   -30,   -30,
-     -30,   -30,    11,    39,    15,   -30,    -6,   -30,    13,   -30,
-     -13,     0,     0,     3,    -2,   -30,   -30,    44,   -30,    51,
-      51,    51,    51,     2,    51,   -30,    51,   -30,   -30,     0,
-       0,   -30,   -30,   -30,    55,    55
+      11,   -30,   -29,    59,    59,    76,   -30,   -30,   -30,   -30,
+     -30,   -30,    12,    47,    16,   -30,    -8,   -30,    51,   -30,
+     -19,     0,     0,    -7,    -2,   -30,   -30,    27,   -30,    59,
+      59,    59,    59,   -11,    59,    40,    41,    52,    57,   -30,
+      59,   -30,   -30,     0,     0,   -30,   -30,   -30,    63,    59,
+      59,    59,    59,    63,    63,    63,    63,    63
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -560,10 +562,11 @@ static const yytype_int8 yypact[] =
 static const yytype_uint8 yydefact[] =
 {
        0,     3,     0,     0,     0,     0,    19,    20,    21,    22,
-      23,    27,     0,     2,     0,     7,     9,    10,     8,    11,
-       0,    14,    16,    27,     0,     1,     6,     0,     4,     0,
-       0,     0,     0,     0,     0,    24,     0,    12,     5,    13,
-      15,    17,    18,    25,    26,    28
+      23,    31,     0,     2,     0,     7,     9,    10,     8,    11,
+       0,    14,    16,    31,     0,     1,     6,     0,     4,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,    24,
+       0,    12,     5,    13,    15,    17,    18,    25,    26,     0,
+       0,     0,     0,    32,    27,    28,    29,    30
 };
 
   /* YYPGOTO[NTERM-NUM].  */
@@ -584,31 +587,31 @@ static const yytype_int8 yydefgoto[] =
 static const yytype_uint8 yytable[] =
 {
       21,    22,    24,    20,    29,    30,    31,    32,    31,    32,
-      27,    25,     1,    33,     2,     3,     4,    34,    28,    35,
-      37,    29,    30,    31,    32,    36,    39,    40,    41,    42,
-       5,    44,     0,    45,    43,     0,     6,     7,     8,     9,
-      10,    11,    26,     0,     2,     3,     4,    38,     0,     0,
-      29,    30,    31,    32,     0,     0,     2,     3,     4,     0,
-       5,    29,    30,    31,    32,     0,     6,     7,     8,     9,
-      10,    11,     5,     2,     3,     4,     0,     0,     6,     7,
-       8,     9,    10,    11,     0,     0,     0,     0,     0,     5,
-       0,     0,     0,     0,     0,     6,     7,     8,     9,    10,
-      23
+      27,    33,    25,    39,     1,    40,     2,     3,     4,    28,
+      41,    47,    29,    30,    31,    32,    43,    44,    45,    46,
+      42,    48,     5,    29,    30,    31,    32,    53,     6,     7,
+       8,     9,    10,    11,    49,    50,    54,    55,    56,    57,
+      26,     0,     2,     3,     4,    34,    51,    35,    36,    37,
+      38,    52,     0,     0,     2,     3,     4,     0,     5,    29,
+      30,    31,    32,     0,     6,     7,     8,     9,    10,    11,
+       5,     2,     3,     4,     0,     0,     6,     7,     8,     9,
+      10,    11,     0,     0,     0,     0,     0,     5,     0,     0,
+       0,     0,     0,     6,     7,     8,     9,    10,    23
 };
 
 static const yytype_int8 yycheck[] =
 {
        3,     4,     5,    32,     6,     7,     8,     9,     8,     9,
-      13,     0,     3,    19,     5,     6,     7,     4,     3,    32,
-      22,     6,     7,     8,     9,    22,    29,    30,    31,    32,
-      21,    34,    -1,    36,    32,    -1,    27,    28,    29,    30,
-      31,    32,     3,    -1,     5,     6,     7,     3,    -1,    -1,
-       6,     7,     8,     9,    -1,    -1,     5,     6,     7,    -1,
-      21,     6,     7,     8,     9,    -1,    27,    28,    29,    30,
-      31,    32,    21,     5,     6,     7,    -1,    -1,    27,    28,
-      29,    30,    31,    32,    -1,    -1,    -1,    -1,    -1,    21,
-      -1,    -1,    -1,    -1,    -1,    27,    28,    29,    30,    31,
-      32
+      13,    19,     0,    32,     3,    22,     5,     6,     7,     3,
+      22,    32,     6,     7,     8,     9,    29,    30,    31,    32,
+       3,    34,    21,     6,     7,     8,     9,    40,    27,    28,
+      29,    30,    31,    32,     4,     4,    49,    50,    51,    52,
+       3,    -1,     5,     6,     7,     4,     4,     6,     7,     8,
+       9,     4,    -1,    -1,     5,     6,     7,    -1,    21,     6,
+       7,     8,     9,    -1,    27,    28,    29,    30,    31,    32,
+      21,     5,     6,     7,    -1,    -1,    27,    28,    29,    30,
+      31,    32,    -1,    -1,    -1,    -1,    -1,    21,    -1,    -1,
+      -1,    -1,    -1,    27,    28,    29,    30,    31,    32
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -618,8 +621,9 @@ static const yytype_uint8 yystos[] =
        0,     3,     5,     6,     7,    21,    27,    28,    29,    30,
       31,    32,    35,    36,    37,    38,    39,    40,    41,    42,
       32,    37,    37,    32,    37,     0,     3,    37,     3,     6,
-       7,     8,     9,    19,     4,    32,    22,    22,     3,    37,
-      37,    37,    37,    32,    37,    37
+       7,     8,     9,    19,     4,     6,     7,     8,     9,    32,
+      22,    22,     3,    37,    37,    37,    37,    32,    37,     4,
+       4,     4,     4,    37,    37,    37,    37,    37
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
@@ -627,7 +631,8 @@ static const yytype_uint8 yyr1[] =
 {
        0,    34,    35,    36,    36,    36,    36,    37,    37,    37,
       37,    37,    37,    37,    37,    37,    37,    37,    37,    38,
-      38,    38,    38,    38,    39,    39,    40,    41,    42
+      38,    38,    38,    38,    39,    39,    40,    40,    40,    40,
+      40,    41,    42
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
@@ -635,7 +640,8 @@ static const yytype_uint8 yyr2[] =
 {
        0,     2,     1,     1,     2,     3,     2,     1,     1,     1,
        1,     1,     3,     3,     2,     3,     2,     3,     3,     1,
-       1,     1,     1,     1,     3,     3,     3,     1,     4
+       1,     1,     1,     1,     3,     3,     3,     4,     4,     4,
+       4,     1,     4
 };
 
 
@@ -1314,13 +1320,13 @@ yyreduce:
         case 2:
 #line 119 "parser.y" /* yacc.c:1646  */
     { raizDoPrograma = (yyvsp[0].bloco); }
-#line 1318 "parser.cpp" /* yacc.c:1646  */
+#line 1324 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 3:
 #line 122 "parser.y" /* yacc.c:1646  */
     { }
-#line 1324 "parser.cpp" /* yacc.c:1646  */
+#line 1330 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 4:
@@ -1329,7 +1335,7 @@ yyreduce:
             (yyval.bloco) = new Bloco(contexto);
             (yyval.bloco)->addInstrucao((yyvsp[-1].nodo));
     }
-#line 1333 "parser.cpp" /* yacc.c:1646  */
+#line 1339 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 5:
@@ -1339,13 +1345,13 @@ yyreduce:
                 (yyvsp[-2].bloco)->addInstrucao((yyvsp[-1].nodo));
             (yyval.bloco) = (yyvsp[-2].bloco);
     }
-#line 1343 "parser.cpp" /* yacc.c:1646  */
+#line 1349 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 6:
 #line 135 "parser.y" /* yacc.c:1646  */
     { }
-#line 1349 "parser.cpp" /* yacc.c:1646  */
+#line 1355 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 7:
@@ -1353,7 +1359,7 @@ yyreduce:
     {
             (yyval.nodo) = NodoPolimorfo<>::converter(*(yyvsp[0].primitivo));
     }
-#line 1357 "parser.cpp" /* yacc.c:1646  */
+#line 1363 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 8:
@@ -1361,7 +1367,7 @@ yyreduce:
     {
             (yyval.nodo) = NodoPolimorfo<>::converter(*(yyvsp[0].variavel));
     }
-#line 1365 "parser.cpp" /* yacc.c:1646  */
+#line 1371 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 9:
@@ -1369,7 +1375,7 @@ yyreduce:
     {
             (yyval.nodo) = NodoPolimorfo<>::converter(*(yyvsp[0].definicao));
     }
-#line 1373 "parser.cpp" /* yacc.c:1646  */
+#line 1379 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 10:
@@ -1377,7 +1383,7 @@ yyreduce:
     {
             (yyval.nodo) = NodoPolimorfo<>::converter(*(yyvsp[0].atribuicao));
     }
-#line 1381 "parser.cpp" /* yacc.c:1646  */
+#line 1387 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 11:
@@ -1385,7 +1391,7 @@ yyreduce:
     {
             (yyval.nodo) = (yyvsp[0].nodo);
     }
-#line 1389 "parser.cpp" /* yacc.c:1646  */
+#line 1395 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 12:
@@ -1393,7 +1399,7 @@ yyreduce:
     {
             (yyval.nodo) = Parenteses<>::instanciar((yyvsp[-1].nodo));
     }
-#line 1397 "parser.cpp" /* yacc.c:1646  */
+#line 1403 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 13:
@@ -1401,7 +1407,7 @@ yyreduce:
     {
             (yyval.nodo) = Soma<int, int, int>::instanciar((yyvsp[-2].nodo), (yyvsp[0].nodo));
     }
-#line 1405 "parser.cpp" /* yacc.c:1646  */
+#line 1411 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 14:
@@ -1409,7 +1415,7 @@ yyreduce:
     {
             (yyval.nodo) = Soma<int>::instanciar((yyvsp[0].nodo));
     }
-#line 1413 "parser.cpp" /* yacc.c:1646  */
+#line 1419 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 15:
@@ -1417,7 +1423,7 @@ yyreduce:
     {
             (yyval.nodo) = Subtracao<int, int, int>::instanciar((yyvsp[-2].nodo), (yyvsp[0].nodo));
     }
-#line 1421 "parser.cpp" /* yacc.c:1646  */
+#line 1427 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 16:
@@ -1425,7 +1431,7 @@ yyreduce:
     {
             (yyval.nodo) = Subtracao<int>::instanciar((yyvsp[0].nodo));
     }
-#line 1429 "parser.cpp" /* yacc.c:1646  */
+#line 1435 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 17:
@@ -1433,7 +1439,7 @@ yyreduce:
     {
             (yyval.nodo) = Multiplicacao<int, int, int>::instanciar((yyvsp[-2].nodo), (yyvsp[0].nodo));
     }
-#line 1437 "parser.cpp" /* yacc.c:1646  */
+#line 1443 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 18:
@@ -1441,37 +1447,37 @@ yyreduce:
     {
             (yyval.nodo) = Divisao<int, int, int>::instanciar((yyvsp[-2].nodo), (yyvsp[0].nodo));
     }
-#line 1445 "parser.cpp" /* yacc.c:1646  */
+#line 1451 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 19:
 #line 189 "parser.y" /* yacc.c:1646  */
     { (yyval.primitivo) = new PrimitivoFundamental(new Primitivo<int>((yyvsp[0]._int))); }
-#line 1451 "parser.cpp" /* yacc.c:1646  */
+#line 1457 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 20:
 #line 191 "parser.y" /* yacc.c:1646  */
     { (yyval.primitivo) = new PrimitivoFundamental(new Primitivo<double>((yyvsp[0]._double))); }
-#line 1457 "parser.cpp" /* yacc.c:1646  */
+#line 1463 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 21:
 #line 193 "parser.y" /* yacc.c:1646  */
     { (yyval.primitivo) = new PrimitivoFundamental(new Primitivo<bool>((yyvsp[0]._bool))); }
-#line 1463 "parser.cpp" /* yacc.c:1646  */
+#line 1469 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 22:
 #line 195 "parser.y" /* yacc.c:1646  */
     { (yyval.primitivo) = new PrimitivoFundamental(new Primitivo<char>((yyvsp[0]._char))); }
-#line 1469 "parser.cpp" /* yacc.c:1646  */
+#line 1475 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 23:
 #line 197 "parser.y" /* yacc.c:1646  */
     { (yyval.primitivo) = new PrimitivoFundamental(new Primitivo<string>(*(yyvsp[0]._string))); }
-#line 1475 "parser.cpp" /* yacc.c:1646  */
+#line 1481 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 24:
@@ -1487,7 +1493,7 @@ yyreduce:
                 exit(1);
             }
     }
-#line 1491 "parser.cpp" /* yacc.c:1646  */
+#line 1497 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 25:
@@ -1495,7 +1501,7 @@ yyreduce:
     {
             (yyval.definicao)->add(*(yyvsp[0]._string));
     }
-#line 1499 "parser.cpp" /* yacc.c:1646  */
+#line 1505 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 26:
@@ -1509,29 +1515,73 @@ yyreduce:
                 exit(1);
             }
     }
-#line 1513 "parser.cpp" /* yacc.c:1646  */
+#line 1519 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 229 "parser.y" /* yacc.c:1646  */
+#line 228 "parser.y" /* yacc.c:1646  */
     {
-            (yyval.variavel) = contexto->getVariavel(*(yyvsp[0]._string));
+            NodoFundamental* nodo = NodoPolimorfo<>::converter(*(yyvsp[-3].variavel));
+            nodo = Soma<int, int, int>::instanciar(nodo, (yyvsp[0].nodo));
+
+            (yyval.atribuicao) = AtribuicaoFundamental::instanciar((yyvsp[-3].variavel), nodo);
     }
-#line 1521 "parser.cpp" /* yacc.c:1646  */
+#line 1530 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 234 "parser.y" /* yacc.c:1646  */
+#line 235 "parser.y" /* yacc.c:1646  */
+    {
+            NodoFundamental* nodo = NodoPolimorfo<>::converter(*(yyvsp[-3].variavel));
+            nodo = Subtracao<int, int, int>::instanciar(nodo, (yyvsp[0].nodo));
+
+            (yyval.atribuicao) = AtribuicaoFundamental::instanciar((yyvsp[-3].variavel), nodo);
+    }
+#line 1541 "parser.cpp" /* yacc.c:1646  */
+    break;
+
+  case 29:
+#line 242 "parser.y" /* yacc.c:1646  */
+    {
+            NodoFundamental* nodo = NodoPolimorfo<>::converter(*(yyvsp[-3].variavel));
+            nodo = Multiplicacao<int, int, int>::instanciar(nodo, (yyvsp[0].nodo));
+
+            (yyval.atribuicao) = AtribuicaoFundamental::instanciar((yyvsp[-3].variavel), nodo);
+    }
+#line 1552 "parser.cpp" /* yacc.c:1646  */
+    break;
+
+  case 30:
+#line 249 "parser.y" /* yacc.c:1646  */
+    {
+            NodoFundamental* nodo = NodoPolimorfo<>::converter(*(yyvsp[-3].variavel));
+            nodo = Divisao<int, int, int>::instanciar(nodo, (yyvsp[0].nodo));
+
+            (yyval.atribuicao) = AtribuicaoFundamental::instanciar((yyvsp[-3].variavel), nodo);
+    }
+#line 1563 "parser.cpp" /* yacc.c:1646  */
+    break;
+
+  case 31:
+#line 257 "parser.y" /* yacc.c:1646  */
+    {
+            (yyval.variavel) = contexto->getVariavel(*(yyvsp[0]._string));
+    }
+#line 1571 "parser.cpp" /* yacc.c:1646  */
+    break;
+
+  case 32:
+#line 262 "parser.y" /* yacc.c:1646  */
     {
             TipoFundamental* tF = TipoFundamental::instanciar(*(yyvsp[-2]._string));
 
             (yyval.nodo) = Conversao<>::instanciar(*tF, *(yyvsp[0].nodo));
     }
-#line 1531 "parser.cpp" /* yacc.c:1646  */
+#line 1581 "parser.cpp" /* yacc.c:1646  */
     break;
 
 
-#line 1535 "parser.cpp" /* yacc.c:1646  */
+#line 1585 "parser.cpp" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1759,5 +1809,5 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 240 "parser.y" /* yacc.c:1906  */
+#line 268 "parser.y" /* yacc.c:1906  */
 
