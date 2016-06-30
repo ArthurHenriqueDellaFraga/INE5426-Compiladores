@@ -80,7 +80,7 @@ letra [a-zA-Z]
                                   yylval._string = new string(yylval._string->substr(1, yylval._string->size() -2));
                                   return SENTENCA;
                               }
-{letra}({letra}|{digito})+    {
+{letra}({letra}|{digito})*    {
                                   yylval._string = new string(yytext);
                                   return IDENTIFICADOR;
                               }

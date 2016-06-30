@@ -158,7 +158,7 @@ instrucao
 
 
     | ABRE_PARENTESES instrucao FECHA_PARENTESES {
-            $$ = Parenteses<>::instanciar(*$2);
+            $$ = Parenteses<>::instanciar($2);
     }
 
     | instrucao SOMA instrucao {
@@ -166,11 +166,11 @@ instrucao
     }
 
     | instrucao SUBTRACAO instrucao {
-            $$ = Subtracao<>::instanciar(*$1, *$3);
+            $$ = Subtracao<int, int, int>::instanciar($1, $3);
     }
 
     | SUBTRACAO instrucao {
-            $$ = SubtracaoUnaria<>::instanciar(*$2);
+            $$ = Subtracao<int>::instanciar($2);
     }
 
     | instrucao MULTIPLICACAO instrucao {

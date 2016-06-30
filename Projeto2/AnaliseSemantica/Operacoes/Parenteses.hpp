@@ -14,11 +14,15 @@ namespace AnaliseSemantica {
 		        void print(){
 			        	cout << "<abre " << this->simbolo << "> ";
 			        	this->nodo->print();
-			        	cout << " <fecha " << this->simbolo << "> ";
+			        	cout << " <fecha " << this->simbolo << ">";
 		        }
 
-						static NodoFundamental* instanciar(NodoFundamental nodo){
-								return apply_visitor(create_visitor (), nodo);
+						T executar(Contexto* contexto){
+								return this->nodo->executar(contexto);
+						}
+
+						static NodoFundamental* instanciar(NodoFundamental* nodo){
+								return apply_visitor(create_visitor (), *nodo);
 						}
 
 				protected:

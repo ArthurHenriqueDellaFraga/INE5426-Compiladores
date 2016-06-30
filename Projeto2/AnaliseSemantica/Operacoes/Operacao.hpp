@@ -34,7 +34,7 @@ namespace AnaliseSemantica {
       public:
           void print(){
               cout << "(";
-              cout << this->simbolo;
+              cout << "<" << this->simbolo << "> ";
               nodo->print();
               cout << ")";
           }
@@ -46,13 +46,13 @@ namespace AnaliseSemantica {
           Nodo<L>* left;
           Nodo<R>* right;
 
-          Operacao(Nodo<L>* left, string* simbolo, Nodo<R>* right) : left(left), right(right), OperacaoAbstrata<T>(simbolo){ }
+          Operacao(Nodo<L>* left, string simbolo, Nodo<R>* right) : left(left), right(right), OperacaoAbstrata<T>(simbolo){ }
 
       public:
           void print(){
               cout << "(";
               left->print();
-              cout << this->simbolo;
+              cout << " <" << this->simbolo << "> ";
               right->print();
               cout << ")";
           }

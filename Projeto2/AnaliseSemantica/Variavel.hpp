@@ -39,7 +39,7 @@ namespace AnaliseSemantica {
           void print(){
               cout << "variavel ";
               this->getTipo()->print();
-              cout << " " << this->identificador;
+              cout << " " << this->identificador << " -> " << this->valor;
           }
 
           T executar(Contexto* contexto){

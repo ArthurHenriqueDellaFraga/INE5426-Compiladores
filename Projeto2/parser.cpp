@@ -1387,7 +1387,7 @@ yyreduce:
   case 12:
 #line 160 "parser.y" /* yacc.c:1646  */
     {
-            (yyval.nodo) = Parenteses<>::instanciar(*(yyvsp[-1].nodo));
+            (yyval.nodo) = Parenteses<>::instanciar((yyvsp[-1].nodo));
     }
 #line 1393 "parser.cpp" /* yacc.c:1646  */
     break;
@@ -1403,7 +1403,7 @@ yyreduce:
   case 14:
 #line 168 "parser.y" /* yacc.c:1646  */
     {
-            (yyval.nodo) = Subtracao<>::instanciar(*(yyvsp[-2].nodo), *(yyvsp[0].nodo));
+            (yyval.nodo) = Subtracao<int, int, int>::instanciar((yyvsp[-2].nodo), (yyvsp[0].nodo));
     }
 #line 1409 "parser.cpp" /* yacc.c:1646  */
     break;
@@ -1411,7 +1411,7 @@ yyreduce:
   case 15:
 #line 172 "parser.y" /* yacc.c:1646  */
     {
-            (yyval.nodo) = SubtracaoUnaria<>::instanciar(*(yyvsp[0].nodo));
+            (yyval.nodo) = Subtracao<int>::instanciar((yyvsp[0].nodo));
     }
 #line 1417 "parser.cpp" /* yacc.c:1646  */
     break;
