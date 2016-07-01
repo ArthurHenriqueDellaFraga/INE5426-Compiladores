@@ -25,14 +25,14 @@ namespace AnaliseSemantica {
               condicao->print();
               cout << endl;
 
-              for(map<bool, Bloco*>::reverse_iterator it = listaDeInstrucoes.rbegin(); it != listaDeInstrucoes.rend(); ++it){
-                  if(it->first)
-                      cout << "+entao: " << endl;
-                  else
-                      cout << "+senao: " << endl;
+              cout << "+entao: " << endl;
+              _true->print();
 
-                  it->second->print();
+              if(_false != NULL){
+                  cout << "+senao: " << endl;
+                  _false->print();
               }
+
               cout << "Fim expressao condicional";
           }
 
@@ -45,12 +45,12 @@ namespace AnaliseSemantica {
               }
           }
 
-          static NodoFundamental* instanciar(Contexto* contexto, NodoFundamental condicao, Bloco* _true, Bloco* _false){
+          static NodoFundamental* instanciar(Contexto* contexto, NodoFundamental* condicao, Bloco* _true, Bloco* _false){
               createVisitor create;
               create.contexto = contexto;
               create._true = _true;
               create._false = _false;
-              return apply_visitor(create, condicao);
+              return apply_visitor(create, *condicao);
           }
 
       protected:
@@ -60,7 +60,7 @@ namespace AnaliseSemantica {
               Bloco* _false;
 
               NodoFundamental* operator()(Nodo<bool>* condicao) const {
-                  return new NodoFundamental(new If(contexto, condicao, _true, _false);
+                  return new NodoFundamental(new If(contexto, condicao, _true, _false));
               }
 
               template <typename V>

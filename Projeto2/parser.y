@@ -335,4 +335,8 @@ condicao
             $$ = If::instanciar(contexto, $3, $6, NULL);
     }
 
+    | IF ABRE_PARENTESES instrucao FECHA_PARENTESES ABRE_CHAVES bloco FECHA_CHAVES ELSE ABRE_CHAVES bloco FECHA_CHAVES {
+            $$ = If::instanciar(contexto, $3, $6, $10);
+    }
+
 %%
