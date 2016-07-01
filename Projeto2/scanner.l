@@ -55,6 +55,9 @@ letra [a-zA-Z]
 "{"                           {return ABRE_CHAVES;}
 "}"                           {return FECHA_CHAVES;}
 
+"if"                          {return IF;}
+"else"                        {return ELSE;}
+
 {digito}+                     {
                                   yylval._int = atoi(yytext);
                                   return INTEIRO;

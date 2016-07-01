@@ -23,6 +23,8 @@
     #include "AnaliseSemantica/Operacao/Logica/Or.hpp"
     #include "AnaliseSemantica/Operacao/Logica/NegacaoBooleana.hpp"
 
+    #include "AnaliseSemantica/Condicao/If.hpp"
+
 
     #include <stdio.h>
     #include <stdlib.h>
@@ -87,6 +89,8 @@
 %token ABRE_CHAVES FECHA_CHAVES
 %token ABRE_COLCHETE FECHA_COLCHETE
 
+%token IF ELSE
+
 %token <_int> INTEIRO
 %token <_double> RACIONAL
 %token <_bool> BOOLEANO
@@ -107,6 +111,7 @@
 %type <atribuicao> atribuicao
 %type <nodo> conversao
 %type <nodo> operacao
+%type <nodo> condicao
 
 /* Operator precedence for mathematical operators
  * The latest it is listed, the highest the precedence
@@ -169,6 +174,10 @@ instrucao
     }
 
     | operacao {
+            $$ = $1;
+    }
+
+    | condicao {
             $$ = $1;
     }
 
@@ -321,5 +330,9 @@ operacao
             $$ = NegacaoBooleana::instanciar($2);
     }
 
+condicao
+    : IF ABRE_PARENTESES instrucao FECHA_PARENTESES ABRE_CHAVES bloco FECHA_CHAVES {
+            $$ = If::instanciar(contexto, $3, $6, NULL);
+    }
 
 %%
