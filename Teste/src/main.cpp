@@ -1,4 +1,3 @@
- // clang++ -I ../../Projeto2/boost_1_60_0/ main.cpp -o teste ../../Projeto2/boost_1_60_0/stage/lib/libboost_filesystem.a ../../Projeto2/boost_1_60_0/stage/lib/libboost_system.a
 #define BOOST_FILESYSTEM_VERSION 3
 #define BOOST_FILESYSTEM_NO_DEPRECATED
 #include <boost/filesystem.hpp>
@@ -52,9 +51,9 @@ wstring readFile(const char *filename) {
   return text;
 }
 
-void compute_diff(wstring text1, wstring text2){
+wstring compute_diff(wstring text1, wstring text2){
   diff_match_patch<wstring> dmp;
-  wstring as = dmp.diff_prettyHtml(dmp.diff_main(text1, text2, false));
+  return dmp.diff_prettyHtml(dmp.diff_main(text1, text2, false));
 }
 
 void executeFile(path file){
@@ -66,7 +65,40 @@ void executeFile(path file){
 
     system(command.c_str());
 
-    usleep(50);
+    usleep(10000);
+}
+
+string getFileNameWithoutExtension(path path){
+  string fileName = path.string();
+  std::string::size_type pos = fileName.find('.');
+  return fileName.substr(0, pos);
+}
+
+wstring getOutput(){
+  string fileName = TEMP_FILE;
+  fileName = FILE_PATH + fileName;
+  return readFile(fileName.c_str());
+}
+
+wstring getExpectedOutput(path path){
+    string fileName = getFileNameWithoutExtension(path) + ".out";
+    fileName = FILE_PATH + fileName;
+    return readFile(fileName.c_str());
+}
+
+bool hasChanges(wstring output, wstring expectedOutput){
+    return expectedOutput.compare(output) != 0;
+}
+
+void printResult(path path, bool hasChange, wstring output, wstring expectedOutput){
+    if(!hasChange){
+      cout << path << ": " << "OK" << endl;
+    }else{
+      cout << path << ": " << "ERROOOUUU!" << endl;
+      cout << "HTML com o diff:" << endl;
+      cout << compute_diff(output, expectedOutput) << endl;;
+    }
+    cout << endl;
 }
 
 int main(){
@@ -77,19 +109,15 @@ int main(){
   getOutputFiles(outputFiles);
 
   for(int i=0; i < inputFiles.size(); i++){
-      cout << inputFiles[i] << endl;
-  }
+      executeFile(inputFiles[i]);
 
-  for(int i=0; i < outputFiles.size(); i++){
-      cout << outputFiles[i] << endl;
-  }
-  string file = "../files/" + inputFiles[0].string();
-  string filein = "../files/declaracao.in";
-  string fileout = "../files/declaracao.in";
-  wstring text1 = readFile(filein.c_str());
-  wstring text2 = readFile(fileout.c_str());
-  cout << text1.compare(text2);
+      wstring expectedOutput = getExpectedOutput(inputFiles[i]);
+      wstring output = getOutput();
 
-    executeFile(inputFiles[0]);
-  // compute_diff(readFile(filein.c_str()), readFile(fileout.c_str()));
+      bool hasChange = hasChanges(output, expectedOutput);
+
+      printResult(inputFiles[i], hasChange, output,expectedOutput);
+  }
 }
+
+//http://htmledit.squarefree.com/
