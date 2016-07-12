@@ -1,0 +1,4 @@
+Declaracao de variavel int: a1
+Declaracao de variavel int: a, b
+Declaracao de variavel double: c1
+Declaracao de variavel double: c, d
