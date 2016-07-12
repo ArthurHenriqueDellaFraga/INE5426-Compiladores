@@ -1,0 +1,11 @@
+def int: a1;
+a1 = 12;
+def double: c1;
+c1 = 1.43;
+def boolean: e1;
+e1 = TRUE;
+e1 = FALSE;
+def char: g1;
+g1 = 'a';
+def string s1;
+s1 = "string";
