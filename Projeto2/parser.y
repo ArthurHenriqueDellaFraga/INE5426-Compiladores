@@ -34,7 +34,7 @@
     using namespace std;
 
     extern Bloco* raizDoPrograma; /* the root node of our program */
-    extern Contexto* contexto;
+    extern vector<Contexto*> contexto;
 
     extern int yylex();
     extern void yyerror(const char* s, ...);
@@ -103,6 +103,7 @@
 
 %type <bloco> program
 %type <bloco> bloco
+%type <bloco> bloco_fechado
 %type <nodo> instrucao
 
 %type <primitivo> primitivo
@@ -136,11 +137,19 @@
 program
     : bloco { raizDoPrograma = $1; }
 
+bloco_fechado
+    : ABRE_CHAVES bloco FECHA_CHAVES {
+            $$ = $2;
+            contexto.erase(contexto.end()-1);
+    }
+
 bloco
     : NOVA_LINHA { }
 
     | instrucao NOVA_LINHA {
-            $$ = new Bloco(contexto);
+            $$ = new Bloco(contexto.back());
+            contexto.push_back($$->getContexto());
+
             $$->addInstrucao($1);
     }
 
@@ -251,7 +260,7 @@ atribuicao
 
 variavel
     : IDENTIFICADOR {
-            $$ = contexto->getVariavel(*$1);
+            $$ = contexto.back()->getVariavel(*$1);
     }
 
 conversao
@@ -331,12 +340,14 @@ operacao
     }
 
 condicao
-    : IF ABRE_PARENTESES instrucao FECHA_PARENTESES ABRE_CHAVES bloco FECHA_CHAVES {
-            $$ = If::instanciar(contexto, $3, $6, NULL);
+    : IF ABRE_PARENTESES instrucao FECHA_PARENTESES bloco_fechado {
+            $$ = If::instanciar(contexto.back(), $3, $5, NULL);
     }
 
-    | IF ABRE_PARENTESES instrucao FECHA_PARENTESES ABRE_CHAVES bloco FECHA_CHAVES ELSE ABRE_CHAVES bloco FECHA_CHAVES {
-            $$ = If::instanciar(contexto, $3, $6, $10);
+    | IF ABRE_PARENTESES instrucao FECHA_PARENTESES bloco_fechado ELSE bloco_fechado {
+            $$ = If::instanciar(contexto.back(), $3, $5, $7);
     }
+
+
 
 %%

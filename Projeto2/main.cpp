@@ -1,17 +1,18 @@
 #include "AnaliseSemantica/Bloco.hpp"
 
 #include <iostream>
+#include <vector>
 
 using namespace AnaliseSemantica;
 
 Bloco* raizDoPrograma; //set on Bison file
-Contexto* contexto;
+vector<Contexto*> contexto;
 
 extern int yyparse();
 
 int main(int argc, char **argv){
 
-    contexto = new Contexto();
+    contexto.push_back(new Contexto());
 
     try{
         yyparse();

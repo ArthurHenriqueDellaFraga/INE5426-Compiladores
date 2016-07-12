@@ -13,14 +13,16 @@ namespace AnaliseSemantica {
           vector<NodoFundamental*> listaDeInstrucoes;
           Contexto* contexto;
       public:
-          Bloco(Contexto* contexto) : contexto(contexto) { }
+          Bloco(Contexto* contexto) : contexto(new Contexto(contexto)) { }
           Bloco() : contexto(new Contexto()) { }
 
           virtual void print(){
+              cout << "    " << this << "{" << endl;
               for(int i=0; i < listaDeInstrucoes.size(); i++){
                   listaDeInstrucoes[i]->print();
                   cout << endl;
               }
+              cout << "    }" << this << endl;
           }
 
           void executar(Contexto* contexto){
@@ -41,6 +43,10 @@ namespace AnaliseSemantica {
                   erro->print();
                   exit(1);
               }
+          }
+
+          Contexto* getContexto(){
+              return contexto;
           }
   };
 

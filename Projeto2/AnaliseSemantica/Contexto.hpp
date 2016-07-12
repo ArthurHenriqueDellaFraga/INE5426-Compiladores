@@ -10,6 +10,7 @@ namespace AnaliseSemantica {
         protected:
             map<string, VariavelFundamental*> _variavel;
         public:
+            Contexto(Contexto* contexto) : _variavel(contexto->_variavel){}
             Contexto(){ }
 
             void put(string identificador, VariavelFundamental* variavel){
