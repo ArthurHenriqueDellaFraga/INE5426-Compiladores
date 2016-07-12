@@ -130,7 +130,7 @@ extern int yydebug;
     using namespace std;
 
     extern Bloco* raizDoPrograma; /* the root node of our program */
-    extern vector<Contexto*> contexto;
+    extern Contexto* contexto;
 
     extern int yylex();
     extern void yyerror(const char* s, ...);
@@ -1382,7 +1382,7 @@ yyreduce:
 #line 141 "parser.y" /* yacc.c:1646  */
     {
             (yyval.bloco) = (yyvsp[-1].bloco);
-            contexto.erase(contexto.end()-1);
+            contexto = contexto->getAntecessor();
     }
 #line 1388 "parser.cpp" /* yacc.c:1646  */
     break;
@@ -1396,8 +1396,8 @@ yyreduce:
   case 5:
 #line 149 "parser.y" /* yacc.c:1646  */
     {
-            (yyval.bloco) = new Bloco(contexto.back());
-            contexto.push_back((yyval.bloco)->getContexto());
+            (yyval.bloco) = new Bloco(contexto);
+            contexto = (yyval.bloco)->getContexto();
 
             (yyval.bloco)->addInstrucao((yyvsp[-1].nodo));
     }
@@ -1591,7 +1591,7 @@ yyreduce:
   case 27:
 #line 262 "parser.y" /* yacc.c:1646  */
     {
-            (yyval.variavel) = contexto.back()->getVariavel(*(yyvsp[0]._string));
+            (yyval.variavel) = contexto->getVariavel(*(yyvsp[0]._string));
     }
 #line 1597 "parser.cpp" /* yacc.c:1646  */
     break;
@@ -1737,7 +1737,7 @@ yyreduce:
   case 45:
 #line 343 "parser.y" /* yacc.c:1646  */
     {
-            (yyval.nodo) = If::instanciar(contexto.back(), (yyvsp[-2].nodo), (yyvsp[0].bloco), NULL);
+            (yyval.nodo) = If::instanciar(contexto, (yyvsp[-2].nodo), (yyvsp[0].bloco), NULL);
     }
 #line 1743 "parser.cpp" /* yacc.c:1646  */
     break;
@@ -1745,7 +1745,7 @@ yyreduce:
   case 46:
 #line 347 "parser.y" /* yacc.c:1646  */
     {
-            (yyval.nodo) = If::instanciar(contexto.back(), (yyvsp[-4].nodo), (yyvsp[-2].bloco), (yyvsp[0].bloco));
+            (yyval.nodo) = If::instanciar(contexto, (yyvsp[-4].nodo), (yyvsp[-2].bloco), (yyvsp[0].bloco));
     }
 #line 1751 "parser.cpp" /* yacc.c:1646  */
     break;

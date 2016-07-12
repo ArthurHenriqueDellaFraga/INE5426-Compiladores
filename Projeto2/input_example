@@ -2,9 +2,11 @@ def int a;
 
 if(FALSE){
   def int b;
+  a += 1;
 }
 else{
-  a += 8;
+  def double c;
+  c += 8.1;
 };
 
-b += 1;
+a += 1;

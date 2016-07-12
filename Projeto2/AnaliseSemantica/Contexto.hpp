@@ -9,8 +9,9 @@ namespace AnaliseSemantica {
     class Contexto {
         protected:
             map<string, VariavelFundamental*> _variavel;
+            Contexto* antecessor;
         public:
-            Contexto(Contexto* contexto) : _variavel(contexto->_variavel){}
+            Contexto(Contexto* contexto) : antecessor(contexto){}
             Contexto(){ }
 
             void put(string identificador, VariavelFundamental* variavel){
@@ -32,10 +33,23 @@ namespace AnaliseSemantica {
                     Erro* erro = new Erro("variavel " + identificador + " sem declaracao");
                     erro->print();
 
-                    return new VariavelFundamental(new Variavel<void>(identificador));
+                    if(antecessor != NULL){
+                        return antecessor->getVariavel(identificador);
+                    }
+                    else{
+                        return new VariavelFundamental(new Variavel<void>(identificador));
+                    }
                 }
 
                 return _variavel[identificador];
+            }
+
+            Contexto* getAntecessor(){
+                if(antecessor != NULL){
+                    return antecessor;
+                }
+
+                return this;
             }
 
     };

@@ -77,7 +77,7 @@ extern int yydebug;
     using namespace std;
 
     extern Bloco* raizDoPrograma; /* the root node of our program */
-    extern vector<Contexto*> contexto;
+    extern Contexto* contexto;
 
     extern int yylex();
     extern void yyerror(const char* s, ...);

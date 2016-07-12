@@ -6,13 +6,13 @@
 using namespace AnaliseSemantica;
 
 Bloco* raizDoPrograma; //set on Bison file
-vector<Contexto*> contexto;
+Contexto* contexto;
 
 extern int yyparse();
 
 int main(int argc, char **argv){
 
-    contexto.push_back(new Contexto());
+    contexto = new Contexto();
 
     try{
         yyparse();

@@ -34,7 +34,7 @@
     using namespace std;
 
     extern Bloco* raizDoPrograma; /* the root node of our program */
-    extern vector<Contexto*> contexto;
+    extern Contexto* contexto;
 
     extern int yylex();
     extern void yyerror(const char* s, ...);
@@ -140,15 +140,15 @@ program
 bloco_fechado
     : ABRE_CHAVES bloco FECHA_CHAVES {
             $$ = $2;
-            contexto.erase(contexto.end()-1);
+            contexto = contexto->getAntecessor();
     }
 
 bloco
     : NOVA_LINHA { }
 
     | instrucao NOVA_LINHA {
-            $$ = new Bloco(contexto.back());
-            contexto.push_back($$->getContexto());
+            $$ = new Bloco(contexto);
+            contexto = $$->getContexto();
 
             $$->addInstrucao($1);
     }
@@ -260,7 +260,7 @@ atribuicao
 
 variavel
     : IDENTIFICADOR {
-            $$ = contexto.back()->getVariavel(*$1);
+            $$ = contexto->getVariavel(*$1);
     }
 
 conversao
@@ -341,11 +341,11 @@ operacao
 
 condicao
     : IF ABRE_PARENTESES instrucao FECHA_PARENTESES bloco_fechado {
-            $$ = If::instanciar(contexto.back(), $3, $5, NULL);
+            $$ = If::instanciar(contexto, $3, $5, NULL);
     }
 
     | IF ABRE_PARENTESES instrucao FECHA_PARENTESES bloco_fechado ELSE bloco_fechado {
-            $$ = If::instanciar(contexto.back(), $3, $5, $7);
+            $$ = If::instanciar(contexto, $3, $5, $7);
     }
 
 
