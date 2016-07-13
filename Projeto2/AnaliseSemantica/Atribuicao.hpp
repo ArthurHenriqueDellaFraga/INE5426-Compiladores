@@ -28,7 +28,7 @@ namespace AnaliseSemantica {
           }
 
           void executar(Contexto* contexto){
-              *variavel = (valor->executar(contexto));
+              variavel->setValor(valor->executar(contexto));
           }
   };
 

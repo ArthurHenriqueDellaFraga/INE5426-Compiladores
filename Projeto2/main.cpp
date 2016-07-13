@@ -23,8 +23,8 @@ int main(int argc, char **argv){
     }
 
     cout << endl << endl;
-    raizDoPrograma->print();
-    //raizDoPrograma->executar(contexto);
+    raizDoPrograma->executar(new Contexto());
+    // raizDoPrograma->print();
 
     return 0;
 }

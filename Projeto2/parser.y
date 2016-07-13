@@ -147,15 +147,36 @@ bloco
     : NOVA_LINHA { }
 
     | instrucao NOVA_LINHA {
-            $$ = new Bloco(contexto);
-            contexto = $$->getContexto();
+            $$ = new Bloco();
+            contexto = new Contexto(contexto);
+
+            try{
+                $1->executar(contexto);
+                $1->print();
+                cout << endl;
+            }
+            catch(Erro* erro){
+                erro->print();
+                exit(1);
+            }
 
             $$->addInstrucao($1);
     }
 
     | bloco instrucao NOVA_LINHA{
-            if($2 != NULL)
+            if($2 != NULL){
+                try{
+                    $2->executar(contexto);
+                    $2->print();
+                    cout << endl;
+                }
+                catch(Erro* erro){
+                    erro->print();
+                    exit(1);
+                }
+
                 $1->addInstrucao($2);
+            }
             $$ = $1;
     }
 
@@ -200,7 +221,6 @@ primitivo
     | CARACTER { $$ = new PrimitivoFundamental(new Primitivo<char>($1)); }
 
     | SENTENCA { $$ = new PrimitivoFundamental(new Primitivo<string>(*$1)); }
-
 
 definicao
     : DEFINICAO IDENTIFICADOR IDENTIFICADOR {
@@ -341,11 +361,11 @@ operacao
 
 condicao
     : IF ABRE_PARENTESES instrucao FECHA_PARENTESES bloco_fechado {
-            $$ = If::instanciar(contexto, $3, $5, NULL);
+            $$ = If::instanciar($3, $5, NULL);
     }
 
     | IF ABRE_PARENTESES instrucao FECHA_PARENTESES bloco_fechado ELSE bloco_fechado {
-            $$ = If::instanciar(contexto, $3, $5, $7);
+            $$ = If::instanciar($3, $5, $7);
     }
 
 

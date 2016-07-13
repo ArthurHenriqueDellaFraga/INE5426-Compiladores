@@ -14,10 +14,9 @@ namespace AnaliseSemantica {
           Nodo<bool>* condicao;
           Bloco* _true;
           Bloco* _false;
-          Contexto* contexto;
 
-          If(Contexto* contexto, Nodo<bool>* condicao, Bloco* _true, Bloco* _false)
-          : condicao(condicao), _true(_true), _false(_false), contexto(contexto){ }
+          If(Nodo<bool>* condicao, Bloco* _true, Bloco* _false)
+          : condicao(condicao), _true(_true), _false(_false){ }
 
           void print(){
               cout << "Expressao condicional" << endl;
@@ -45,9 +44,8 @@ namespace AnaliseSemantica {
               }
           }
 
-          static NodoFundamental* instanciar(Contexto* contexto, NodoFundamental* condicao, Bloco* _true, Bloco* _false){
+          static NodoFundamental* instanciar(NodoFundamental* condicao, Bloco* _true, Bloco* _false){
               createVisitor create;
-              create.contexto = contexto;
               create._true = _true;
               create._false = _false;
               return apply_visitor(create, *condicao);
@@ -55,12 +53,11 @@ namespace AnaliseSemantica {
 
       protected:
           struct createVisitor : public static_visitor<NodoFundamental*>{
-              Contexto* contexto;
               Bloco* _true;
               Bloco* _false;
 
               NodoFundamental* operator()(Nodo<bool>* condicao) const {
-                  return new NodoFundamental(new If(contexto, condicao, _true, _false));
+                  return new NodoFundamental(new If(condicao, _true, _false));
               }
 
               template <typename V>

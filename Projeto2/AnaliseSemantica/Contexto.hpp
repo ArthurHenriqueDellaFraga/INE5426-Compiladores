@@ -30,13 +30,12 @@ namespace AnaliseSemantica {
                 it = _variavel.find(identificador);
 
                 if(it == _variavel.end()){
-                    Erro* erro = new Erro("variavel " + identificador + " sem declaracao");
-                    erro->print();
-
                     if(antecessor != NULL){
                         return antecessor->getVariavel(identificador);
                     }
                     else{
+                        Erro* erro = new Erro("variavel " + identificador + " sem declaracao");
+                        erro->print();
                         return new VariavelFundamental(new Variavel<void>(identificador));
                     }
                 }

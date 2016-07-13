@@ -46,9 +46,8 @@ namespace AnaliseSemantica {
               return this->valor;
           }
 
-          Variavel& operator=(const T& valor){
+          void setValor(T valor){
               this->valor = valor;
-              return *this;
           }
   };
 
@@ -59,6 +58,11 @@ namespace AnaliseSemantica {
 
           void executar(Contexto* contexto){
               //ERROR ?
+          }
+
+          template <typename T>
+          void setValor(T valor){
+              throw new Erro("Variável " + identificador + " não declarada.");
           }
   };
 

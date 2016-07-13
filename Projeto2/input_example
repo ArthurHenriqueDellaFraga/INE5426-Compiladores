@@ -3,6 +3,7 @@ def int a;
 if(FALSE){
   def int b;
   a += 1;
+  a += 1;
 }
 else{
   def double c;
