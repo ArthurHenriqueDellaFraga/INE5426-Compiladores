@@ -1784,7 +1784,7 @@ yyreduce:
   case 46:
 #line 384 "parser.y" /* yacc.c:1646  */
     {
-            (yyval.nodo) = Imprimir::instanciar((yyvsp[0].nodo));
+            (yyval.nodo) = Imprimir<char>::instanciar((yyvsp[0].nodo));
     }
 #line 1790 "parser.cpp" /* yacc.c:1646  */
     break;

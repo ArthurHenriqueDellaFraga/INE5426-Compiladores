@@ -9,30 +9,34 @@ namespace AnaliseSemantica {
 	// INSTANCIAÇÃO
 
 	template<typename T>
-    class Imprimir : public Operacao<void, T> {
-		    public:
-		        Imprimir(Nodo<T>* nodo) : Operacao<void, T>(nodo, "print") { }
+  class Imprimir : public Operacao<void, T> {
+	    public:
+	        Imprimir(Nodo<T>* nodo) : Operacao<void, T>(nodo, "print") { }
 
-            void print(){
-                cout << "<" << this->simbolo << "> ";
-                this->nodo->print();
-            }
+          void print(){
+              cout << "<" << this->simbolo << "> ";
+              this->nodo->print();
+          }
 
-						void executar(Contexto* contexto){
-                this->print();
-                cout << ": " << this->nodo->executar(contexto);
-						}
+					void executar(Contexto* contexto){
+              this->print();
+              cout << ": " << (this->nodo->executar(contexto)) << endl;
+					}
 
-						static NodoFundamental* instanciar(NodoFundamental* nodo){
-								return apply_visitor(create_visitor(), *nodo);
-						}
+					static NodoFundamental* instanciar(NodoFundamental* nodo){
+							return apply_visitor(create_visitor(), *nodo);
+					}
 
-				protected:
-						struct create_visitor : public static_visitor<NodoFundamental*>{
-								template <typename V>
-								NodoFundamental* operator()(Nodo<V>*& nodo) const {
-										return new NodoFundamental(new Imprimir<V>(nodo));
-								}
-						};
+			protected:
+					struct create_visitor : public static_visitor<NodoFundamental*>{
+							template <typename V>
+							NodoFundamental* operator()(Nodo<V>*& nodo) const {
+									return new NodoFundamental(new Imprimir<V>(nodo));
+							}
+
+							NodoFundamental* operator()(Nodo<void>*& nodo) const {
+									throw new Erro("Impressão inválida");
+							}
+					};
     };
 }

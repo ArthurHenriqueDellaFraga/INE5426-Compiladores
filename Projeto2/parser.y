@@ -382,7 +382,7 @@ operacao
 
 
     | PRINT instrucao {
-            $$ = Imprimir::instanciar($2);
+            $$ = Imprimir<char>::instanciar($2);
     }
 
 condicao

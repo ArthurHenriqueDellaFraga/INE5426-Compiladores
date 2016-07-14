@@ -1,13 +1,13 @@
 def int a, d;
 a += 1;
 
-if(TRUE){
+if(FALSE){
   d += 1;
   d += 1;
 }
 else{
   a += 1;
 };
-a += d;
+a = (d + a);
 
 print a;
