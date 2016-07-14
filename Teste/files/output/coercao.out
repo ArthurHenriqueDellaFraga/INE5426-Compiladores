@@ -1,0 +1,22 @@
+Declaracao de variavel int: a
+Atribuicao de valor para variavel int a: (int) valor double 2.4
+Atribuicao de valor para variavel int a: (int) valor char a
+Atribuicao de valor para variavel int a: (int) valor bool TRUE
+Atribuicao de valor para variavel int a: (int) valor bool FALSE
+Declaracao de variavel double: d
+Atribuicao de valor para variavel double d: (double) valor int 3
+Atribuicao de valor para variavel double d: (double) valor char d
+Atribuicao de valor para variavel double d: (double) valor bool FALSE
+Atribuicao de valor para variavel double d: (double) valor bool TRUE
+Declaracao de variavel bool: b
+Atribuicao de valor para variavel bool b: (bool) valor double 1.2
+Atribuicao de valor para variavel bool b: (bool) valor double 0.1
+Atribuicao de valor para variavel bool b: (bool) valor double 0
+Atribuicao de valor para variavel bool b: (bool) valor int 1
+Atribuicao de valor para variavel bool b: (bool) valor int 0
+Declaracao de variavel char: c
+Atribuicao de valor para variavel char c: valor char c
+Atribuicao de valor para variavel char c: (char) valor int 97
+Atribuicao de valor para variavel char c: (char) valor double 98.2
+Atribuicao de valor para variavel char c: (char) valor bool TRUE
+Atribuicao de valor para variavel char c: (char) valor bool FALSE

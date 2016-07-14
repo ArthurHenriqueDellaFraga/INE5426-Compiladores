@@ -1,0 +1,25 @@
+def int a;
+a = 2.4;
+a = 'a';
+a = TRUE;
+a = FALSE;
+
+def double d;
+d = 3;
+d = 'd';
+d = FALSE;
+d = TRUE;
+
+def bool b;
+b = 1.2;
+b = 0.1;
+b = 0.000;
+b = 1;
+b = 0;
+
+def char c;
+c = 'c';
+c = 97;
+c = 98.2;
+c = TRUE;
+c = FALSE;

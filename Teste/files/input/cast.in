@@ -1,29 +1,7 @@
 def int a;
-a = (int) 1;
-a = (int) 2.4;
-a = (int) 'a';
-a = (int) TRUE;
-a = (int) FALSE;
-
-def double d;
-d = (double) 1.2;
-d = (double) 3;
-d = (double) 'd';
-d = (double) FALSE;
-d = (double) TRUE;
+a = 5 + ((int) 'a');
+a = ((double) 'a') - 6;
 
 def bool b;
-b = (bool) TRUE;
-b = (bool) FALSE;
-b = (bool) 1.2;
-b = (bool) 0.1;
-b = (bool) 0.000;
-b = (bool) 1;
-b = (bool) 0;
-
-def char c;
-c = (char) 'c';
-c = (char) 97;
-c = (char) 98.2;
-c = (char) TRUE;
-c = (char) FALSE;
+b = ((bool) 1.00) && TRUE;
+b = ((bool) 1.00) || ((bool) 0);

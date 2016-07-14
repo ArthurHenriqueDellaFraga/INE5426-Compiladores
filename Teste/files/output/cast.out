@@ -1,26 +1,6 @@
 Declaracao de variavel int: a
-Atribuicao de valor para variavel int: (int) valor int 1
-Atribuicao de valor para variavel int: (int) valor double 2.4
-Atribuicao de valor para variavel int: (int) valor char a
-Atribuicao de valor para variavel int: (int) valor bool TRUE
-Atribuicao de valor para variavel int: (int) valor bool FALSE
-Declaracao de variavel double: d
-Atribuicao de valor para variavel double: (double) valor double 1.2
-Atribuicao de valor para variavel double: (double) valor int 3
-Atribuicao de valor para variavel double: (double) valor char d
-Atribuicao de valor para variavel double: (double) valor bool FALSE
-Atribuicao de valor para variavel double: (double) valor bool TRUE
+Atribuicao de valor para variavel int a: (valor int 5 <soma> <abre parenteses> (int) valor char a <fecha parenteses>)
+Atribuicao de valor para variavel int a: (int) (<abre parenteses> (double) valor char a <fecha parenteses> <subtracao> valor int 6)
 Declaracao de variavel bool: b
-Atribuicao de valor para variavel bool: (bool) valor bool TRUE
-Atribuicao de valor para variavel bool: (bool) valor bool FALSE
-Atribuicao de valor para variavel bool: (bool) valor double 1.2
-Atribuicao de valor para variavel bool: (bool) valor double 0.1
-Atribuicao de valor para variavel bool: (bool) valor double 0
-Atribuicao de valor para variavel bool: (bool) valor int 1
-Atribuicao de valor para variavel bool: (bool) valor int 0
-Declaracao de variavel char: c
-Atribuicao de valor para variavel char: (char) valor char c
-Atribuicao de valor para variavel char: (char) valor int 97
-Atribuicao de valor para variavel char: (char) valor double 98.2
-Atribuicao de valor para variavel char: (char) valor bool TRUE
-Atribuicao de valor para variavel char: (char) valor bool FALSE
+Atribuicao de valor para variavel bool b: (<abre parenteses> (bool) valor double 1 <fecha parenteses> <and> valor bool TRUE)
+Atribuicao de valor para variavel bool b: (<abre parenteses> (bool) valor double 1 <fecha parenteses> <or> <abre parenteses> (bool) valor int 0 <fecha parenteses>)

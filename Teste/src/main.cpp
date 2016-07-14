@@ -107,8 +107,8 @@ void printResult(path path, bool hasChange, wstring output, wstring expectedOutp
       cout << path << ": " << "OK" << endl;
     }else{
       cout << path << ": " << "ERROOOUUU!" << endl;
-      cout << "HTML com o diff:" << endl;
-      cout << compute_diff(output, expectedOutput) << endl;;
+      // cout << "HTML com o diff:" << endl;
+      // cout << compute_diff(output, expectedOutput) << endl;;
     }
     cout << endl;
 }

@@ -1,0 +1,22 @@
+def bool b;
+b = 'a' != 'b' && 3 > 2;
+def int d,e;
+d = 2;
+e = 1;
+b = d > e && b;
+b = TRUE && FALSE;
+b = TRUE && ((bool) 3 * 3 + 5);
+b = d > 2 && e >= 0;
+
+b = 'a' != 'b' || 3 > 2;
+b = d > e || b;
+b = TRUE || FALSE;
+b = TRUE || ((bool) 3 * 3 + 5);
+b = d > 2 || e >= 0;
+
+b = 'a' != 'b' || 3 > 2;
+b = d > e || b;
+b = !TRUE || FALSE;
+b = TRUE || !((bool) 3 * 3 + 5);
+b = d > 2 || !(e >= 0);
+b = !d >= e;

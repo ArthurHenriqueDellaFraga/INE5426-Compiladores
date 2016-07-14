@@ -1,0 +1,6 @@
+comparacao nao imprimi o resultado ->
+comparação de string. "a" != "a"
+bool b = (d + e) < (d * e + e);
+b = !d >= e; //deveria dar erro na negacao do d?
+operações matematicas entre variaveis
+a = 3 + 5 / 4 * 6; //nao imprimiu o cast 5 / 4 pra int
