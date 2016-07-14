@@ -45,14 +45,14 @@ namespace AnaliseSemantica {
           }
 
           static NodoFundamental* instanciar(NodoFundamental* condicao, Bloco* _true, Bloco* _false){
-              createVisitor create;
+              create_visitor create;
               create._true = _true;
               create._false = _false;
               return apply_visitor(create, *condicao);
           }
 
       protected:
-          struct createVisitor : public static_visitor<NodoFundamental*>{
+          struct create_visitor : public static_visitor<NodoFundamental*>{
               Bloco* _true;
               Bloco* _false;
 
