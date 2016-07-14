@@ -49,6 +49,7 @@ extern int yydebug;
     #include "AnaliseSemantica/Definicao.hpp"
 
     #include "AnaliseSemantica/Operacao/Parenteses.hpp"
+    #include "AnaliseSemantica/Operacao/Imprimir.hpp"
 
     #include "AnaliseSemantica/Operacao/Matematica/Soma.hpp"
     #include "AnaliseSemantica/Operacao/Matematica/Subtracao.hpp"
@@ -82,7 +83,7 @@ extern int yydebug;
     extern int yylex();
     extern void yyerror(const char* s, ...);
 
-#line 86 "parser.h" /* yacc.c:1909  */
+#line 87 "parser.h" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -105,23 +106,24 @@ extern int yydebug;
     AND = 271,
     OR = 272,
     NEGACAO_BOOLEANA = 273,
-    VIRGULA = 274,
-    PONTO = 275,
-    ABRE_PARENTESES = 276,
-    FECHA_PARENTESES = 277,
-    ABRE_CHAVES = 278,
-    FECHA_CHAVES = 279,
-    ABRE_COLCHETE = 280,
-    FECHA_COLCHETE = 281,
-    IF = 282,
-    ELSE = 283,
-    INTEIRO = 284,
-    RACIONAL = 285,
-    BOOLEANO = 286,
-    CARACTER = 287,
-    SENTENCA = 288,
-    IDENTIFICADOR = 289,
-    errord = 290
+    PRINT = 274,
+    VIRGULA = 275,
+    PONTO = 276,
+    ABRE_PARENTESES = 277,
+    FECHA_PARENTESES = 278,
+    ABRE_CHAVES = 279,
+    FECHA_CHAVES = 280,
+    ABRE_COLCHETE = 281,
+    FECHA_COLCHETE = 282,
+    IF = 283,
+    ELSE = 284,
+    INTEIRO = 285,
+    RACIONAL = 286,
+    BOOLEANO = 287,
+    CARACTER = 288,
+    SENTENCA = 289,
+    IDENTIFICADOR = 290,
+    errord = 291
   };
 #endif
 
@@ -130,7 +132,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 46 "parser.y" /* yacc.c:1909  */
+#line 47 "parser.y" /* yacc.c:1909  */
 
     int _int;
     double _double;
@@ -146,7 +148,7 @@ union YYSTYPE
     DefinicaoFundamental* definicao;
     AtribuicaoFundamental* atribuicao;
 
-#line 150 "parser.h" /* yacc.c:1909  */
+#line 152 "parser.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

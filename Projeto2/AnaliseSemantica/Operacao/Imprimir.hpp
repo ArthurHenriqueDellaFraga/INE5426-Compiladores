@@ -9,18 +9,18 @@ namespace AnaliseSemantica {
 	// INSTANCIAÇÃO
 
 	template<typename T>
-    class Parenteses : public Operacao<T, T> {
+    class Imprimir : public Operacao<void, T> {
 		    public:
-		        Parenteses(Nodo<T>* nodo) : Operacao<T, T>(nodo, "parenteses") { }
+		        Imprimir(Nodo<T>* nodo) : Operacao<void, T>(nodo, "print") { }
 
-		        void print(){
-			        	cout << "<abre " << this->simbolo << "> ";
-			        	this->nodo->print();
-			        	cout << " <fecha " << this->simbolo << ">";
-		        }
+            void print(){
+                cout << "<" << this->simbolo << "> ";
+                this->nodo->print();
+            }
 
-						T executar(Contexto* contexto){
-								return this->nodo->executar(contexto);
+						void executar(Contexto* contexto){
+                this->print();
+                cout << ": " << this->nodo->executar(contexto);
 						}
 
 						static NodoFundamental* instanciar(NodoFundamental* nodo){
@@ -31,7 +31,7 @@ namespace AnaliseSemantica {
 						struct create_visitor : public static_visitor<NodoFundamental*>{
 								template <typename V>
 								NodoFundamental* operator()(Nodo<V>*& nodo) const {
-										return new NodoFundamental(new Parenteses<V>(nodo));
+										return new NodoFundamental(new Imprimir<V>(nodo));
 								}
 						};
     };

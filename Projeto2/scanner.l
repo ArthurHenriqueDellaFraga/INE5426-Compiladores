@@ -39,8 +39,9 @@ letra [a-zA-Z]
 
 "&&"                          {return AND;}
 "||"                          {return OR;}
-
 "!"                           {return NEGACAO_BOOLEANA;}
+
+"print"                       {return PRINT;}
 
 "="                           {return ATRIBUICAO;}
 "def"                         {return DEFINICAO;}

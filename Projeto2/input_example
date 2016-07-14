@@ -10,6 +10,4 @@ else{
 };
 a += d;
 
-if(a == 3){
-  def bool deuBoa;
-};
+print a;

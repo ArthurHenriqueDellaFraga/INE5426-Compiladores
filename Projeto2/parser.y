@@ -6,6 +6,7 @@
     #include "AnaliseSemantica/Definicao.hpp"
 
     #include "AnaliseSemantica/Operacao/Parenteses.hpp"
+    #include "AnaliseSemantica/Operacao/Imprimir.hpp"
 
     #include "AnaliseSemantica/Operacao/Matematica/Soma.hpp"
     #include "AnaliseSemantica/Operacao/Matematica/Subtracao.hpp"
@@ -81,6 +82,8 @@
 %token AND
 %token OR
 %token NEGACAO_BOOLEANA
+
+%token PRINT
 
 %token VIRGULA
 %token PONTO
@@ -374,6 +377,12 @@ operacao
 
     | NEGACAO_BOOLEANA instrucao {
             $$ = NegacaoBooleana::instanciar($2);
+    }
+
+
+
+    | PRINT instrucao {
+            $$ = Imprimir::instanciar($2);
     }
 
 condicao
