@@ -22,7 +22,7 @@ int main(int argc, char **argv){
         exit(1);
     }
 
-    // cout << endl << endl;
+    cout << endl << endl;
     raizDoPrograma->executar(contexto);
     //raizDoPrograma->print();
 

@@ -1,6 +1,11 @@
 def int a, d;
 a += 1;
 
+/* comentario
+         de
+    multiplas linhas
+*/
+
 if(FALSE){
   d += 1;
   d += 1;
@@ -8,6 +13,7 @@ if(FALSE){
 else{
   a += (double) 'a';
 };
+
 a += d;
 
 print a;

@@ -25,6 +25,9 @@ letra [a-zA-Z]
 \n                            ;
 ";"                           {return NOVA_LINHA;}
 
+"="                           {return ATRIBUICAO;}
+"def"                         {return DEFINICAO;}
+
 "+"                           {return SOMA;}
 "-"                           {return SUBTRACAO;}
 "*"                           {return MULTIPLICACAO;}
@@ -42,9 +45,6 @@ letra [a-zA-Z]
 "!"                           {return NEGACAO_BOOLEANA;}
 
 "print"                       {return PRINT;}
-
-"="                           {return ATRIBUICAO;}
-"def"                         {return DEFINICAO;}
 
 ","                           {return VIRGULA;}
 "."                           {return PONTO;}
@@ -87,6 +87,16 @@ letra [a-zA-Z]
 {letra}({letra}|{digito})*    {
                                   yylval._string = new string(yytext);
                                   return IDENTIFICADOR;
+                              }
+
+"//".*\n                      {
+                                  yylval._string = new string(yytext);
+                                  return COMENTARIO;
+                              }
+
+"/*"(.|\n)*"*/"               {
+                                  yylval._string = new string(yytext);
+                                  return COMENTARIO;
                               }
 
 .                             {yyerror("léxico: simbolo desconhecido: '%c'\n", *yytext);}

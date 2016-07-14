@@ -5,6 +5,8 @@
     #include "AnaliseSemantica/Atribuicao.hpp"
     #include "AnaliseSemantica/Definicao.hpp"
 
+    #include "AnaliseSemantica/Geral/Comentario.hpp"
+
     #include "AnaliseSemantica/Operacao/Parenteses.hpp"
     #include "AnaliseSemantica/Operacao/Imprimir.hpp"
 
@@ -101,6 +103,7 @@
 %token <_string> SENTENCA
 
 %token <_string> IDENTIFICADOR
+%token <_string> COMENTARIO
 
 // type defines the type of our nonterminal symbols.
 
@@ -202,6 +205,10 @@ bloco
 
     | bloco NOVA_LINHA { }
 
+    | bloco COMENTARIO {
+            $1->addInstrucao(new NodoFundamental(new Comentario(*$2)));
+    }
+
 instrucao
     : primitivo {
             $$ = NodoPolimorfo<>::converter(*$1);
@@ -210,10 +217,6 @@ instrucao
     | variavel {
             $$ = NodoPolimorfo<>::converter(*$1);
     }
-
-    // | definicao {
-    //         $$ = NodoPolimorfo<>::converter(*$1);
-    // }
 
     | atribuicao {
             $$ = NodoPolimorfo<>::converter(*$1);
