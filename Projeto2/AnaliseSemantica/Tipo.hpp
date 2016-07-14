@@ -23,6 +23,10 @@ namespace AnaliseSemantica {
               cout << identificador;
           }
 
+          string getIdentificador(){
+              return identificador;
+          }
+
           string getIdentificadorMasculino(){
               return identificador;
           }

@@ -61,7 +61,7 @@ namespace AnaliseSemantica {
               apply_visitor(executar, *this);
           }
 
-          TipoFundamental getTipo(){
+          TipoFundamental* getTipo(){
               return apply_visitor(getTipo_visitor (), *this);
           }
 
@@ -101,11 +101,10 @@ namespace AnaliseSemantica {
               }
           };
 
-          struct getTipo_visitor : public static_visitor<TipoFundamental> {
+          struct getTipo_visitor : public static_visitor<TipoFundamental*> {
               template <typename V>
-              TipoFundamental operator()(V v) const {
-                  TipoFundamental* tipo= new TipoFundamental(v->getTipo());
-                  return *tipo;
+              TipoFundamental* operator()(V v) const {
+                  return new TipoFundamental(v->getTipo());
               }
           };
   };

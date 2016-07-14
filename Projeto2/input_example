@@ -6,8 +6,9 @@ if(FALSE){
   d += 1;
 }
 else{
-  a += 1;
+  a += (double) 'a';
 };
-a = (d + a);
+a += d;
 
 print a;
+print d;

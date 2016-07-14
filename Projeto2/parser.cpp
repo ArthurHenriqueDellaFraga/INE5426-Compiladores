@@ -1648,7 +1648,7 @@ yyreduce:
     {
             TipoFundamental* tF = TipoFundamental::instanciar(*(yyvsp[-2]._string));
 
-            (yyval.nodo) = Conversao<>::instanciar(*tF, *(yyvsp[0].nodo));
+            (yyval.nodo) = Conversao<>::instanciar(tF, (yyvsp[0].nodo));
     }
 #line 1654 "parser.cpp" /* yacc.c:1646  */
     break;

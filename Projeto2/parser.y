@@ -307,7 +307,7 @@ conversao
     : ABRE_PARENTESES IDENTIFICADOR FECHA_PARENTESES instrucao {
             TipoFundamental* tF = TipoFundamental::instanciar(*$2);
 
-            $$ = Conversao<>::instanciar(*tF, *$4);
+            $$ = Conversao<>::instanciar(tF, $4);
     }
 
 operacao
