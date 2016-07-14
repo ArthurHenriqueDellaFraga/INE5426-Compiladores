@@ -28,6 +28,7 @@
 
     #include "AnaliseSemantica/Condicao/If.hpp"
     #include "AnaliseSemantica/Condicao/While.hpp"
+    #include "AnaliseSemantica/Condicao/For.hpp"
 
 
     #include <stdio.h>
@@ -95,7 +96,7 @@
 %token ABRE_CHAVES FECHA_CHAVES
 %token ABRE_COLCHETE FECHA_COLCHETE
 
-%token IF ELSE WHILE
+%token IF ELSE WHILE FOR
 
 %token <_int> INTEIRO
 %token <_double> RACIONAL
@@ -402,6 +403,10 @@ condicao
 
     | WHILE ABRE_PARENTESES instrucao FECHA_PARENTESES bloco_fechado {
             $$ = While::instanciar($3, $5);
+    }
+
+    | FOR ABRE_PARENTESES variavel NOVA_LINHA instrucao NOVA_LINHA atribuicao FECHA_PARENTESES bloco_fechado {
+            $$ = For::instanciar($3, $5, $7, $9);
     }
 
 

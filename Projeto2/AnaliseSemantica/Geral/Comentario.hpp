@@ -20,7 +20,7 @@ namespace AnaliseSemantica {
           }
 
           void executar(Contexto* contexto){
-              cout << texto << endl;
+              cout << texto;
           }
   };
 
