@@ -15,20 +15,16 @@ namespace AnaliseSemantica {
           Bloco(){}
 
           virtual void print(){
-              cout << "    " << this << "{" << endl;
               for(int i=0; i < listaDeInstrucoes.size(); i++){
                   listaDeInstrucoes[i]->print();
                   cout << endl;
               }
-              cout << "    }" << this << endl;
           }
 
           void executar(Contexto* contexto){
               Contexto* novoContexto = new Contexto(contexto);
 
               for(int i=0; i < listaDeInstrucoes.size(); i++){
-                  listaDeInstrucoes[i]->print();
-                  cout << endl;
                   listaDeInstrucoes[i]->executar(novoContexto);
               }
           }

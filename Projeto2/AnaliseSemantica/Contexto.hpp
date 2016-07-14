@@ -51,5 +51,13 @@ namespace AnaliseSemantica {
                 return this;
             }
 
+            void print(){
+                if(antecessor != NULL){
+                    antecessor->print();
+                }
+
+                cout << this << endl;
+            }
+
     };
 }

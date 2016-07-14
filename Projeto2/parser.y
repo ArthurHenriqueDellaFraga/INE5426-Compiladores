@@ -135,7 +135,10 @@
 %%
 
 program
-    : bloco { raizDoPrograma = $1; }
+    : bloco {
+            contexto = contexto->getAntecessor();
+            raizDoPrograma = $1;
+    }
 
 bloco_fechado
     : ABRE_CHAVES bloco FECHA_CHAVES {
@@ -150,32 +153,46 @@ bloco
             $$ = new Bloco();
             contexto = new Contexto(contexto);
 
+            $$->addInstrucao($1);
+    }
+
+    | bloco instrucao NOVA_LINHA{
+            if($2 != NULL){
+                $1->addInstrucao($2);
+            }
+            $$ = $1;
+    }
+
+    | definicao NOVA_LINHA {
+            $$ = new Bloco();
+            contexto = new Contexto(contexto);
+
             try{
                 $1->executar(contexto);
-                $1->print();
-                cout << endl;
+                //$2->print();
+                // cout << endl;
             }
             catch(Erro* erro){
                 erro->print();
                 exit(1);
             }
 
-            $$->addInstrucao($1);
+            $$->addInstrucao(NodoPolimorfo<>::converter(*$1));
     }
 
-    | bloco instrucao NOVA_LINHA{
+    | bloco definicao NOVA_LINHA{
             if($2 != NULL){
                 try{
                     $2->executar(contexto);
-                    $2->print();
-                    cout << endl;
+                    //$2->print();
+                    // cout << endl;
                 }
                 catch(Erro* erro){
                     erro->print();
                     exit(1);
                 }
 
-                $1->addInstrucao($2);
+                $1->addInstrucao(NodoPolimorfo<>::converter(*$2));
             }
             $$ = $1;
     }
@@ -191,9 +208,9 @@ instrucao
             $$ = NodoPolimorfo<>::converter(*$1);
     }
 
-    | definicao {
-            $$ = NodoPolimorfo<>::converter(*$1);
-    }
+    // | definicao {
+    //         $$ = NodoPolimorfo<>::converter(*$1);
+    // }
 
     | atribuicao {
             $$ = NodoPolimorfo<>::converter(*$1);

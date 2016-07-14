@@ -1,13 +1,15 @@
-def int a;
+def int a, d;
+a += 1;
 
-if(FALSE){
-  def int b;
-  a += 1;
-  a += 1;
+if(TRUE){
+  d += 1;
+  d += 1;
 }
 else{
-  def double c;
-  c += 8.1;
+  a += 1;
 };
+a += d;
 
-a += 1;
+if(a == 3){
+  def bool deuBoa;
+};
