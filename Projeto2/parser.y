@@ -27,6 +27,7 @@
     #include "AnaliseSemantica/Operacao/Logica/NegacaoBooleana.hpp"
 
     #include "AnaliseSemantica/Condicao/If.hpp"
+    #include "AnaliseSemantica/Condicao/While.hpp"
 
 
     #include <stdio.h>
@@ -94,7 +95,7 @@
 %token ABRE_CHAVES FECHA_CHAVES
 %token ABRE_COLCHETE FECHA_COLCHETE
 
-%token IF ELSE
+%token IF ELSE WHILE
 
 %token <_int> INTEIRO
 %token <_double> RACIONAL
@@ -395,6 +396,10 @@ condicao
 
     | IF ABRE_PARENTESES instrucao FECHA_PARENTESES bloco_fechado ELSE bloco_fechado {
             $$ = If::instanciar($3, $5, $7);
+    }
+
+    | WHILE ABRE_PARENTESES instrucao FECHA_PARENTESES bloco_fechado {
+            $$ = While::instanciar($3, $5);
     }
 
 

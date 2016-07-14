@@ -62,7 +62,7 @@ namespace AnaliseSemantica {
 
               template <typename V>
               NodoFundamental* operator()(Nodo<V>* condicao) const {
-                  throw new Erro("operacao teste espera booleano mas recebeu outro");
+                  throw new Erro("operacao If espera booleano mas recebeu outro");
               }
           };
   };

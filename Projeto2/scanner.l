@@ -58,6 +58,7 @@ letra [a-zA-Z]
 
 "if"                          {return IF;}
 "else"                        {return ELSE;}
+"while"                       {return WHILE;}
 
 {digito}+                     {
                                   yylval._int = atoi(yytext);
