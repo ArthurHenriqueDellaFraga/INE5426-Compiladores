@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Conversao.hpp"
+#include "Operacao/Conversao.hpp"
 #include <boost/variant/multivisitors.hpp>
 
 using namespace boost;
@@ -28,7 +28,7 @@ namespace AnaliseSemantica {
           }
 
           void executar(Contexto* contexto){
-              *variavel = (valor->executar(contexto));
+              this->variavel->setValor(valor->executar(contexto));
           }
   };
 
@@ -50,7 +50,7 @@ namespace AnaliseSemantica {
                     VariavelFundamental* vF = new VariavelFundamental(variavel);
                     NodoFundamental* nF = new NodoFundamental(valor);
 
-                    NodoFundamental* conversao = Conversao<>::instanciar(vF->getTipo(), *nF);
+                    NodoFundamental* conversao = Conversao<>::instanciar(vF->getTipo(), nF);
                     return AtribuicaoPolimorfo::instanciar(vF, conversao);
               }
 

@@ -5,7 +5,10 @@
     #include "AnaliseSemantica/Atribuicao.hpp"
     #include "AnaliseSemantica/Definicao.hpp"
 
+    #include "AnaliseSemantica/Geral/Comentario.hpp"
+
     #include "AnaliseSemantica/Operacao/Parenteses.hpp"
+    #include "AnaliseSemantica/Operacao/Imprimir.hpp"
 
     #include "AnaliseSemantica/Operacao/Matematica/Soma.hpp"
     #include "AnaliseSemantica/Operacao/Matematica/Subtracao.hpp"
@@ -24,6 +27,7 @@
     #include "AnaliseSemantica/Operacao/Logica/NegacaoBooleana.hpp"
 
     #include "AnaliseSemantica/Condicao/If.hpp"
+    #include "AnaliseSemantica/Condicao/While.hpp"
 
 
     #include <stdio.h>
@@ -82,6 +86,8 @@
 %token OR
 %token NEGACAO_BOOLEANA
 
+%token PRINT
+
 %token VIRGULA
 %token PONTO
 
@@ -89,7 +95,7 @@
 %token ABRE_CHAVES FECHA_CHAVES
 %token ABRE_COLCHETE FECHA_COLCHETE
 
-%token IF ELSE
+%token IF ELSE WHILE
 
 %token <_int> INTEIRO
 %token <_double> RACIONAL
@@ -98,11 +104,13 @@
 %token <_string> SENTENCA
 
 %token <_string> IDENTIFICADOR
+%token <_string> COMENTARIO
 
 // type defines the type of our nonterminal symbols.
 
 %type <bloco> program
 %type <bloco> bloco
+%type <bloco> bloco_fechado
 %type <nodo> instrucao
 
 %type <primitivo> primitivo
@@ -136,23 +144,73 @@
 %%
 
 program
-    : bloco { raizDoPrograma = $1; }
+    : bloco {
+            contexto = contexto->getAntecessor();
+            raizDoPrograma = $1;
+    }
+
+bloco_fechado
+    : ABRE_CHAVES bloco FECHA_CHAVES {
+            $$ = $2;
+            contexto = contexto->getAntecessor();
+    }
 
 bloco
     : NOVA_LINHA { }
 
     | instrucao NOVA_LINHA {
-            $$ = new Bloco(contexto);
+            $$ = new Bloco();
+            contexto = new Contexto(contexto);
+
             $$->addInstrucao($1);
     }
 
     | bloco instrucao NOVA_LINHA{
-            if($2 != NULL)
+            if($2 != NULL){
                 $1->addInstrucao($2);
+            }
+            $$ = $1;
+    }
+
+    | definicao NOVA_LINHA {
+            $$ = new Bloco();
+            contexto = new Contexto(contexto);
+
+            try{
+                $1->executar(contexto);
+                //$2->print();
+                // cout << endl;
+            }
+            catch(Erro* erro){
+                erro->print();
+                exit(1);
+            }
+
+            $$->addInstrucao(NodoPolimorfo<>::converter(*$1));
+    }
+
+    | bloco definicao NOVA_LINHA{
+            if($2 != NULL){
+                try{
+                    $2->executar(contexto);
+                    //$2->print();
+                    // cout << endl;
+                }
+                catch(Erro* erro){
+                    erro->print();
+                    exit(1);
+                }
+
+                $1->addInstrucao(NodoPolimorfo<>::converter(*$2));
+            }
             $$ = $1;
     }
 
     | bloco NOVA_LINHA { }
+
+    | bloco COMENTARIO {
+            $1->addInstrucao(new NodoFundamental(new Comentario(*$2)));
+    }
 
 instrucao
     : primitivo {
@@ -160,10 +218,6 @@ instrucao
     }
 
     | variavel {
-            $$ = NodoPolimorfo<>::converter(*$1);
-    }
-
-    | definicao {
             $$ = NodoPolimorfo<>::converter(*$1);
     }
 
@@ -193,7 +247,6 @@ primitivo
     | CARACTER { $$ = new PrimitivoFundamental(new Primitivo<char>($1)); }
 
     | SENTENCA { $$ = new PrimitivoFundamental(new Primitivo<string>(*$1)); }
-
 
 definicao
     : DEFINICAO IDENTIFICADOR IDENTIFICADOR {
@@ -260,7 +313,7 @@ conversao
     : ABRE_PARENTESES IDENTIFICADOR FECHA_PARENTESES instrucao {
             TipoFundamental* tF = TipoFundamental::instanciar(*$2);
 
-            $$ = Conversao<>::instanciar(*tF, *$4);
+            $$ = Conversao<>::instanciar(tF, $4);
     }
 
 operacao
@@ -332,13 +385,25 @@ operacao
             $$ = NegacaoBooleana::instanciar($2);
     }
 
-condicao
-    : IF ABRE_PARENTESES instrucao FECHA_PARENTESES ABRE_CHAVES bloco FECHA_CHAVES {
-            $$ = If::instanciar(contexto, $3, $6, NULL);
+
+
+    | PRINT instrucao {
+            $$ = Imprimir<char>::instanciar($2);
     }
 
-    | IF ABRE_PARENTESES instrucao FECHA_PARENTESES ABRE_CHAVES bloco FECHA_CHAVES ELSE ABRE_CHAVES bloco FECHA_CHAVES {
-            $$ = If::instanciar(contexto, $3, $6, $10);
+condicao
+    : IF ABRE_PARENTESES instrucao FECHA_PARENTESES bloco_fechado {
+            $$ = If::instanciar($3, $5, NULL);
     }
+
+    | IF ABRE_PARENTESES instrucao FECHA_PARENTESES bloco_fechado ELSE bloco_fechado {
+            $$ = If::instanciar($3, $5, $7);
+    }
+
+    | WHILE ABRE_PARENTESES instrucao FECHA_PARENTESES bloco_fechado {
+            $$ = While::instanciar($3, $5);
+    }
+
+
 
 %%

@@ -1,6 +1,7 @@
 #include "AnaliseSemantica/Bloco.hpp"
 
 #include <iostream>
+#include <vector>
 
 using namespace AnaliseSemantica;
 
@@ -22,8 +23,8 @@ int main(int argc, char **argv){
     }
 
     cout << endl << endl;
-    raizDoPrograma->print();
-    //raizDoPrograma->executar(contexto);
+    raizDoPrograma->executar(contexto);
+    //raizDoPrograma->print();
 
     return 0;
 }

@@ -28,7 +28,7 @@ namespace AnaliseSemantica {
                   NodoFundamental* l = new NodoFundamental(left);
                   NodoFundamental* r = new NodoFundamental(right);
 
-                  NodoFundamental* conversao = Conversao<>::instanciar(l->getTipo(), *r);
+                  NodoFundamental* conversao = Conversao<>::instanciar(l->getTipo(), r);
                   return Menor::instanciar(l, conversao);
             }
 

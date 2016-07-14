@@ -23,7 +23,7 @@ namespace AnaliseSemantica {
 
       protected:
           struct create_visitor : public static_visitor<NodoFundamental*>{
-              string mensagemDeErro = "operacao Multiplicacao espera int ou double mas recebeu outros";
+              string mensagemDeErro = "operacao Divisao espera int ou double mas recebeu outros";
 
               NodoFundamental* operator()(Nodo<int>*& left, Nodo<int>*& right) const {
                   return new NodoFundamental(new Divisao<int, int, int>(left, right));

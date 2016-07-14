@@ -23,13 +23,9 @@ namespace AnaliseSemantica {
               cout << identificador;
           }
 
-          string getIdentificadorMasculino(){
+          string getIdentificador(){
               return identificador;
           }
-
-          string getIdentificadorFeminino(){
-              return identificador;
-          };
   };
 
   //INSTANCIAÇÃO
