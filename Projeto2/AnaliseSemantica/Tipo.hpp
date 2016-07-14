@@ -26,14 +26,6 @@ namespace AnaliseSemantica {
           string getIdentificador(){
               return identificador;
           }
-
-          string getIdentificadorMasculino(){
-              return identificador;
-          }
-
-          string getIdentificadorFeminino(){
-              return identificador;
-          };
   };
 
   //INSTANCIAÇÃO
