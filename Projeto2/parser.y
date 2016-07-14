@@ -109,8 +109,9 @@
 %type <variavel> variavel
 %type <definicao> definicao
 %type <atribuicao> atribuicao
-%type <nodo> conversao
+
 %type <nodo> operacao
+%type <nodo> conversao
 %type <nodo> condicao
 
 /* Operator precedence for mathematical operators
@@ -125,6 +126,7 @@
 
 %left SOMA SUBTRACAO
 %left MULTIPLICACAO DIVISAO
+
 %nonassoc errord
 
 /* Gramatica Sintática */

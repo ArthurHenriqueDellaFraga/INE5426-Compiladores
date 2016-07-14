@@ -1,4 +1,0 @@
-Declaracao de variavel int: a1
-Atribuicao de valor para variavel int a1 -> 12: valor int 12
-Declaracao de variavel double: c1
-Atribuicao de valor para variavel double c1 -> 1.43: valor double 1.43
