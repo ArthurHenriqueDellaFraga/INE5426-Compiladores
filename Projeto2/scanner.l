@@ -61,6 +61,8 @@ letra [a-zA-Z]
 "while"                       {return WHILE;}
 "for"                         {return FOR;}
 
+"return"                      {return RETORNO;}
+
 {digito}+                     {
                                   yylval._int = atoi(yytext);
                                   return INTEIRO;

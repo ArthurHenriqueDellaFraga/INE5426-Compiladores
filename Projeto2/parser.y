@@ -32,6 +32,7 @@
 
     #include "AnaliseSemantica/Funcao/DefinicaoDeFuncao.hpp"
     #include "AnaliseSemantica/Funcao/ChamadaDeFuncao.hpp"
+    #include "AnaliseSemantica/Funcao/Retorno.hpp"
 
 
     #include <stdio.h>
@@ -106,6 +107,8 @@
 %token ABRE_COLCHETE FECHA_COLCHETE
 
 %token IF ELSE WHILE FOR
+
+%token RETORNO
 
 %token <_int> INTEIRO
 %token <_double> RACIONAL
@@ -288,6 +291,10 @@ instrucao
 
     | chamada_funcao {
             $$ = NodoPolimorfo<>::converter(*$1);
+    }
+
+    | RETORNO instrucao {
+            $$ = Retorno<int>::instanciar($2);
     }
 
 primitivo
