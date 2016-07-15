@@ -1,0 +1,22 @@
+def int a, i;
+i = 0;
+
+while(i < 10){
+  a += 1;
+  i += 1;
+  print "Incrementado variavel a em 1";
+};
+
+print a;
+
+def bool naoMandeiParar;
+naoMandeiParar = TRUE;
+i = 0;
+while(naoMandeiParar){
+  a = 10 * i;
+  print a;
+  if(a == 50){
+    naoMandeiParar = FALSE;
+  };
+  i += 1;
+};

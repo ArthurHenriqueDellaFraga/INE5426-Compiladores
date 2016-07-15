@@ -1,0 +1,11 @@
+def int a;
+a = 5 + ((int) 'a');
+print a;
+a = ((double) 'a') - 6;
+print a;
+
+def bool b;
+b = ((bool) 1.00) && TRUE;
+print b;
+b = ((bool) 1.00) || ((bool) 0);
+print b;

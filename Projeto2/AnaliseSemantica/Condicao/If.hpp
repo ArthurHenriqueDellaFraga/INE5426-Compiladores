@@ -24,11 +24,11 @@ namespace AnaliseSemantica {
               condicao->print();
               cout << endl;
 
-              cout << "+entao: " << endl;
+              cout << "+entao:" << endl;
               _true->print();
 
               if(_false != NULL){
-                  cout << "+senao: " << endl;
+                  cout << "+senao:" << endl;
                   _false->print();
               }
 
