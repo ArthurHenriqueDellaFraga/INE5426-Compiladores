@@ -10,20 +10,34 @@ print a;
 
 def double d;
 d = 3;
+print d;
 d = 'd';
+print d;
 d = FALSE;
+print d;
 d = TRUE;
+print d;
 
 def bool b;
 b = 1.2;
+print b;
 b = 0.1;
+print b;
 b = 0.000;
+print b;
 b = 1;
+print b;
 b = 0;
+print b;
 
 def char c;
 c = 'c';
+print c;
 c = 97;
+print c;
 c = 98.2;
+print c;
 c = TRUE;
+print c;
 c = FALSE;
+print c;

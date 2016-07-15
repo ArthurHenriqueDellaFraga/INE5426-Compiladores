@@ -10,6 +10,7 @@
 
 #define INPUT_FILE_PATH "../files/input/"
 #define OUTPUT_FILE_PATH "../files/output/"
+#define EXECUTION_FILE_PATH "../files/exec/"
 #define INPUT_EXTENSION ".in"
 #define OUTPUT_EXTENSION ".out"
 #define TEMP_FILE "temp_file.txt"
@@ -38,7 +39,7 @@ void get_all(const path& root, const string& ext, vector<path>& ret)
 
 void clear(){
     vector<boost::filesystem::path> files;
-    get_all(OUTPUT_FILE_PATH, ".ex", files);
+    get_all(EXECUTION_FILE_PATH, ".ex", files);
     if(!files.empty()){
         for(int i=0; i < files.size(); i++){
           string path = OUTPUT_FILE_PATH + files[i].string();
@@ -65,7 +66,7 @@ wstring readFile(const char *filename) {
 
 wstring compute_diff(wstring text1, wstring text2){
   diff_match_patch<wstring> dmp;
-  return dmp.diff_prettyHtml(dmp.diff_main(text1, text2, false));
+  return dmp.diff_prettyHtml(dmp.diff_main(text1, text2, true));
 }
 
 string getFileNameWithoutExtension(path path){
@@ -79,16 +80,16 @@ void executeFile(path file){
     command += "cd " PROGRAM_PATH ";";
     command += " ./"  PROGRAM_NAME;
     command += " < ../Teste/files/input/" + file.string();
-    command += " > ../Teste/files/output/" + getFileNameWithoutExtension(file) + ".ex'";
+    command += " > ../Teste/files/exec/" + getFileNameWithoutExtension(file) + ".ex'";
 
     system(command.c_str());
 
-    usleep(10000);
+    usleep(20000);
 }
 
 wstring getOutput(path path){
   string fileName = getFileNameWithoutExtension(path) + ".ex";
-  fileName = OUTPUT_FILE_PATH + fileName;
+  fileName = EXECUTION_FILE_PATH + fileName;
   return readFile(fileName.c_str());
 }
 
@@ -110,7 +111,6 @@ void printResult(path path, bool hasChange, wstring output, wstring expectedOutp
       // cout << "HTML com o diff:" << endl;
       // cout << compute_diff(output, expectedOutput) << endl;;
     }
-    cout << endl;
 }
 
 int main(){
@@ -122,7 +122,6 @@ int main(){
       executeFile(inputFiles[i]);
       wstring expectedOutput = getExpectedOutput(inputFiles[i]);
       wstring output = getOutput(inputFiles[i]);
-
       bool hasChange = hasChanges(output, expectedOutput);
 
       printResult(inputFiles[i], hasChange, output,expectedOutput);
