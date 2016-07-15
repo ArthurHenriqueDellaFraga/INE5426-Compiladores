@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Definicao.hpp"
+#include "Contexto.hpp"
 
 using namespace boost;
 using namespace std;
@@ -11,9 +11,9 @@ namespace AnaliseSemantica {
 
   template <typename T>
   class Definicao : public Nodo<void>{
-      public:
+      protected:
           vector<string> listaDeIdentificador;
-
+      public:
           Definicao(string identificador) {
               add(identificador);
           }
@@ -39,6 +39,10 @@ namespace AnaliseSemantica {
           void add(string identificador){
               listaDeIdentificador.push_back(identificador);
           }
+
+          vector<string> getListaDeIdentificador(){
+              return listaDeIdentificador;
+          }
   };
 
   // POLIMORFISMO
@@ -55,10 +59,14 @@ namespace AnaliseSemantica {
 
           }
 
-          static DefinicaoPolimorfo* instanciar(TipoPolimorfo tipo, string identificador){
+          vector<string> getListaDeIdentificador(){
+              return boost::apply_visitor(getListaDeIdentificador_visitor(), *this);
+          }
+
+          static DefinicaoPolimorfo* instanciar(TipoPolimorfo* tipo, string identificador){
               create_visitor create;
               create.identificador = identificador;
-              return boost::apply_visitor(create, tipo);
+              return boost::apply_visitor(create, *tipo);
           }
 
       protected:
@@ -77,6 +85,13 @@ namespace AnaliseSemantica {
             template <typename V>
             void operator()(Definicao<V>*& definicao) const {
                 definicao->add(identificador);
+            }
+        };
+
+        struct getListaDeIdentificador_visitor : public static_visitor<vector<string>>{
+            template <typename V>
+            vector<string> operator()(Definicao<V>*& definicao) const {
+                return definicao->getListaDeIdentificador();
             }
         };
   };

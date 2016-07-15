@@ -8,17 +8,15 @@ using namespace std;
 
 namespace AnaliseSemantica {
 
-  // INSTANCIAÇÃO
+  //ABSTRAÇÃO
 
   template <typename T>
-  class Atribuicao : public Nodo<void>{
+  class AtribuicaoAbstrata : public Nodo<void>{
       public:
           Variavel<T>* variavel;
           Nodo<T>* valor;
 
-          Atribuicao() {}
-
-          Atribuicao(Variavel<T>* variavel, Nodo<T>* valor) : variavel(variavel), valor(valor){ }
+          AtribuicaoAbstrata(Variavel<T>* variavel, Nodo<T>* valor) : variavel(variavel), valor(valor){ }
 
           void print(){
               cout << "Atribuicao de valor para ";
@@ -26,18 +24,41 @@ namespace AnaliseSemantica {
               cout << ": ";
               valor->print();
           }
+  };
+
+  // INSTANCIAÇÃO
+
+  template <typename T>
+  class Atribuicao : public AtribuicaoAbstrata<T>{
+      public:
+
+          Atribuicao(Variavel<T>* variavel, Nodo<T>* valor)
+          : AtribuicaoAbstrata<T>(variavel, valor){ }
 
           void executar(Contexto* contexto){
-              this->variavel->setValor(valor->executar(contexto));
+              this->variavel->setValor(this->valor->executar(contexto));
           }
+  };
+
+  template <>
+  class Atribuicao<void> : public AtribuicaoAbstrata<void>{
+      public:
+
+          Atribuicao(Variavel<void>* variavel, Nodo<void>* valor)
+          : AtribuicaoAbstrata<void>(variavel, valor){ }
+
+          void executar(Contexto* contexto){
+              throw new Erro("Atribuicao inválida");
+          }
+
   };
 
   // POLIMORFISMO
 
-  class AtribuicaoPolimorfo : public Polimorfo<Atribuicao>{
+  class AtribuicaoPolimorfo : public NodoPolimorfo<Atribuicao>{
       public:
           template <typename U>
-          AtribuicaoPolimorfo(Atribuicao<U>* atribuicao) : Polimorfo<Atribuicao>(atribuicao){ }
+          AtribuicaoPolimorfo(Atribuicao<U>* atribuicao) : NodoPolimorfo<Atribuicao>(atribuicao){ }
 
           static AtribuicaoPolimorfo* instanciar(VariavelFundamental* variavel, NodoFundamental* valor){
               return boost::apply_visitor(create_visitor(), *variavel, *valor);

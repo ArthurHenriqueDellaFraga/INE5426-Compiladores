@@ -30,6 +30,9 @@
     #include "AnaliseSemantica/Condicao/While.hpp"
     #include "AnaliseSemantica/Condicao/For.hpp"
 
+    #include "AnaliseSemantica/Funcao/DefinicaoDeFuncao.hpp"
+    #include "AnaliseSemantica/Funcao/ChamadaDeFuncao.hpp"
+
 
     #include <stdio.h>
     #include <stdlib.h>
@@ -62,6 +65,12 @@
     VariavelFundamental* variavel;
     DefinicaoFundamental* definicao;
     AtribuicaoFundamental* atribuicao;
+
+    DefinicaoDeFuncaoFundamental* definicao_funcao;
+    vector<DefinicaoFundamental*>* argumentos_funcao;
+
+    ChamadaDeFuncaoFundamental* chamada_funcao;
+    vector<NodoFundamental*>* argumentos;
 }
 
 // token defines our terminal symbols (tokens).
@@ -122,12 +131,19 @@
 %type <nodo> operacao
 %type <nodo> condicao
 
+%type<definicao_funcao> definicao_funcao
+%type<definicao_funcao> assinatura_funcao
+%type<argumentos_funcao> argumentos_funcao
+
+%type<chamada_funcao> chamada_funcao
+%type<argumentos> argumentos
+
 /* Operator precedence for mathematical operators
  * The latest it is listed, the highest the precedence
  */
 
-%left AND OR
 
+%left AND OR
 %right NEGACAO_BOOLEANA
 
 %left IGUAL DIFERENTE MAIOR MENOR MAIOR_IGUAL MENOR_IGUAL
@@ -205,6 +221,40 @@ bloco
             $$ = $1;
     }
 
+    | definicao_funcao NOVA_LINHA {
+            $$ = new Bloco();
+            contexto = new Contexto(contexto);
+
+            try{
+                $1->executar(contexto);
+                //$2->print();
+                // cout << endl;
+            }
+            catch(Erro* erro){
+                erro->print();
+                exit(1);
+            }
+
+            $$->addInstrucao(NodoPolimorfo<>::converter(*$1));
+    }
+
+    | bloco definicao_funcao NOVA_LINHA{
+            if($2 != NULL){
+                try{
+                    $2->executar(contexto);
+                    //$2->print();
+                    // cout << endl;
+                }
+                catch(Erro* erro){
+                    erro->print();
+                    exit(1);
+                }
+
+                $1->addInstrucao(NodoPolimorfo<>::converter(*$2));
+            }
+            $$ = $1;
+    }
+
     | bloco NOVA_LINHA { }
 
     | bloco COMENTARIO {
@@ -236,6 +286,10 @@ instrucao
             $$ = $1;
     }
 
+    | chamada_funcao {
+            $$ = NodoPolimorfo<>::converter(*$1);
+    }
+
 primitivo
     : INTEIRO { $$ = new PrimitivoFundamental(new Primitivo<int>($1)); }
 
@@ -252,7 +306,7 @@ definicao
             try{
                 TipoFundamental* tF = TipoFundamental::instanciar(*$2);
 
-                $$ = DefinicaoFundamental::instanciar(*tF, *$3);
+                $$ = DefinicaoFundamental::instanciar(tF, *$3);
             }
             catch(Erro* erro){
                 erro->print();
@@ -407,6 +461,51 @@ condicao
             $$ = For::instanciar($3, $5, $7, $9);
     }
 
+definicao_funcao
+    : assinatura_funcao bloco_fechado {
+            $1->add($2);
+            $$ = $1;
+            contexto = contexto->getAntecessor();
+    }
+
+assinatura_funcao
+    : DEFINICAO IDENTIFICADOR IDENTIFICADOR ABRE_PARENTESES argumentos_funcao FECHA_PARENTESES{
+            TipoFundamental* tF = TipoFundamental::instanciar(*$2);
+            $$ = DefinicaoDeFuncaoFundamental::instanciar(tF, *$3, *$5);
+
+            contexto = new Contexto(contexto);
+            for(int i = 0; i < $5->size(); i++){
+                $5->at(i)->executar(contexto);
+            }
+    }
+
+argumentos_funcao
+    : definicao {
+            $$ = new vector<DefinicaoFundamental*>();
+            $$->push_back($1);
+    }
+
+    | definicao VIRGULA argumentos_funcao {
+            $3->insert($3->begin(), $1);
+            $$ = $3;
+    }
+
+chamada_funcao
+    : IDENTIFICADOR ABRE_PARENTESES argumentos FECHA_PARENTESES {
+            FuncaoFundamental* funcao = contexto->getFuncao(*$1);
+            $$ = ChamadaDeFuncaoFundamental::instanciar(funcao, *$3);
+    }
+
+argumentos
+    : instrucao {
+            $$ = new vector<NodoFundamental*>();
+            $$->push_back($1);
+      }
+
+      | instrucao VIRGULA argumentos {
+            $3->insert($3->begin(), $1);
+            $$ = $3;
+      }
 
 
 %%

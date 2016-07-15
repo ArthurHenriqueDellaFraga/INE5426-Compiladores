@@ -91,17 +91,22 @@ namespace AnaliseSemantica {
                 return _tipo[identificador]();
           }
 
-          // template<typename U>
-          // TipoPolimorfo& operator=(const Tipo<U>*& tipo){
-          //     variant<Tipo<int>*, Tipo<double>*, Tipo<bool>*, Tipo<char>*, Tipo<string>*, Tipo<void>*>::operator=(tipo);
-          //     return *this;
-          // }
+          string getIdentificador(){
+              return boost::apply_visitor(getIdentificador_visitor(), *this);
+          }
 
       protected:
           template <typename V>
           static TipoPolimorfo* createTipo(){
               return new TipoPolimorfo(new Tipo<V>());
           }
+
+          struct getIdentificador_visitor : public static_visitor<string>{
+              template <typename V>
+              string operator()(Tipo<V>*& tipo) const {
+                  return tipo->getIdentificador();
+              }
+          };
   };
 
   typedef TipoPolimorfo TipoFundamental;

@@ -23,7 +23,7 @@ namespace AnaliseSemantica {
 
           void executar(Contexto* contexto){
               Contexto* novoContexto = new Contexto(contexto);
-
+  
               for(int i=0; i < listaDeInstrucoes.size(); i++){
                   listaDeInstrucoes[i]->executar(novoContexto);
               }
