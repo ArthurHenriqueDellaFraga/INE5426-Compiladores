@@ -22,10 +22,11 @@ int main(int argc, char **argv){
         exit(1);
     }
 
-    // cout << endl << endl;
-    // raizDoPrograma->print();
-    cout << endl << endl;
+    cout << endl << ":: Compilação ::" << endl;
+    raizDoPrograma->print();
+    cout << endl << ":: Execução ::" << endl;
     raizDoPrograma->executar(contexto);
+    cout << endl;
 
     return 0;
 }
