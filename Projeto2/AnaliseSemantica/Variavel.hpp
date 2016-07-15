@@ -60,8 +60,8 @@ namespace AnaliseSemantica {
               //ERROR ?
           }
 
-          template <typename T>
-          void setValor(T valor){
+          template <typename U>
+          void setValor(U valor){
               throw new Erro("Variável " + identificador + " não declarada.");
           }
   };

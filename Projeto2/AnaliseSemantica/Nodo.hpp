@@ -19,7 +19,7 @@ namespace AnaliseSemantica {
           virtual void print(){ cout << "Nodo->print()" << endl;}
           virtual T executar(Contexto* contexto) = 0;
 
-          Tipo<T>* getTipo(){
+          virtual Tipo<T>* getTipo(){
               return new Tipo<T>();
           }
   };

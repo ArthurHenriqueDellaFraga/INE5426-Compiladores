@@ -15,6 +15,8 @@ namespace AnaliseSemantica {
         Erro(string mensagem){
             add(mensagem);
         }
+        
+        Erro(){ }
 
         void print(){
             for(int i = 0; i < listaDeMensagens.size(); i++){
