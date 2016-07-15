@@ -1,0 +1,13 @@
+declaração
+atribuição
+conversão (cast)
+conversão (char -> int ...)
+comparação
+logica
+matematica
+if
+while
+for
+repeat
+funcao
+array

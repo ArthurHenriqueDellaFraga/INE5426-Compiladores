@@ -1,0 +1,17 @@
+def int a1;
+a1 = 12;
+print a1;
+def double c1;
+c1 = 1.43;
+print c1;
+def bool e1;
+e1 = TRUE;
+print e1;
+e1 = FALSE;
+print e1;
+def char g1;
+g1 = 'a';
+print g1;
+def string s1;
+s1 = "string";
+print s1;

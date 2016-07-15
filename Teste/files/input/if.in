@@ -1,0 +1,47 @@
+def int a, d;
+a += 1;
+d = 1;
+
+if(a > d){
+  print "Entrou no if";
+  d += 1;
+  d += 1;
+}
+else{
+  a += (double) 'a';
+  print "Entrou no else";
+};
+
+a += d;
+
+print a;
+print d;
+
+def bool maior;
+def double v1, v2;
+v1 = 2;
+v2 = 1.9999;
+
+if(v1 > v2){
+  print "Entrou no if";
+  maior = TRUE;
+}
+else{
+  print "Entrou no else";
+  maior = FALSE;
+};
+
+print maior;
+
+a = 0;
+v2 = 4;
+if(v1 > v2 && maior){
+  print "Entrou no if";
+  a = 2 * 2;
+}
+else{
+  print "Entrou no else";
+  a = 2 / 2;
+};
+
+print a;
