@@ -22,7 +22,7 @@ clean:
 	rm parser.cpp parser.h scanner.cpp ${OUTPUT}
 
 test: all
-	./${OUTPUT} < input_example
+	cd ../Teste/src/; make execute;
 
 execute: all
 	./${OUTPUT}

@@ -1,0 +1,6 @@
+def int i;
+for(i; i < 4; i += 8){
+  def int a;
+  a += 9;
+  print a;
+};

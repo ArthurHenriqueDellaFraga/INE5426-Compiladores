@@ -29,7 +29,7 @@ namespace AnaliseSemantica {
               atribuicao->print();
               cout << endl;
 
-              cout << "+faz: " << endl;
+              cout << "+faz:" << endl;
               bloco->print();
 
               cout << "Fim expressao condicional";

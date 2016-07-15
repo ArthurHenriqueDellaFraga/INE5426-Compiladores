@@ -1,0 +1,12 @@
+def char c;
+def int f(def bool b){
+    if(b){
+      print 3;
+    };
+    return 5;
+};
+
+def int a, b;
+def string k;
+a = f(TRUE);
+print a;
