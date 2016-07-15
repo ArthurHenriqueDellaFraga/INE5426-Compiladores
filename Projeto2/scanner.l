@@ -60,6 +60,7 @@ letra [a-zA-Z]
 "else"                        {return ELSE;}
 "while"                       {return WHILE;}
 "for"                         {return FOR;}
+"repeat"                      {return REPEAT;}
 
 "return"                      {return RETORNO;}
 

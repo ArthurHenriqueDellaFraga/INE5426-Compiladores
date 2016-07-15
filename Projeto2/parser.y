@@ -29,6 +29,7 @@
     #include "AnaliseSemantica/Condicao/If.hpp"
     #include "AnaliseSemantica/Condicao/While.hpp"
     #include "AnaliseSemantica/Condicao/For.hpp"
+    #include "AnaliseSemantica/Condicao/Repeat.hpp"
 
     #include "AnaliseSemantica/Funcao/DefinicaoDeFuncao.hpp"
     #include "AnaliseSemantica/Funcao/ChamadaDeFuncao.hpp"
@@ -106,7 +107,7 @@
 %token ABRE_CHAVES FECHA_CHAVES
 %token ABRE_COLCHETE FECHA_COLCHETE
 
-%token IF ELSE WHILE FOR
+%token IF ELSE WHILE FOR REPEAT
 
 %token RETORNO
 
@@ -466,6 +467,10 @@ condicao
 
     | FOR ABRE_PARENTESES variavel NOVA_LINHA instrucao NOVA_LINHA atribuicao FECHA_PARENTESES bloco_fechado {
             $$ = For::instanciar($3, $5, $7, $9);
+    }
+
+    | REPEAT ABRE_PARENTESES instrucao FECHA_PARENTESES bloco_fechado {
+            $$ = Repeat::instanciar($3, $5);
     }
 
 definicao_funcao
